@@ -45,11 +45,13 @@ class User < ActiveRecord::Base
       json.data do |data|
         data.user do |user|
           user.(self, :full_name, :bio, :website, :follows_count, :followed_by_count, :posts_count, :email, :authentication_token)
-          if self.errors.present?
-            user.errors self.errors
-          end
+        end
+        
+        if self.errors.present?
+          data.errors self.errors
         end
       end
+      
       json.status (self.errors.present? ? 422 : 201)
     end
   end
