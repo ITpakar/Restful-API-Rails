@@ -4,10 +4,12 @@ class Api::V1::UsersController < Api::BaseController
 
     json = Jbuilder.encode do |json|
       json.data do |data|
-        json.email params[:user][:email]
-        json.new_record? user_exists
+        data.email params[:user][:email]
+        data.user_exists? user_exists
       end
+      json.status 200
     end
+    
     render json: json
   end
 end
