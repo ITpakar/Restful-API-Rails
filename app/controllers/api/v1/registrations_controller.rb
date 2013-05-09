@@ -7,7 +7,7 @@ module Api
         
 
         if user_params[:facebook_id].present?
-          generated_password = Devise.friendly_token.first(6)
+          generated_password = Devise.friendly_token.first(8)
           user_params.update(password: generated_password, password_confirmation: generated_password)
         end
 

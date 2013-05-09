@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130508172351) do
+ActiveRecord::Schema.define(:version => 20130509125910) do
 
   create_table "oauth_access_grants", :force => true do |t|
     t.integer  "resource_owner_id", :null => false
@@ -71,8 +71,8 @@ ActiveRecord::Schema.define(:version => 20130508172351) do
     t.string   "profile_picture_name"
     t.boolean  "auto_accept",            :default => true
     t.integer  "facebook_id"
-    t.text     "bio"
-    t.string   "website"
+    t.text     "bio",                                      :null => false
+    t.string   "website",                :default => "",   :null => false
     t.integer  "follows_count",          :default => 0
     t.integer  "followed_by_count",      :default => 0
     t.integer  "posts_count",            :default => 0
