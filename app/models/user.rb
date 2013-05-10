@@ -52,6 +52,8 @@ class User < ActiveRecord::Base
           user.(self, :full_name, :bio, :website, :follows_count, :followed_by_count, :posts_count, :email, :authentication_token)
           if self.profile_picture.present?
             user.profile_picture_url = self.profile_picture.jpg.url
+          elsif self.facebook_id.present?
+            user.profile_picture_url = "http://graph.facebook.com/#{self.facebook_id}/picture?type=large"
           else
             user.profile_picture_url = ''
           end
