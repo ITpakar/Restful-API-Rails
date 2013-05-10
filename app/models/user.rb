@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
         end
         
         if bool_errors
-          data.errors self.errors
+          data.errors self.errors.full_messages
         end
       end
       json.success !bool_errors
