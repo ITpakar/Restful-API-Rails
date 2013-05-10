@@ -11,7 +11,7 @@ module Api
      
         if user.valid_password?(params[:user][:password])
           sign_in(:user, user)
-          render json: user.to_builder.target!, status: 201
+          render json: user.to_builder.target!, status: 200
           return
         end
         
@@ -20,14 +20,14 @@ module Api
       
       def destroy
         sign_out(current_user)
-        render json: { success: true }, status: 201
+        render json: { success: true }, status: 200
       end
      
       protected
        
         def invalid_login_attempt
           warden.custom_failure!
-          render json: { success: false, message: "Error with your email or password" }, status: 401
+          render json: { success: false, message: "Error with your email or password" }, status: 200
         end
 
     end

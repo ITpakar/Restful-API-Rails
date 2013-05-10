@@ -10,6 +10,6 @@ class Api::V1::UsersController < Api::BaseController
       json.status 200
     end
     
-    render json: json
+    render json: json, status: 200
   end
 end
