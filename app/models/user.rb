@@ -42,6 +42,8 @@ class User < ActiveRecord::Base
 
   before_save :ensure_authentication_token
 
+  image_accessor :profile_picture
+
   def to_builder
     bool_errors = self.errors.present?
     Jbuilder.new do |json|
