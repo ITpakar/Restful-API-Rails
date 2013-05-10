@@ -50,6 +50,11 @@ class User < ActiveRecord::Base
       json.data do |data|
         data.user do |user|
           user.(self, :full_name, :bio, :website, :follows_count, :followed_by_count, :posts_count, :email, :authentication_token)
+          if self.profile_picture.present?
+            user.profile_picture_url = self.profile_picture.jpg.url
+          else
+            user.profile_picture_url = ''
+          end
         end
         
         if bool_errors
