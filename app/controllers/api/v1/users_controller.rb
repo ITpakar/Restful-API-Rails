@@ -12,7 +12,7 @@ module Api
             data.email params[:user][:email]
             data.user_exists? user_exists
           end
-          json.status 200
+          json.success true
         end
         
         render json: json, status: 200
