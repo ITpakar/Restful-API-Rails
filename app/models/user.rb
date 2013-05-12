@@ -21,8 +21,8 @@
 #  profile_picture_name   :string(255)
 #  auto_accept            :boolean          default(TRUE)
 #  facebook_id            :integer
-#  bio                    :text
-#  website                :string(255)      default("")
+#  bio                    :text             default(""), not null
+#  website                :string(255)      default(""), not null
 #  follows_count          :integer          default(0)
 #  followed_by_count      :integer          default(0)
 #  posts_count            :integer          default(0)
@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
         end
       end
       json.success !bool_errors
-      json.status (bool_errors ? 422 : 201)
+      # json.status (bool_errors ? 422 : 201)
     end
   end
 end

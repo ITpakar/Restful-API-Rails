@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130509125910) do
+ActiveRecord::Schema.define(:version => 20130510120110) do
 
   create_table "oauth_access_grants", :force => true do |t|
     t.integer  "resource_owner_id", :null => false
@@ -51,6 +51,21 @@ ActiveRecord::Schema.define(:version => 20130509125910) do
   end
 
   add_index "oauth_applications", ["uid"], :name => "index_oauth_applications_on_uid", :unique => true
+
+  create_table "posts", :force => true do |t|
+    t.text     "quote",                               :null => false
+    t.text     "caption",                             :null => false
+    t.string   "quote_image_uid"
+    t.string   "quote_image_name"
+    t.boolean  "editors_pick",     :default => false, :null => false
+    t.integer  "likes_count",      :default => 0,     :null => false
+    t.integer  "user_id"
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+  end
+
+  add_index "posts", ["editors_pick"], :name => "index_posts_on_editors_pick"
+  add_index "posts", ["user_id"], :name => "index_posts_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "",   :null => false
