@@ -11,6 +11,7 @@ Quotiful::Application.routes.draw do
             post 'email_check'  
           end
         end
+        resources :posts, only: [:create]
       # end
     end
 

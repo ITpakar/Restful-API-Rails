@@ -2,8 +2,8 @@ module Api
   module V1
     class SessionsController < Api::BaseController
  
+      before_filter :validate_authentication_key, only: [:destroy]
       before_filter :ensure_params_user_exist, only: [:create]
-      before_filter :ensure_authentication_key_exist, only: [:destroy]
      
       def create
         user = User.find_for_database_authentication(email: params[:user][:email])

@@ -2,7 +2,7 @@ module Api
   module V1
     class PostsController < Api::BaseController
 
-      before_filter :ensure_authentication_key_exist
+      before_filter :validate_authentication_key
       before_filter :ensure_params_post_exist
 
       def create
@@ -19,7 +19,7 @@ module Api
       protected
 
         def ensure_params_post_exist
-          return unless params[:user].blank?
+          return unless params[:post].blank?
           render json: { success: false, message: "Missing post parameter" }, status: 200
         end
     end

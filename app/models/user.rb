@@ -44,6 +44,8 @@ class User < ActiveRecord::Base
 
   image_accessor :profile_picture
 
+  has_many :posts, dependent: :destroy
+
   def to_builder
     bool_errors = self.errors.present?
     Jbuilder.new do |json|
