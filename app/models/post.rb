@@ -19,9 +19,10 @@ class Post < ActiveRecord::Base
 
   belongs_to :user
 
-  validates_presence_of :quote#, :quote_image
+  has_many :taggings, as: :taggable, dependent: :destroy
+  has_many :tags, through: :taggings
 
-  after_save :save_tags_on_quote_and_description
+  validates_presence_of :quote#, :quote_image
 
   image_accessor :quote_image
 
@@ -43,13 +44,6 @@ class Post < ActiveRecord::Base
         end
       end
       json.success !bool_errors
-      # json.status (bool_errors ? 422 : 201)
     end
   end
-
-  private
-
-    def save_tags_on_quote_and_description
-      # TODO: Resque job for searching tags on quotes and description
-    end
 end

@@ -2,7 +2,7 @@ module Api
   module V1
     class PostsController < Api::BaseController
 
-      before_filter :validate_authentication_key
+      before_filter :validate_authentication_token
       before_filter :ensure_params_post_exist
 
       def create

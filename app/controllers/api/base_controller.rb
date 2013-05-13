@@ -10,8 +10,8 @@ module Api
     protected
 
       def current_user
-        if params[:authentication_key].present?
-          @current_user ||= User.find_by_authentication_token(params[:authentication_key])
+        if params[:authentication_token].present?
+          @current_user ||= User.find_by_authentication_token(params[:authentication_token])
           if @current_user.present?
             sign_in(:user, @current_user)
             return @current_user
@@ -19,18 +19,18 @@ module Api
         end
       end
 
-      def ensure_authentication_key_exist
-        return unless params[:authentication_key].blank?
-        render json: { success: false, message: "Missing authentication_key parameter" }, status: 200
+      def ensure_authentication_token_exist
+        return unless params[:authentication_token].blank?
+        render json: { success: false, message: "Missing authentication_token parameter" }, status: 200
       end
 
-      def check_validity_of_authentication_key
+      def check_validity_of_authentication_token
         return if current_user.present?
-        render json: { success: false, message: "Invalid authentication_key parameter" }, status: 200
+        render json: { success: false, message: "Invalid authentication_token parameter" }, status: 200
       end
 
-      def validate_authentication_key
-        ensure_authentication_key_exist || check_validity_of_authentication_key
+      def validate_authentication_token
+        ensure_authentication_token_exist || check_validity_of_authentication_token
       end
     
       def ensure_params_user_exist
