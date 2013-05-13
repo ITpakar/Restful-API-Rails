@@ -1,0 +1,5 @@
+#!/bin/bash
+
+ssh quotiful@s4.sourcepad.com "cd staging && git pull && touch tmp/restart.txt && script/restart"
+
+curl "http://quotiful.sourcepadstage.com/"

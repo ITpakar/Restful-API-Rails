@@ -1,0 +1,6 @@
+#!/bin/bash
+
+bundle install --deployment --without development test
+bundle exec rake db:migrate
+bundle exec rake workers:killall
+nohup bundle exec rake workers:start COUNT=3 QUEUE=extract_tags > log/workers.log 2>&1 &

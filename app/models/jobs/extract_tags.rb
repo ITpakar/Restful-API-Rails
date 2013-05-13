@@ -1,6 +1,6 @@
 module Jobs
   class ExtractTags
-    @queue = :tags_extractor
+    @queue = :extract_tags
 
     def self.perform(post_id)
       post = Post.find(post_id)
