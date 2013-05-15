@@ -26,10 +26,15 @@ class Tag < ActiveRecord::Base
       json.data do |data|
         data.tag do |tag|
           tag.(self, :name, :posts_count)
+          tag.tag_id self.id
           
           if with_posts
-            str_condition = "posts.id BETWEEN %s AND %s" % [options[:min_id], options[:max_id]] if options.all? { |k,v| v } && options.present?
+            arr_condition = []
+            arr_condition << "posts.id > %s" % options[:min_id] if options[:min_id].present?
+            arr_condition << "posts.id < %s" % options[:max_id] if options[:max_id].present?
+            str_condition = arr_condition.join(" AND ")
             tag.posts self.posts.paginate_by(10, str_condition), :id, :caption, :editors_pick, :likes_count, :quote
+
           end
         end
         

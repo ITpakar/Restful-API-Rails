@@ -32,6 +32,8 @@ class Post < ActiveRecord::Base
       json.data do |data|
         data.post do |post|
           post.(self, :caption, :editors_pick, :likes_count, :quote)
+          post.post_id self.id
+          
           if self.quote_image.present?
             post.quote_image_url = self.quote_image.jpg.url
           else

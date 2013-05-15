@@ -45,6 +45,31 @@ class User < ActiveRecord::Base
   image_accessor :profile_picture
 
   has_many :posts, dependent: :destroy
+  has_many :relationships
+  # REFACTOR: naming problem, list of users that the current user follows
+  has_many :follows, class_name: 'Relationship', conditions: { relationships: { status: 'approved' } }
+  has_many :followed_by_self, through: :follows, source: :user
+  # REFACTOR: naming problem, list of users that follows current user
+  has_many :followers, class_name: 'Relationship', conditions: { relationships: {status: 'approved'} }
+  has_many :followed_by_users, through: :followers, source: :follower
+  # REFACTOR: naming problem, list of users that requested to follow current user
+  has_many :requests, class_name: 'Relationship', conditions: { relationships: { status: 'requested' } }
+  has_many :requested_by_users, through: :requests, source: :follower
+
+  def authenticated_feed(options = {min_id: nil, max_id: nil, count: 10})
+    arr_condition = []
+    arr_condition << "posts.id > %s" % options[:min_id] if options[:min_id].present?
+    arr_condition << "posts.id < %s" % options[:max_id] if options[:max_id].present?
+    str_condition = arr_condition.join(" AND ")
+    Post.where(user_id: [self.follows.map(&:user_id), self.id].flatten)
+        .where(str_condition)
+        .limit(options[:count])
+        .order('created_at DESC')
+  end
+
+  def published_feed(options = {min_id: nil, max_id: nil, min_timestamp: nil, max_timestamp: nil, count: 10})
+    
+  end
 
   def to_builder
     bool_errors = self.errors.present?
@@ -52,12 +77,14 @@ class User < ActiveRecord::Base
       json.data do |data|
         data.user do |user|
           user.(self, :full_name, :bio, :website, :follows_count, :followed_by_count, :posts_count, :email, :authentication_token)
+          user.user_id self.id
+
           if self.profile_picture.present?
-            user.profile_picture_url = self.profile_picture.jpg.url
+            user.profile_picture = self.profile_picture.jpg.url
           elsif self.facebook_id.present?
-            user.profile_picture_url = "http://graph.facebook.com/#{self.facebook_id}/picture?type=large"
+            user.profile_picture = "http://graph.facebook.com/#{self.facebook_id}/picture?type=large"
           else
-            user.profile_picture_url = ''
+            user.profile_picture = ''
           end
         end
         
@@ -66,7 +93,6 @@ class User < ActiveRecord::Base
         end
       end
       json.success !bool_errors
-      # json.status (bool_errors ? 422 : 201)
     end
   end
 end

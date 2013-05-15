@@ -7,9 +7,19 @@ Quotiful::Application.routes.draw do
     version 1 do
       # cache as: 'v1' do
         devise_for :users
-        resources :users, only: [] do
+        resources :users, only: [:show] do
           collection do
             post 'email_check'  
+          end
+
+          member do
+            get 'feed'
+            get 'follows'
+            get 'followed_by', path: 'followed-by'
+            get 'requested_by', path: 'requested-by'
+            get 'relationship'
+            post 'relationship'
+            get 'recent'
           end
         end
         resources :posts, only: [:create]
