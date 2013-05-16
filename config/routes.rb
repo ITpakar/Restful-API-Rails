@@ -22,7 +22,13 @@ Quotiful::Application.routes.draw do
             get 'recent'
           end
         end
-        resources :posts, only: [:create]
+        resources :posts, only: [:create, :show] do
+          member do
+            get 'likes'
+            post 'likes'
+            delete 'likes'
+          end
+        end
         resources :tags, only: [:show] do
           member do
             get 'search'

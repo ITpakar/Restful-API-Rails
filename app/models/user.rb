@@ -45,6 +45,8 @@ class User < ActiveRecord::Base
   image_accessor :profile_picture
 
   has_many :posts, dependent: :destroy
+  has_many :likes, dependent: :destroy
+  has_many :liked_posts, through: :likes, source: :likable, source_type: 'Post'
   has_many :relationships
   # REFACTOR: naming problem, list of users that the current user follows
   has_many :follows, class_name: 'Relationship', conditions: { relationships: { status: 'approved' } }
