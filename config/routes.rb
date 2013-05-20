@@ -24,8 +24,8 @@ Quotiful::Application.routes.draw do
         end
         resources :posts, only: [:create, :show] do
           collection do
-            get 'editors_pick', path: 'editors-pick'
-            get 'popular'
+            get 'editors_picks', path: 'editors-picks'
+            get 'popular', path: 'popular'
           end
           member do
             get 'likes'

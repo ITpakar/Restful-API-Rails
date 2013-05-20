@@ -4,7 +4,7 @@ module Api
 
       before_filter :ensure_params_post_exist, only: [:create]
       before_filter :validate_authentication_token
-      before_filter :validate_post_object, except: [:create]
+      before_filter :validate_post_object, except: [:create, :editors_picks, :popular_quotes]
 
       def create
         post = current_user.posts.build(params[:post])
@@ -46,7 +46,62 @@ module Api
         render json: json, status: 200
       end
 
+      def editors_picks
+        options = {
+          start_date: params[:start_date],
+          end_date: params[:end_date],
+          min_id: params[:min_id],
+          max_id: params[:max_id],
+          count: params[:count]
+        }
+        options.reject!{ |k,v| v.blank? }
+
+        @posts = Post.editors_picked(options)
+
+        json = posts_collection
+
+        render json: json, status: 200
+      end
+
+      def popular
+        options = {
+          start_date: params[:start_date],
+          end_date: params[:end_date],
+          min_id: params[:min_id],
+          max_id: params[:max_id],
+          count: params[:count]
+        }
+        options.reject!{ |k,v| v.blank? }
+
+        @posts = Post.popular(options)
+
+        json = posts_collection
+
+        render json: json, status: 200
+      end
+
       protected
+
+        def posts_collection
+          Jbuilder.encode do |json|
+            json.data do |data|
+              data.posts do |posts|
+                posts.array! @posts do |post|
+                  posts.caption post.caption
+                  posts.editors_pick post.editors_pick
+                  posts.likes_count post.likes_count
+                  posts.quote post.quote
+                  posts.post_id post.id
+                  posts.set! :user do
+                    posts.set! :user_id, post.user_id 
+                    posts.(post.user, :full_name, :profile_picture)
+                  end
+                end
+              end
+            end
+            json.success true
+          end
+        end
 
         def process_get
           json = Jbuilder.encode do |json|

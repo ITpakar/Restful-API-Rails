@@ -14,28 +14,47 @@ class Tag < ActiveRecord::Base
 
   has_many :taggings
   has_many :posts, through: :taggings, source: :taggable, source_type: 'Post' do
-    def paginate_by(count = 10, condition = '')
-      where(condition).limit(count).order('posts.id DESC')
+    def from_min_id(min_id)
+      if min_id.present?
+        where("posts.id > ?", min_id)
+      else
+        return self
+      end
+    end
+
+    def to_max_id(max_id)
+      if max_id.present?
+        where("posts.id < ?", min_id)
+      else
+        return self
+      end
+    end
+
+    def find_with_conditions(options)
+      from_min_id(options[:min_id]).to_max_id(options[:max_id]).limit(options[:count]).order('posts.id DESC')
     end
   end
   has_many :user, through: :taggings
 
-  def to_builder(with_posts = false, options = {min_id: nil, max_id: nil})
+  def to_builder(options = {}, inclusion = {})
     bool_errors = self.errors.present?
+    
+    options.reverse_update(
+      min_id: nil,
+      max_id: nil,
+      count: 10
+    )
+
+    inclusion.reverse_update(
+      posts: false
+    )
+
     Jbuilder.new do |json|
       json.data do |data|
         data.tag do |tag|
           tag.(self, :name, :posts_count)
           tag.tag_id self.id
-          
-          if with_posts
-            arr_condition = []
-            arr_condition << "posts.id > %s" % options[:min_id] if options[:min_id].present?
-            arr_condition << "posts.id < %s" % options[:max_id] if options[:max_id].present?
-            str_condition = arr_condition.join(" AND ")
-            tag.posts self.posts.paginate_by(10, str_condition), :id, :caption, :editors_pick, :likes_count, :quote
-
-          end
+          tag.posts(self.posts.find_with_conditions(options), :id, :caption, :editors_pick, :likes_count, :quote) if inclusion[:posts] and !bool_errors
         end
         
         if bool_errors

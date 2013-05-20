@@ -25,10 +25,8 @@ module Api
       end
 
       def feed
-        hash_conditions = {}
-        hash_conditions.update(min_id: params[:min_id]) if params[:min_id].present?
-        hash_conditions.update(max_id: params[:max_id]) if params[:max_id].present?
-        hash_conditions.update(count: params[:count]) if params[:count].present?
+        hash_conditions = {min_id: params[:min_id], max_id: params[:max_id], count: params[:count]}
+        hash_conditions.reject!{ |k,v| v.blank? }
 
         json = Jbuilder.encode do |json|
           json.data do |data|

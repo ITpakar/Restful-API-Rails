@@ -28,6 +28,40 @@ class Post < ActiveRecord::Base
 
   image_accessor :quote_image
 
+  def self.editors_picked(options = {})
+    options.reverse_update(
+      start_date: 7.days.ago,
+      end_date: Time.now,
+      min_id: nil,
+      max_id: nil,
+      count: 10
+    )
+
+    collection = self.where(editors_pick: true).order('posts.created_at DESC, posts.likes_count DESC').limit(options[:count])
+    collection = collection.where("posts.created_at BETWEEN ? AND ?", options[:start_date], options[:end_date])
+    collection = collection.where("posts.id > ?", options[:min_id]) if options[:min_id].present?
+    collection = collection.where("posts.id < ?", options[:max_id]) if options[:max_id].present?
+
+    return collection
+  end
+
+  def self.popular(options = {})
+    options.reverse_update(
+      start_date: 7.days.ago,
+      end_date: Time.now,
+      min_id: nil,
+      max_id: nil,
+      count: 10
+    )
+
+    collection = self.order('posts.likes_count DESC, posts.created_at DESC').limit(options[:count])
+    collection = collection.where("posts.created_at BETWEEN ? AND ?", options[:start_date], options[:end_date])
+    collection = collection.where("posts.id > ?", options[:min_id]) if options[:min_id].present?
+    collection = collection.where("posts.id < ?", options[:max_id]) if options[:max_id].present?
+
+    return collection
+  end
+
   def to_builder
     bool_errors = self.errors.present?
     Jbuilder.new do |json|
