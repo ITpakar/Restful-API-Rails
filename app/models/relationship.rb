@@ -21,6 +21,8 @@ class Relationship < ActiveRecord::Base
 
   def approve!
     update_attribute(:status, 'approved')
+    self.user.increment!(:followed_by_count)
+    self.follower.increment!(:follows_count)
   end
 
   def block!

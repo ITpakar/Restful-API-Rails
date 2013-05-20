@@ -5,7 +5,7 @@ Quotiful::Application.routes.draw do
 
   api vendor_string: "quotiful", default_version: 1 do
     version 1 do
-      # cache as: 'v1' do
+      cache as: 'v1' do
         devise_for :users
         resources :users, only: [:show] do
           collection do
@@ -23,6 +23,10 @@ Quotiful::Application.routes.draw do
           end
         end
         resources :posts, only: [:create, :show] do
+          collection do
+            get 'editors_pick', path: 'editors-pick'
+            get 'popular'
+          end
           member do
             get 'likes'
             post 'likes'
@@ -35,7 +39,7 @@ Quotiful::Application.routes.draw do
             get 'recent'
           end
         end
-      # end
+      end
     end
 
     # version 2 do
