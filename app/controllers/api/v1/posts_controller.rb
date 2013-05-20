@@ -8,13 +8,9 @@ module Api
 
       def create
         post = current_user.posts.build(params[:post])
+        post.save
         
-        if post.save
-          render json: post.to_builder.target!, status: 200
-          return
-        else
-          render json: post.to_builder.target!, status: 200
-        end
+        render json: post.to_builder.target!, status: 200
       end
 
       def show
@@ -32,16 +28,6 @@ module Api
           end
           json.success true
         end
-
-        render json: json, status: 200
-      end
-
-      def likes
-        json =  case request.method
-                when "GET" then process_get
-                when "POST" then process_post
-                when "DELETE" then process_delete
-                end
 
         render json: json, status: 200
       end
@@ -103,28 +89,6 @@ module Api
           end
         end
 
-        def process_get
-          json = Jbuilder.encode do |json|
-            json.data do |data|
-              data.users(instance_post.users_liked.order('likes.created_at DESC'), :id, :full_name, :profile_picture)
-            end
-            json.success true
-          end
-
-          return json
-        end
-
-        def process_post
-          instance_post.likes.find_or_create_by_user_id(current_user.id)
-          {success: true, data: nil}.to_json
-        end
-
-        def process_delete
-          like = instance_post.likes.find_by_user_id(current_user.id)
-          like.destroy if like.present?
-          {success: true, data: nil}.to_json
-        end
-
         def instance_post
           @instance_post ||= Post.find(params[:id])
         end
@@ -147,6 +111,7 @@ module Api
           return unless params[:post].blank?
           render json: { success: false, message: "Missing post parameter" }, status: 200
         end
+
     end
   end
 end

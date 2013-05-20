@@ -7,6 +7,7 @@ Quotiful::Application.routes.draw do
     version 1 do
       cache as: 'v1' do
         devise_for :users
+        
         resources :users, only: [:show] do
           collection do
             post 'email_check'  
@@ -22,23 +23,28 @@ Quotiful::Application.routes.draw do
             get 'recent'
           end
         end
+
         resources :posts, only: [:create, :show] do
           collection do
             get 'editors_picks', path: 'editors-picks'
             get 'popular', path: 'popular'
           end
-          member do
-            get 'likes'
-            post 'likes'
-            delete 'likes'
+
+          resources :likes, controller: 'posts/likes', only: [:index, :create] do
+            collection do
+              delete 'destroy', path: ''
+            end
           end
+
         end
+
         resources :tags, only: [:show] do
           member do
             get 'search'
             get 'recent'
           end
         end
+
       end
     end
 
