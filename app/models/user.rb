@@ -38,7 +38,8 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation,
                   :full_name, :auto_accept, :facebook_id, :bio,
-                  :website, :follows_count, :followed_by_count, :posts_count
+                  :website, :follows_count, :followed_by_count, :posts_count,
+                  :profile_picture
 
   before_save :ensure_authentication_token
 
