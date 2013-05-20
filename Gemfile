@@ -6,8 +6,8 @@ gem 'mysql2'
 gem 'api-versions', '~> 0.2.0'
 gem 'jbuilder'
 
+gem 'dragonfly', '~>0.9.15'
 gem 'rack-cache', :require => 'rack/cache'
-gem 'dragonfly', '~> 0.9.15'
 
 gem 'devise'
 gem 'doorkeeper', '~> 0.6.7'
