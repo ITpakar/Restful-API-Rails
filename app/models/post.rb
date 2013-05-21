@@ -23,7 +23,7 @@ class Post < ActiveRecord::Base
   has_many :tags, through: :taggings
   has_many :likes, as: :likable, dependent: :destroy
   has_many :users_liked, through: :likes, source: :user
-  has_many :comments, as: :likable, dependent: :destroy
+  has_many :comments, as: :commentable, dependent: :destroy
   has_many :users_commented, through: :comments, source: :user
 
   validates_presence_of :quote#, :quote_image

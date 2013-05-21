@@ -36,6 +36,7 @@ Quotiful::Application.routes.draw do
             end
           end
 
+          resources :comments, controller: 'posts/comments', only: [:index, :create, :destroy]
         end
 
         resources :tags, only: [:show] do
