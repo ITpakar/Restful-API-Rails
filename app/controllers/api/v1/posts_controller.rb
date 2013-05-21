@@ -3,7 +3,6 @@ module Api
     class PostsController < Api::BaseController
 
       before_filter :ensure_params_post_exist, only: [:create]
-      before_filter :validate_authentication_token
       before_filter :validate_post_object, except: [:create, :editors_picks, :popular_quotes]
 
       def create

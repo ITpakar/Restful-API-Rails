@@ -2,7 +2,6 @@ module Api
   module V1
     class TagsController < Api::BaseController
       
-      before_filter :validate_authentication_token
       before_filter :ensure_params_id_exist
 
       def show

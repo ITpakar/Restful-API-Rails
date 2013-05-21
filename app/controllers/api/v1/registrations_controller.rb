@@ -3,6 +3,7 @@ module Api
     class RegistrationsController < Api::BaseController
       
       before_filter :ensure_params_user_exist
+      skip_before_filter :validate_authentication_token
 
       def create
         user_params = params[:user].dup

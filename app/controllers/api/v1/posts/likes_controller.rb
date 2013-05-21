@@ -3,7 +3,6 @@ module Api
     module Posts
       class LikesController < Api::BaseController
         
-        before_filter :validate_authentication_token
         before_filter :validate_post_object
 
         def index

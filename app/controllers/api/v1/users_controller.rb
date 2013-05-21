@@ -3,7 +3,7 @@ module Api
     class UsersController < Api::BaseController
       
       before_filter :ensure_params_user_exist, only: [:email_check]
-      before_filter :validate_authentication_token, except: [:email_check]
+      skip_before_filter :validate_authentication_token, only: [:email_check]
       before_filter :validate_user_object, except: [:email_check, :requested_by, :feed]
 
       def email_check

@@ -4,6 +4,7 @@ module Api
     include ActionController::MimeResponds
     
     skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/vnd.quotiful+json;version=1' }
+    before_filter :validate_authentication_token
 
     respond_to :json
 
