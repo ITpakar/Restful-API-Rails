@@ -13,7 +13,7 @@ class Author < ActiveRecord::Base
 
   has_many :quotes, dependent: :nullify
 
-  seachable do
+  searchable do
     text :name
     string :name
   end
