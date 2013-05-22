@@ -6,9 +6,17 @@ module Api
         before_filter :validate_post_object
 
         def index
+          @users = instance_post.users_liked.order('likes.created_at DESC')
+
           json = Jbuilder.encode do |json|
             json.data do |data|
-              data.users(instance_post.users_liked.order('likes.created_at DESC'), :id, :full_name, :profile_picture)
+              data.users do |info|
+                info.array! @users do |user|
+                  info.user_id user.id
+                  info.full_name user.full_name
+                  info.profile_picture user.profile_picture
+                end
+              end
             end
             json.success true
           end

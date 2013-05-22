@@ -22,7 +22,11 @@ module Api
               post.likes_count instance_post.likes_count
               post.quote instance_post.quote
               post.quote_image instance_post.quote_image
-              post.user instance_post.user, :id, :full_name, :profile_picture
+              post.set! :user do
+                post.set! :user_id, instance_post.user_id
+                post.set! :full_name, instance_post.user.full_name
+                post.set! :profile_picture, instance_post.user.profile_picture.try(:url)
+              end
             end
           end
           json.success true
@@ -79,7 +83,8 @@ module Api
                   posts.post_id post.id
                   posts.set! :user do
                     posts.set! :user_id, post.user_id 
-                    posts.(post.user, :full_name, :profile_picture)
+                    posts.set! :full_name, post.user.full_name
+                    posts.set! :profile_picture, post.user.profile_picture.try(:url)
                   end
                 end
               end

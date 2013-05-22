@@ -31,12 +31,19 @@ module Api
             boost(5.0) { with(:follows_id, current_user.id) }
             boost(3.0) { with(:followers_id, current_user.id) }
           end
+          without :full_name, nil
           paginate(page: page, per_page: 10)
         end.results
 
         json = Jbuilder.encode do |json|
           json.data do |data|
-            data.users(@users, :id, :full_name, :profile_picture)
+            data.users do |info|
+              info.array! @users do |user|
+                info.user_id user.id
+                info.full_name user.full_name
+                info.profile_picture user.profile_picture.try(:url)
+              end
+            end
           end
           json.success true
         end
@@ -62,7 +69,12 @@ module Api
                 info.likes_count post.likes_count
                 info.quote post.quote
                 info.quote_image post.quote_image
-                info.user post.user, :id, :full_name, :profile_picture
+                info.user post.user, :id, :full_name
+                info.set! :user do
+                  info.set! :user_id, post.user_id
+                  info.set! :full_name, post.user.full_name
+                  info.set! :profile_picture, post.user.profile_picture.try(:url)
+                end
               end  
             end
           end
@@ -73,9 +85,17 @@ module Api
       end
 
       def follows
+        @users = instance_user.followed_by_self
+
         json = Jbuilder.encode do |json|
           json.data do |data|
-            data.users instance_user.followed_by_self, :full_name, :profile_picture, :id
+            data.users do |info|
+              info.array! @users do |user|
+                info.user_id user.id
+                info.full_name user.full_name
+                info.profile_picture user.profile_picture.try(:url)
+              end
+            end
           end
           json.success true
         end
@@ -84,9 +104,17 @@ module Api
       end
 
       def followed_by
+        @users = instance_user.followed_by_users
+
         json = Jbuilder.encode do |json|
           json.data do |data|
-            data.users instance_user.followed_by_users, :full_name, :profile_picture, :id
+            data.users do |info|
+              info.array! @users do |user|
+                info.user_id user.id
+                info.full_name user.full_name
+                info.profile_picture user.profile_picture.try(:url)
+              end
+            end
           end
           json.success true
         end
@@ -95,9 +123,17 @@ module Api
       end
 
       def requested_by
+        @users = current_user.requested_by_users
+
         json = Jbuilder.encode do |json|
           json.data do |data|
-            data.users current_user.requested_by_users, :full_name, :profile_picture, :id
+            data.users do |info|
+              info.array! @users do |user|
+                info.user_id user.id
+                info.full_name user.full_name
+                info.profile_picture user.profile_picture.try(:url)
+              end
+            end
           end
           json.success true
         end
@@ -134,7 +170,16 @@ module Api
                 info.quote_image post.quote_image
               end
             end
-            data.user instance_user, :full_name, :bio, :website, :follows_count, :followed_by_count, :id, :posts_count, :profile_picture
+            data.user do |user|
+              user.full_name instance_user.full_name
+              user.bio instance_user.bio
+              user.website instance_user.website
+              user.follows_count instance_user.follows_count
+              user.followed_by_count instance_user.followed_by_count
+              user.user_id instance_user.id
+              user.posts_count instance_user.posts_count
+              user.profile_picture instance_user.profile_picture.try(:url)
+            end
             
           end
           json.success true
