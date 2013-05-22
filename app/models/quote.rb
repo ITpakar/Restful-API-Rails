@@ -20,8 +20,12 @@ class Quote < ActiveRecord::Base
   validates_presence_of :body
 
   searchable do
-    string :author_name, author.name
+    string :author_name do
+      author.name
+    end
 
-    text :author_name, author.name
+    text :author_name do
+      author.name
+    end
   end
 end
