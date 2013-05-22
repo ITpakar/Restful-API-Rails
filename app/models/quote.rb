@@ -17,9 +17,11 @@ class Quote < ActiveRecord::Base
 
   serialize :tags
 
-  validate_presence_of :body
+  validates_presence_of :body
 
   searchable do
-    
+    string :author_name, author.name
+
+    text :author_name, author.name
   end
 end
