@@ -11,7 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130520231118) do
+ActiveRecord::Schema.define(:version => 20130522152400) do
+
+  create_table "authors", :force => true do |t|
+    t.string   "name",       :default => "", :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+  end
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id"
@@ -85,10 +91,21 @@ ActiveRecord::Schema.define(:version => 20130520231118) do
     t.integer  "user_id"
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
+    t.string   "author_name",      :default => ""
   end
 
   add_index "posts", ["editors_pick"], :name => "index_posts_on_editors_pick"
   add_index "posts", ["user_id"], :name => "index_posts_on_user_id"
+
+  create_table "quotes", :force => true do |t|
+    t.text     "body",       :null => false
+    t.integer  "author_id"
+    t.text     "tags"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "quotes", ["author_id"], :name => "index_quotes_on_author_id"
 
   create_table "relationships", :force => true do |t|
     t.integer  "follower_id",                         :null => false
@@ -99,8 +116,8 @@ ActiveRecord::Schema.define(:version => 20130520231118) do
   end
 
   add_index "relationships", ["follower_id", "user_id"], :name => "index_relationships_on_follower_id_and_user_id", :unique => true
-  add_index "relationships", ["follower_id"], :name => "index_relationships_on_follower_id", :unique => true
-  add_index "relationships", ["user_id"], :name => "index_relationships_on_user_id", :unique => true
+  add_index "relationships", ["follower_id"], :name => "index_relationships_on_follower_id"
+  add_index "relationships", ["user_id"], :name => "index_relationships_on_user_id"
 
   create_table "taggings", :force => true do |t|
     t.integer  "taggable_id"

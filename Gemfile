@@ -14,6 +14,9 @@ gem 'doorkeeper', '~> 0.6.7'
 
 gem 'resque', '~> 1.24.1'
 
+gem 'sunspot_rails'
+gem 'sunspot_solr'
+
 # group :assets do
 #   gem 'sass-rails',   '~> 3.2.3'
 #   gem 'coffee-rails', '~> 3.2.1'

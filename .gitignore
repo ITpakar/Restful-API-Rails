@@ -16,3 +16,7 @@
 
 database.yml
 .DS_Store
+
+*.rdb
+/solr/data/*
+/solr/pids/*

@@ -12,10 +12,11 @@
 #  user_id          :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  author_name      :string(255)      default("")
 #
 
 class Post < ActiveRecord::Base
-  attr_accessible :caption, :editors_pick, :likes_count, :quote, :quote_image_name, :quote_image_uid
+  attr_accessible :author_name, :caption, :editors_pick, :likes_count, :quote, :quote_image_name, :quote_image_uid
 
   belongs_to :user
 
@@ -26,9 +27,14 @@ class Post < ActiveRecord::Base
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :users_commented, through: :comments, source: :user
 
-  validates_presence_of :quote#, :quote_image
+  validates_presence_of :quote
 
   image_accessor :quote_image
+
+  searchable do
+    text :caption
+    text :quote
+  end
 
   def self.editors_picked(options = {})
     options.reverse_update(

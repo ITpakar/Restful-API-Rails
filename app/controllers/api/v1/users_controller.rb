@@ -4,7 +4,7 @@ module Api
       
       before_filter :ensure_params_user_exist, only: [:email_check]
       skip_before_filter :validate_authentication_token, only: [:email_check]
-      before_filter :validate_user_object, except: [:email_check, :requested_by, :feed]
+      before_filter :validate_user_object, except: [:email_check, :requested_by, :feed, :search]
 
       def email_check
         user_exists = User.exists?(email: params[:user][:email])
@@ -17,6 +17,30 @@ module Api
           json.success true
         end
         
+        render json: json, status: 200
+      end
+
+      def search
+        name = params[:q].dup.downcase
+        page = params[:page].dup
+        page = 1 if page.blank?
+
+        @users = User.search do
+          keywords(name) do
+            fields :full_name
+            boost(5.0) { with(:follows_id, current_user.id) }
+            boost(3.0) { with(:followers_id, current_user.id) }
+          end
+          paginate(page: page, per_page: 10)
+        end.results
+
+        json = Jbuilder.encode do |json|
+          json.data do |data|
+            data.users(@users, :id, :full_name, :profile_picture)
+          end
+          json.success true
+        end
+
         render json: json, status: 200
       end
 

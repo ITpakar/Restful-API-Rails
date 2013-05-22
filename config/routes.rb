@@ -10,7 +10,8 @@ Quotiful::Application.routes.draw do
         
         resources :users, only: [:show] do
           collection do
-            post 'email_check'  
+            post 'email_check'
+            get 'search'
           end
 
           member do

@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
   
   has_many :relationships
   # REFACTOR: naming problem, list of users that the current user follows
-  has_many :follows, class_name: 'Relationship', conditions: { relationships: { status: 'approved' } }
+  has_many :follows, class_name: 'Relationship', conditions: { relationships: { status: 'approved' } }, foreign_key: :follower_id
   has_many :followed_by_self, through: :follows, source: :user
   # REFACTOR: naming problem, list of users that follows current user
   has_many :followers, class_name: 'Relationship', conditions: { relationships: {status: 'approved'} }
@@ -61,6 +61,28 @@ class User < ActiveRecord::Base
   # REFACTOR: naming problem, list of users that requested to follow current user
   has_many :requests, class_name: 'Relationship', conditions: { relationships: { status: 'requested' } }
   has_many :requested_by_users, through: :requests, source: :follower
+
+  validates_presence_of :full_name
+
+  searchable do
+    text :full_name do
+      full_name.try(:downcase)
+    end
+
+    integer :id
+
+    integer :follows_id, multiple: true do
+      follows.map { |relationship| relationship.user_id } rescue []
+    end
+
+    integer :followers_id, multiple: true do
+      followers.map { |relationship| relationship.follower_id }
+    end
+
+    string :full_name do
+      full_name.try(:downcase)
+    end
+  end
 
   def authenticated_feed(options = {min_id: nil, max_id: nil, count: 10})
     arr_condition = []
@@ -71,10 +93,6 @@ class User < ActiveRecord::Base
         .where(str_condition)
         .limit(options[:count])
         .order('created_at DESC')
-  end
-
-  def published_feed(options = {min_id: nil, max_id: nil, min_timestamp: nil, max_timestamp: nil, count: 10})
-    
   end
 
   def to_builder
