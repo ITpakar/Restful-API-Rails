@@ -36,6 +36,18 @@ class Tag < ActiveRecord::Base
   end
   has_many :user, through: :taggings
 
+  searchable do
+    integer :id
+    text :name do
+      name.downcase
+    end
+    string :name do
+      name.downcase
+    end
+  end
+
+  validates_presence_of :name
+
   def to_builder(options = {}, inclusion = {})
     bool_errors = self.errors.present?
     

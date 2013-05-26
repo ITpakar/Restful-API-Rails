@@ -4,18 +4,14 @@ module Api
       class UsersController < Api::V1::SearchController
         
         def index
-          name = params[:q].dup.downcase
-          page = params[:page]
-          page = 1 if page.blank?
-
           @users = User.search do
-            keywords(name) do
+            keywords(@query) do
               fields :full_name
               boost(5.0) { with(:follows_id, current_user.id) }
               boost(3.0) { with(:followers_id, current_user.id) }
             end
             without :full_name, nil
-            paginate(page: page, per_page: 10)
+            paginate(page: @page, per_page: 10)
           end.results
 
           json = Jbuilder.encode do |json|

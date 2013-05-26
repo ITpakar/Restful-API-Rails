@@ -1,6 +1,5 @@
 Quotiful::Application.routes.draw do
   # use_doorkeeper
-  devise_for :users
   mount Resque::Server.new, :at => "/resque"
 
   api vendor_string: "quotiful", default_version: 1 do
@@ -47,6 +46,7 @@ Quotiful::Application.routes.draw do
         end
 
         namespace :search do
+          resources :tags, only: [:index]
           resources :users, only: [:index]
         end
 

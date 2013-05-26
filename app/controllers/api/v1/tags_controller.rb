@@ -10,20 +10,6 @@ module Api
         return response_for_tag(tag)
       end
 
-      def search
-        name = params[:id].downcase
-        tags = Tag.where("name LIKE ?", name + '%').order("name ASC")
-
-        json = Jbuilder.encode do |json|
-          json.data do |data|
-            data.tags tags, :name, :posts_count
-          end
-          json.success true
-        end
-
-        render json: json, status: 200
-      end
-
       def recent
         name = params[:id].downcase
         tag = Tag.find_by_name(name)
