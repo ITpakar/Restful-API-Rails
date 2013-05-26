@@ -14,4 +14,9 @@ class Author < ActiveRecord::Base
   has_many :quotes, dependent: :nullify
 
   validates_presence_of :name
+
+  searchable do
+    string :name
+    text :name
+  end
 end
