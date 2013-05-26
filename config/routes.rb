@@ -19,10 +19,10 @@ Quotiful::Application.routes.draw do
             get 'follows'
             get 'followed_by', path: 'followed-by'
             get 'requested_by', path: 'requested-by'
-            get 'relationship'
-            post 'relationship'
             get 'recent'
           end
+
+          resources :relationships, path: :relationship, only: [:index, :create], controller: 'users/relationships'
         end
 
         resources :posts, only: [:create, :show] do

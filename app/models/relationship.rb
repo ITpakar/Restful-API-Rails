@@ -23,6 +23,11 @@ class Relationship < ActiveRecord::Base
     update_attribute(:status, 'approved')
     self.user.increment!(:followed_by_count)
     self.follower.increment!(:follows_count)
+
+    # SOLR: save changes to solr index
+    self.user.index
+    self.follower.index
+    Sunspot.commit
   end
 
   def block!
