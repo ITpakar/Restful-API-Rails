@@ -11,7 +11,6 @@ Quotiful::Application.routes.draw do
         resources :users, only: [:show] do
           collection do
             post 'email_check'
-            get 'search'
           end
 
           member do
@@ -45,6 +44,10 @@ Quotiful::Application.routes.draw do
             get 'search'
             get 'recent'
           end
+        end
+
+        namespace :search do
+          resources :users, only: [:index]
         end
 
       end
