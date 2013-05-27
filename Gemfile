@@ -9,7 +9,7 @@ gem 'jbuilder'
 gem 'dragonfly', '~>0.9.15'
 gem 'rack-cache', :require => 'rack/cache'
 
-gem 'devise'
+gem 'devise', '~> 2.2.4'
 gem 'doorkeeper', '~> 0.6.7'
 
 gem 'resque', '~> 1.24.1'

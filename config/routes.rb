@@ -53,6 +53,7 @@ Quotiful::Application.routes.draw do
           resources :users, only: [:index]
         end
 
+        resources :versions, path: :version, only: [:index]
       end
     end
 
@@ -60,4 +61,6 @@ Quotiful::Application.routes.draw do
     #   inherit from: 'v1'
     # end
   end
+
+  root to: 'api/v1/versions#index'
 end

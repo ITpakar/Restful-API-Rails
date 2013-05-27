@@ -151,7 +151,7 @@ PLATFORMS
 DEPENDENCIES
   annotate
   api-versions (~> 0.2.0)
-  devise
+  devise (~> 2.2.4)
   doorkeeper (~> 0.6.7)
   dragonfly (~> 0.9.15)
   jbuilder

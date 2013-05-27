@@ -19,7 +19,7 @@ module Api
       end
       
       def destroy
-        sign_out(current_user)
+        sign_out(current_user) if signed_in?
         render json: { success: true }, status: 200
       end
      
