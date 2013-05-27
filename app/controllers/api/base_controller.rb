@@ -14,7 +14,6 @@ module Api
         if params[:authentication_token].present?
           @current_user ||= User.find_by_authentication_token(params[:authentication_token])
           if @current_user.present?
-            sign_in(:user, @current_user)
             return @current_user
           end
         end
