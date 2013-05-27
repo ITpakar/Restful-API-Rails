@@ -16,6 +16,7 @@ gem 'resque', '~> 1.24.1'
 
 gem 'sunspot_rails'
 gem 'sunspot_solr'
+gem 'progress_bar'
 
 # group :assets do
 #   gem 'sass-rails',   '~> 3.2.3'
