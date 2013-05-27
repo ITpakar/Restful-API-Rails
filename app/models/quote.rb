@@ -27,10 +27,10 @@ class Quote < ActiveRecord::Base
 
     integer :author_id
 
-    text :author_name#, boost: 17.0
-    text :source#, boost: 2.0
-    text :body#, boost: 3.0
-    text :tags#, boost: 17.0
+    text :author_name, boost: 17.0
+    text :source, boost: 2.0
+    text :body, boost: 3.0
+    text :tags, boost: 17.0
   end
 
   def author_name

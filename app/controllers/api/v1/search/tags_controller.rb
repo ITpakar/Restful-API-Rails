@@ -4,6 +4,7 @@ module Api
       class TagsController < Api::V1::SearchController
         
         def index
+          # SOLR: Can't find query using instance variable?
           query = @query.delete('#')
           
           @tags = Tag.search do

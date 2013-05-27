@@ -6,6 +6,9 @@ class PostObserver < ActiveRecord::Observer
     # increment posts counter on users
     user = post.user
     user.increment!(:posts_count)
+
+    # SOLR: add to solr index
+    post.index!
   end
 
   def after_destroy(post)
@@ -17,5 +20,8 @@ class PostObserver < ActiveRecord::Observer
     # decrement posts counter on users
     user = post.user
     user.decrement!(:posts_count)
+
+    # SOLR: remove from solr index
+    post.remove_from_index!
   end
 end

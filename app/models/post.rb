@@ -32,8 +32,13 @@ class Post < ActiveRecord::Base
   image_accessor :quote_image
 
   searchable do
+    string :author_name
+
+    integer :user_id
+
     text :caption
     text :quote
+    text :author_name
   end
 
   def self.editors_picked(options = {})

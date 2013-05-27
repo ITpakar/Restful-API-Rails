@@ -4,6 +4,7 @@ module Api
       class QuotesController < Api::V1::SearchController
         
         def index
+          # SOLR: Can't find query using instance variable?
           author_id = params[:author_id]
           query = @query
 

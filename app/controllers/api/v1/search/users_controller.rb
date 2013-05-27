@@ -4,6 +4,7 @@ module Api
       class UsersController < Api::V1::SearchController
         
         def index
+          # SOLR: Can't find query using instance variable?
           query = @query
 
           @users = User.search do
