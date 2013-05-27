@@ -10,7 +10,7 @@ module Api
         return invalid_login_attempt unless user
      
         if user.valid_password?(params[:user][:password])
-          sign_in(:user, user)
+          sign_in(:user, user) unless signed_in?
           render json: user.to_builder.target!, status: 200
           return
         end
