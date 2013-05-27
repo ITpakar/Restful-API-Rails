@@ -1,6 +1,6 @@
 module Api
   module V1
-    class VersionsController < Api::V1::BaseController
+    class VersionsController < Api::BaseController
       skip_before_filter :validate_authentication_token
 
       def index
