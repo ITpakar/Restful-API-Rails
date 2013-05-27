@@ -31,7 +31,7 @@ module Api
         def login_facebook_user(facebook_id)
           user = User.find_by_facebook_id(facebook_id)
           if user.present?
-            sign_in(:user, user)
+            # sign_in(:user, user)
             render json: user.to_builder.target!, status: 200
           end
         end
