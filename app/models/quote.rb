@@ -8,10 +8,11 @@
 #  tags       :text
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  source     :text
 #
 
 class Quote < ActiveRecord::Base
-  attr_accessible :author_id, :body, :tags
+  attr_accessible :author_id, :body, :tags, :source
 
   belongs_to :author
 
@@ -21,11 +22,19 @@ class Quote < ActiveRecord::Base
 
   searchable do
     string :author_name do
-      author.name
+      author.name rescue ''
     end
 
-    text :author_name do
-      author.name
-    end
+    integer :author_id
+
+    text :author_name#, boost: 17.0
+    text :source#, boost: 2.0
+    text :body#, boost: 3.0
+    text :tags#, boost: 17.0
+  end
+
+  def author_name
+    return author.name if author_id.present?
+    return ''
   end
 end

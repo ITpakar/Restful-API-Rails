@@ -4,8 +4,10 @@ module Api
       class UsersController < Api::V1::SearchController
         
         def index
+          query = @query
+
           @users = User.search do
-            keywords(@query) do
+            keywords(query) do
               fields :full_name
               boost(5.0) { with(:follows_id, current_user.id) }
               boost(3.0) { with(:followers_id, current_user.id) }

@@ -4,8 +4,10 @@ module Api
       class AuthorsController < Api::V1::SearchController
         
         def index
+          query = @query
+
           @authors = Author.search do
-            fulltext @query
+            fulltext query
             paginate(page: @page, per_page: 10)
           end.results
 

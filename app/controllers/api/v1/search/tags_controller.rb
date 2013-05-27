@@ -4,10 +4,10 @@ module Api
       class TagsController < Api::V1::SearchController
         
         def index
-          @query = @query.delete('#')
+          query = @query.delete('#')
           
           @tags = Tag.search do
-            fulltext @query
+            fulltext query
             paginate(page: @page, per_page: 10)
           end.results
           

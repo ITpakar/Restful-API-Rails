@@ -47,6 +47,7 @@ Quotiful::Application.routes.draw do
 
         namespace :search do
           resources :authors, only: [:index]
+          resources :quotes, only: [:index]
           resources :tags, only: [:index]
           resources :users, only: [:index]
         end
