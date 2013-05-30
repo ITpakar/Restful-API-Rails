@@ -39,6 +39,9 @@ class Post < ActiveRecord::Base
     text :caption
     text :quote
     text :author_name
+    # text :tag_names do
+    #   tag.map(&:name)
+    # end
   end
 
   def self.editors_picked(options = {})

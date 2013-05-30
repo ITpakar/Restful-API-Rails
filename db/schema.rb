@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130526222647) do
+ActiveRecord::Schema.define(:version => 20130529143444) do
 
   create_table "authors", :force => true do |t|
     t.string   "name",       :default => "", :null => false
@@ -96,6 +96,24 @@ ActiveRecord::Schema.define(:version => 20130526222647) do
 
   add_index "posts", ["editors_pick"], :name => "index_posts_on_editors_pick"
   add_index "posts", ["user_id"], :name => "index_posts_on_user_id"
+
+  create_table "preset_categories", :force => true do |t|
+    t.integer  "preset_images_count", :default => 0, :null => false
+    t.string   "name",                               :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+  end
+
+  create_table "preset_images", :force => true do |t|
+    t.string   "preset_image_uid"
+    t.string   "preset_image_name"
+    t.integer  "preset_category_id"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.string   "name",               :default => ""
+  end
+
+  add_index "preset_images", ["preset_category_id"], :name => "index_preset_images_on_preset_category_id"
 
   create_table "quotes", :force => true do |t|
     t.text     "body",       :null => false

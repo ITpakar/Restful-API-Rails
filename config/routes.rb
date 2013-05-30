@@ -5,6 +5,7 @@ Quotiful::Application.routes.draw do
   api vendor_string: "quotiful", default_version: 1 do
     version 1 do
       cache as: 'v1' do
+        # ROUTES: api/v1/users
         devise_for :users
         
         resources :users, only: [:show] do
@@ -23,6 +24,7 @@ Quotiful::Application.routes.draw do
           resources :relationships, path: :relationship, only: [:index, :create], controller: 'users/relationships'
         end
 
+        # ROUTES: api/v1/posts
         resources :posts, only: [:create, :show] do
           collection do
             get 'editors_picks', path: 'editors-picks'
@@ -38,13 +40,14 @@ Quotiful::Application.routes.draw do
           resources :comments, controller: 'posts/comments', only: [:index, :create, :destroy]
         end
 
+        # ROUTES: api/v1/tags
         resources :tags, only: [:show] do
           member do
-            get 'search'
             get 'recent'
           end
         end
 
+        # ROUTES: api/v1/search
         namespace :search do
           resources :authors, only: [:index]
           resources :posts, only: [:index]
@@ -53,6 +56,11 @@ Quotiful::Application.routes.draw do
           resources :users, only: [:index]
         end
 
+        # ROUTES: api/v1/backgrounds
+        resources :preset_images, path: 'backgrounds/images', only: [:show]
+        resources :preset_categories, path: 'backgrounds/categories', only: [:index, :show]
+
+        # ROUTES: api/v1/version
         resources :versions, path: :version, only: [:index]
       end
     end

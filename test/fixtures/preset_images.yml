@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  preset_image_uid: MyString
+  preset_image_name: MyString
+
+two:
+  preset_image_uid: MyString
+  preset_image_name: MyString
