@@ -11,7 +11,7 @@ module Api
      
         if user.valid_password?(params[:user][:password])
           # sign_in(:user, user) unless signed_in?
-          render json: user.to_builder.target!, status: 200
+          render json: user.to_builder(is_current_user: true).target!, status: 200
           return
         end
         

@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: preset_categories
+#
+#  id                  :integer          not null, primary key
+#  preset_images_count :integer          default(0), not null
+#  name                :string(255)      not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#
+
 class PresetCategory < ActiveRecord::Base
   attr_accessible :name, :preset_images_count
 

@@ -26,6 +26,8 @@
 #  follows_count          :integer          default(0)
 #  followed_by_count      :integer          default(0)
 #  posts_count            :integer          default(0)
+#  favorite_quote         :text
+#  author_name            :string(255)
 #
 
 class User < ActiveRecord::Base
@@ -39,7 +41,7 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation,
                   :full_name, :auto_accept, :facebook_id, :bio,
                   :website, :follows_count, :followed_by_count, :posts_count,
-                  :profile_picture
+                  :profile_picture, :favorite_quote, :author_name, :notifications
 
   before_save :ensure_authentication_token
 
@@ -84,6 +86,40 @@ class User < ActiveRecord::Base
     end
   end
 
+  has_settings do |setting|
+    setting.key :notifications, defaults: {
+      new_follower: true,
+      fb_friend_joins: false,
+      likes_your_post: true,
+      comments_on_your_post: true,
+      comments_after_you: false,
+      requotes_your_post: false,
+      tagged_in_post: true,
+      post_gets_featured: false
+    }
+  end
+
+  def notifications=(value)
+    if value.is_a?(Hash) and value.present?
+      self.settings(:notifications).update_attributes! value
+    end
+  end
+
+  def notifications
+    setting = self.settings(:notifications)
+
+    hash = Hashie::Mash.new
+
+    %w(new_follower fb_friend_joins likes_your_post
+      comments_on_your_post comments_after_you
+      requotes_your_post tagged_in_post
+      post_gets_featured).each do |noty|
+      eval %Q{ hash.#{noty} = setting.#{noty} }
+    end
+
+    return hash
+  end
+
   def authenticated_feed(options = {min_id: nil, max_id: nil, count: 10})
     arr_condition = []
     arr_condition << "posts.id > %s" % options[:min_id] if options[:min_id].present?
@@ -95,13 +131,21 @@ class User < ActiveRecord::Base
         .order('created_at DESC')
   end
 
-  def to_builder
+  def to_builder(options = {with_notifications: false, is_current_user: false})
     bool_errors = self.errors.present?
     Jbuilder.new do |json|
       json.data do |data|
         data.user do |user|
-          user.(self, :full_name, :bio, :website, :follows_count, :followed_by_count, :posts_count, :email, :authentication_token)
+          user.(self, :full_name, :bio, :website, :follows_count, :followed_by_count, :posts_count)
           user.user_id self.id
+
+          if options[:with_notifications]
+            user.notifications self.notifications
+          end
+
+          if options[:is_current_user]
+            user.(self, :email, :authentication_token)
+          end
 
           if self.profile_picture.present?
             user.profile_picture = self.profile_picture.jpg.url

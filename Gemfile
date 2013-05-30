@@ -5,12 +5,14 @@ gem 'mysql2'
 
 gem 'api-versions', '~> 0.2.0'
 gem 'jbuilder'
+gem 'hashie'
 
 gem 'dragonfly', '~>0.9.15'
 gem 'rack-cache', :require => 'rack/cache'
 
 gem 'devise', '~> 2.2.4'
 gem 'doorkeeper', '~> 0.6.7'
+gem 'ledermann-rails-settings', :require => 'rails-settings'
 
 gem 'resque', '~> 1.24.1'
 

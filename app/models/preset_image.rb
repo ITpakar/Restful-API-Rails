@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: preset_images
+#
+#  id                 :integer          not null, primary key
+#  preset_image_uid   :string(255)
+#  preset_image_name  :string(255)
+#  preset_category_id :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  name               :string(255)      default("")
+#
+
 class PresetImage < ActiveRecord::Base
   attr_accessible :preset_image_name, :preset_image_uid, :preset_category_id, :name
 

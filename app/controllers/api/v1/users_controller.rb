@@ -21,7 +21,7 @@ module Api
       end
 
       def show
-        render json: instance_user.to_builder.target!, status: 200
+        render json: instance_user.to_builder(with_notifications: is_current_user?, is_current_user: is_current_user?).target!, status: 200
       end
 
       def feed
@@ -149,6 +149,10 @@ module Api
       end
 
       protected
+
+        def is_current_user?
+          instance_user.id == current_user.id
+        end
 
         def ensure_params_id_exist
           return unless params[:id].blank?

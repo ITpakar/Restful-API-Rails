@@ -49,6 +49,7 @@ GEM
       rack
     erubis (2.7.0)
     fattr (2.2.1)
+    hashie (2.0.4)
     highline (1.6.19)
     hike (1.2.2)
     i18n (0.6.1)
@@ -57,6 +58,8 @@ GEM
       multi_json (>= 1.2.0)
     journey (1.0.4)
     json (1.7.7)
+    ledermann-rails-settings (2.0.3)
+      activerecord (~> 3.1)
     mail (2.5.3)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -154,7 +157,9 @@ DEPENDENCIES
   devise (~> 2.2.4)
   doorkeeper (~> 0.6.7)
   dragonfly (~> 0.9.15)
+  hashie
   jbuilder
+  ledermann-rails-settings
   mysql2
   progress_bar
   pry
