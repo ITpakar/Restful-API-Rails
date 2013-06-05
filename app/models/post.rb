@@ -16,7 +16,7 @@
 #
 
 class Post < ActiveRecord::Base
-  attr_accessible :author_name, :caption, :editors_pick, :likes_count, :quote, :quote_image_name, :quote_image_uid
+  attr_accessible :author_name, :caption, :editors_pick, :likes_count, :quote, :quote_image
 
   belongs_to :user
 
