@@ -1,14 +1,14 @@
 #newImage.modal.hide.fade aria-hidden="true" aria-labelledby="newImageLabel" role="dialog" tabindex="-1"
   .modal-header
     button.close aria-hidden="true" data-dismiss="modal" type="button"
-    h3#newImageLabel Add a background image
+    h3#newImageLabel Add an image
   = form_for :preset_image, multipart: true, html: {:class => 'form-horizontal'} do |f|
     .modal-body
       .control-group
         = f.label :name, :class => 'control-label'
         .controls= f.text_field :name, placeholder: "Image name"
       .control-group
-        = f.label :preset_image, "Background Image", :class => 'control-label'
+        = f.label :preset_image, "Image File", :class => 'control-label'
         .controls
           .fileupload.fileupload-new data-provides="fileupload"
             span.btn.btn-file
