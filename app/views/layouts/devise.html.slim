@@ -9,4 +9,8 @@ html
     = csrf_meta_tags
     meta content="width=(device-width,)initial-scale=1.0" name="viewport"
   body
-    .container= yield
+    .container
+      .row
+        .span12
+          = render 'shared/alert_messages' if notice.present? or alert.present?
+          = yield

@@ -32,8 +32,7 @@
 
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable,
-  # :lockable, :timeoutable and :omniauthable
+  # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :token_authenticatable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
@@ -129,6 +128,22 @@ class User < ActiveRecord::Base
         .where(str_condition)
         .limit(options[:count])
         .order('created_at DESC')
+  end
+
+  def active_for_authentication?
+    !!active
+  end
+
+  def inactive_message
+    "Sorry, this account has been deactivated."
+  end
+
+  def reactivate!
+    self.update_attribute(:active, true)
+  end
+
+  def deactivate!
+    self.update_attribute(:active, false)
   end
 
   def to_builder(options = {with_notifications: false, is_current_user: false})

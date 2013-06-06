@@ -16,7 +16,11 @@ Quotiful::Application.routes.draw do
       end
     end
     resources :preset_categories, except: [:new, :edit, :update], path: "background-categories"
-    resources :users
+    resources :users, except: [:new, :create, :show] do
+      member do
+        post :reactivate
+      end
+    end
   end
 
   api vendor_string: "quotiful", default_version: 1 do
