@@ -4,15 +4,15 @@
       li = link_to "Back to categories list", admin_preset_categories_path
       li.divider-vertical
       li = link_to "Back to images list", admin_preset_images_path
-      
+
 p.lead = @category.name
 
 .row
   - unless @images.present?
     table.span12.table
       caption
-        | No images uploaded.&nbsp;
-        = link_to "Upload now.", '#newImage', 'data-toggle' => 'modal', :role => 'button'
+        | No images assigned to this category.&nbsp;
+        = link_to "Check unassigned images.", unassigned_admin_preset_images_path
   - else
     table.span12.table.table-striped.table-bordered
       thead
