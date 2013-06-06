@@ -12,11 +12,13 @@
 #
 
 class PresetImage < ActiveRecord::Base
-  attr_accessible :preset_image_name, :preset_image_uid, :preset_category_id, :name
+  attr_accessible :preset_category_id, :name, :preset_image
 
   belongs_to :preset_category, :counter_cache => true
 
   image_accessor :preset_image
+
+  validates_presence_of :preset_image
 
   def to_builder
     Jbuilder.new do |json|

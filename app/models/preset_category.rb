@@ -12,7 +12,9 @@
 class PresetCategory < ActiveRecord::Base
   attr_accessible :name, :preset_images_count
 
-  has_many :preset_images
+  has_many :preset_images, dependent: :nullify
+
+  validates_presence_of :name
 
   def to_builder
     Jbuilder.new do |json|

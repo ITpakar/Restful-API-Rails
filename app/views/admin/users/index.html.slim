@@ -1,0 +1,20 @@
+table
+  tr
+    th Name
+    th Email
+    th Joined Date
+    th Followers
+    th Following
+    th Posts
+    th Actions
+  - @users.each do |user|
+    tr
+      td = user.full_name
+      td = user.email
+      td = user.created_at
+      td = user.followed_by_count
+      td = user.follows_count
+      td = user.posts_count
+      td
+        = link_to 'Edit', 'javascript:void(0)'
+        = link_to 'Deactivate', 'javascript:void(0)'

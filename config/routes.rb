@@ -2,6 +2,15 @@ Quotiful::Application.routes.draw do
   # use_doorkeeper
   mount Resque::Server.new, :at => "/resque"
 
+  devise_for :admins, path: :admin
+
+  resources :admin, only: [:index]
+  namespace :admin do
+    resources :preset_images, except: [:new], path: "background"
+    resources :preset_categories, only: [:create, :destroy]
+    resources :users
+  end
+
   api vendor_string: "quotiful", default_version: 1 do
     version 1 do
       cache as: 'v1' do

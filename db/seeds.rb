@@ -24,3 +24,5 @@ comment2 = post2.comments.create(body: "Scelerisque eu commodo euismod")
 comment3 = post2.comments.create(body: "Molestie ac ipsum")
 
 jed.comments << [comment1, comment2, comment3]
+
+admin = Admin.create(email: 'quotiful01@gmail.com', password: 'quotiful123', password_confirmation: 'quotiful123')

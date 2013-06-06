@@ -1,0 +1,29 @@
+#newImage.modal.hide.fade aria-hidden="true" aria-labelledby="newImageLabel" role="dialog" tabindex="-1"
+  .modal-header
+    button.close aria-hidden="true" data-dismiss="modal" type="button"
+    h3#newImageLabel Add new background image
+  = form_for :preset_image, multipart: true, html: {:class => 'form-horizontal'} do |f|
+    .modal-body
+      .control-group
+        = f.label :name, :class => 'control-label'
+        .controls= f.text_field :name, placeholder: "Image name"
+      .control-group
+        = f.label :preset_image, "Background Image", :class => 'control-label'
+        .controls
+          .fileupload.fileupload-new data-provides="fileupload"
+            span.btn.btn-file
+              span.fileupload-new Select file
+              span.fileupload-exists Change
+              = f.file_field :preset_image
+            | &nbsp;
+            span.fileupload-preview
+            | &nbsp;
+            a.close.fileupload-exists data-dismiss="fileupload" href="#" style="float: none" x
+      .control-group
+        = f.label :preset_category_id, "Category", :class => 'control-label'
+        .controls= f.select :preset_category_id, options_from_collection_for_select(PresetCategory.all, :id, :name), include_blank: "Select category"
+      .control-group
+        .controls
+          = f.submit "Submit", :class => 'btn btn-primary'
+          button.btn aria-hidden="true" data-dismiss="modal" Cancel
+  .modal-footer

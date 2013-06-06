@@ -6,6 +6,10 @@ gem 'mysql2'
 gem 'api-versions', '~> 0.2.0'
 gem 'jbuilder'
 gem 'hashie'
+gem 'kaminari'
+
+gem 'slim'
+gem 'jquery-rails'
 
 gem 'dragonfly', '~>0.9.15'
 gem 'rack-cache', :require => 'rack/cache'
@@ -20,14 +24,14 @@ gem 'sunspot_rails'
 gem 'sunspot_solr'
 gem 'progress_bar'
 
-# group :assets do
-#   gem 'sass-rails',   '~> 3.2.3'
-#   gem 'coffee-rails', '~> 3.2.1'
-#   gem 'therubyracer', :platforms => :ruby
-#   gem 'uglifier', '>= 1.0.3'
-# end
-
-# gem 'jquery-rails'
+group :assets do
+  gem 'sass-rails',   '~> 3.2.3'
+  gem 'coffee-rails', '~> 3.2.1'
+  gem 'therubyracer', :platforms => :ruby
+  gem 'uglifier', '>= 1.0.3'
+  gem 'less-rails'
+  gem 'twitter-bootstrap-rails'
+end
 
 group :development do
   gem 'pry'

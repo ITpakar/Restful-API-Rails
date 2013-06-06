@@ -1,0 +1,34 @@
+= render 'preset_categories_form'
+= render 'preset_categories'
+= render 'preset_images_form'
+.row
+  .span12.navbar
+    ul.nav.nav-pills
+      li = link_to "Add a category", '#newCategory', 'data-toggle' => 'modal', :role => 'button'
+      li = link_to "Show all categories", '#listCategories', 'data-toggle' => 'modal', :role => 'button'
+      li.divider-vertical
+      li = link_to "Add a background image", '#newImage', 'data-toggle' => 'modal', :role => 'button'
+
+.row
+  table.span12.table.table-striped.table-bordered
+    - unless @images.present?
+      caption
+        | No images uploaded.
+        = link_to "Upload now.", '#newImage', 'data-toggle' => 'modal', :role => 'button'
+    - else
+      thead
+        tr
+          th.center Category
+          th.center Name
+          th.center Image
+          th.center Actions
+      tbody
+        - @images.each do |image|
+          tr
+            td.span4 = image.preset_category.try(:name) || "-"
+            td.span3 = image.name
+            td.center.span2 = image_tag(image.preset_image.thumb("100x100#").url, :class => 'img-polaroid') rescue nil
+            td.span3
+              = link_to content_tag(:i, " Edit", :class => 'icon-pencil'), 'javascript:void(0)', :class => "btn btn-link", 'data-toggle' => 'tooltip', title: "Coming soon!", rel: 'tooltip'
+              = link_to content_tag(:i, " Delete", :class => 'icon-trash'), admin_preset_image_path(image.id), confirm: "Are you sure?", method: :delete, :class => "btn btn-danger"
+  .span12= paginate @images
