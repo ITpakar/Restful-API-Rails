@@ -6,8 +6,16 @@ Quotiful::Application.routes.draw do
 
   resources :admin, only: [:index]
   namespace :admin do
-    resources :preset_images, except: [:new], path: "background"
-    resources :preset_categories, only: [:create, :destroy]
+    resources :preset_images, except: [:new], path: "background-images" do
+      member do
+        put :assign
+        put :unassign
+      end
+      collection do
+        get :unassigned
+      end
+    end
+    resources :preset_categories, except: [:new, :edit, :update], path: "background-categories"
     resources :users
   end
 

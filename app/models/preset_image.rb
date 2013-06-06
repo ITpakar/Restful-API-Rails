@@ -20,6 +20,22 @@ class PresetImage < ActiveRecord::Base
 
   validates_presence_of :preset_image
 
+  scope :unassigned, where(preset_category_id: nil).order('updated_at DESC')
+
+  def assign!(category_id)
+    # category = PresetCategory.find(category_id)
+    # category.increment!(:preset_images_count)
+    self.update_attribute(:preset_category_id, category_id)
+    PresetCategory.reset_counters category_id, :preset_images
+  end
+
+  def unassign!
+    category = self.preset_category
+    # category.decrement!(:preset_images_count)
+    self.update_attribute(:preset_category_id, nil)
+    PresetCategory.reset_counters category.id, :preset_images
+  end
+
   def to_builder
     Jbuilder.new do |json|
       json.data do |data|

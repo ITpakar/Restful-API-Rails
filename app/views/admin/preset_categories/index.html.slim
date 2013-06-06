@@ -1,0 +1,39 @@
+= render 'form'
+.row
+  .span12.navbar
+    ul.nav.nav-pills
+      li = link_to "Add a category", '#newCategory', 'data-toggle' => 'modal', :role => 'button'
+      li.divider-vertical
+      li = link_to "Show all images", admin_preset_images_path
+      li = link_to "See unassigned images", unassigned_admin_preset_images_path
+
+.row
+  - unless @categories.present?
+    table.table
+      caption
+        | No categories yet.
+        | &nsbp;#{link_to "Create now.", '#newCategory', 'data-toggle' => 'modal', :role => 'button'}
+  - else
+    table.table.table-striped.table-bordered
+      thead
+        tr
+          th.text-center Name
+          th.text-center Images
+          th.text-center Actions
+      tbody
+        - @categories.each do |category|
+          tr
+            td.span4 = category.name
+            td.span5
+              - images = category.preset_images.limit(4)
+              - if images.present?
+                - images.each do |image|
+                  = image_tag(image.preset_image.thumb("50x50#").url, :class => 'img-polaroid')
+                - if category.preset_images.size > 4
+                  small &nbsp;and #{category.preset_images.size - 2} more
+              - else
+                small No images yet.
+            td.span3
+              = link_to content_tag(:i, ' Show all', :class => 'icon-list'), admin_preset_category_path(category.id), :class => 'btn btn-link'
+              | &nbsp;
+              = link_to content_tag(:i, ' Delete', :class => 'icon-trash'), admin_preset_category_path(category.id), confirm: "Are you sure?", method: :delete, :class => 'btn btn-danger'

@@ -1,0 +1,27 @@
+p.lead Unassigned Images
+.row
+  - unless @images.present?
+    table.span12.table
+      caption
+        | Yey! No images unassigned.&nbsp;
+        = link_to "Show all images.", admin_preset_images_path
+  - else
+    table.span12.table.table-striped.table-bordered
+      thead
+        tr
+          th.text-center Name
+          th.text-center Image
+          th.text-center Actions
+      tbody
+        - @images.each do |image|
+          tr
+            td.span3 = image.name
+            td.text-center.span2 = image_tag(image.preset_image.thumb("100x100#").url, :class => 'img-polaroid') rescue nil
+            td.span3
+              = form_for image, url: assign_admin_preset_image_path(image), html: {method: :put, :class => 'form-inline'} do |f|
+                = f.select :preset_category_id, options_from_collection_for_select(PresetCategory.all, :id, :name), include_blank: "Select category"
+                | &nbsp;
+                = f.submit "Assign", :class => 'btn btn-primary', id: 'appendedInputButtons'
+                | &nbsp;
+                = link_to content_tag(:i, " Delete", :class => 'icon-trash'), admin_preset_image_path(image.id), confirm: "Are you sure?", method: :delete, :class => "btn btn-danger"
+    .span12= paginate @images

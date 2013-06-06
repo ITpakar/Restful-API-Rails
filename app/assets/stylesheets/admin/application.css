@@ -19,7 +19,7 @@ input[type=text] {
   height: 30px;
 }
 
-.table th.center, .table td.center {
+table .text-center {
   text-align: center;
 }
 

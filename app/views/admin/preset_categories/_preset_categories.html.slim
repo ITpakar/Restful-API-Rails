@@ -1,0 +1,28 @@
+#listCategories.modal.hide.fade aria-hidden="true" aria-labelledby="listCategoriesLabel" role="dialog" tabindex="-1"
+  .modal-header
+    button.close aria-hidden="true" data-dismiss="modal" type="button"
+    h3#listCategoriesLabel All categories
+  .modal-body
+    - unless @categories.present?
+      table.table
+        caption No categories yet.
+    - else
+      table.table.table-striped    
+        tbody
+          - @categories.each do |category|
+            tr
+              td.span2 = category.name
+              td.span3
+                - images = category.preset_images.limit(2)
+                - if images.present?
+                  - images.each do |image|
+                    = image_tag(image.preset_image.thumb("50x50#").url, :class => 'img-polaroid')
+                  - if category.preset_images.size > 2
+                    small &nbsp;and #{category.preset_images.size - 2} more
+                - else
+                  small No images yet.
+              td.span1
+                = link_to content_tag(:i, ' View', :class => 'icon-list'), admin_preset_category_path(category.id), :class => 'btn btn-link'
+                = link_to content_tag(:i, ' Delete', :class => 'icon-trash'), admin_preset_category_path(category.id), confirm: "Are you sure?", method: :delete, :class => 'btn btn-danger'
+  .modal-footer
+    button.btn aria-hidden="true" data-dismiss="modal" Close

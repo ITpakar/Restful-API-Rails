@@ -1,14 +1,4 @@
-= render 'admin/preset_categories/form'
-= render 'form'
-.row
-  .span12.navbar
-    ul.nav.nav-pills
-      li = link_to "Add a category", '#newCategory', 'data-toggle' => 'modal', :role => 'button'
-      li = link_to "Show all categories", admin_preset_categories_path
-      li.divider-vertical
-      li = link_to "Add a background image", '#newImage', 'data-toggle' => 'modal', :role => 'button'
-      li = link_to "See unassigned images", unassigned_admin_preset_images_path
-
+p.lead = @category.name
 .row
   - unless @images.present?
     table.span12.table
@@ -30,7 +20,7 @@
             td.span3 = image.name
             td.text-center.span2 = image_tag(image.preset_image.thumb("100x100#").url, :class => 'img-polaroid') rescue nil
             td.span3
-              = link_to content_tag(:i, " Edit", :class => 'icon-edit'), 'javascript:void(0)', :class => "btn btn-link", 'data-toggle' => 'tooltip', title: "Coming soon!", rel: 'tooltip'
+              = link_to content_tag(:i, " Unassign", :class => 'icon-remove'), unassign_admin_preset_image_path(image.id), :class => "btn btn-warning", method: :put
               | &nbsp;
               = link_to content_tag(:i, " Delete", :class => 'icon-trash'), admin_preset_image_path(image.id), confirm: "Are you sure?", method: :delete, :class => "btn btn-danger"
-  .span12= paginate @images
+    .span12= paginate @images

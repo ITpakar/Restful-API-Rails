@@ -1,7 +1,7 @@
 #newImage.modal.hide.fade aria-hidden="true" aria-labelledby="newImageLabel" role="dialog" tabindex="-1"
   .modal-header
     button.close aria-hidden="true" data-dismiss="modal" type="button"
-    h3#newImageLabel Add new background image
+    h3#newImageLabel Add a background image
   = form_for :preset_image, multipart: true, html: {:class => 'form-horizontal'} do |f|
     .modal-body
       .control-group
@@ -25,5 +25,6 @@
       .control-group
         .controls
           = f.submit "Submit", :class => 'btn btn-primary'
+          | &nbsp;
           button.btn aria-hidden="true" data-dismiss="modal" Cancel
   .modal-footer
