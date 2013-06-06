@@ -10,12 +10,13 @@
       li = link_to "Add a background image", '#newImage', 'data-toggle' => 'modal', :role => 'button'
 
 .row
-  table.span12.table.table-striped.table-bordered
-    - unless @images.present?
+  - unless @images.present?
+    table.span12.table
       caption
-        | No images uploaded.
+        | No images uploaded.&nbsp;
         = link_to "Upload now.", '#newImage', 'data-toggle' => 'modal', :role => 'button'
-    - else
+  - else
+    table.span12.table.table-striped.table-bordered
       thead
         tr
           th.center Category
