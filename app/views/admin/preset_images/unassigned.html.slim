@@ -1,4 +1,12 @@
+.row
+  .span12.navbar
+    ul.nav.nav-pills
+      li = link_to "Back to categories list", admin_preset_categories_path
+      li.divider-vertical
+      li = link_to "Back to images list", admin_preset_images_path
+
 p.lead Unassigned Images
+
 .row
   - unless @images.present?
     table.span12.table
