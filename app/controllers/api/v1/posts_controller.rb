@@ -25,7 +25,7 @@ module Api
               post.set! :user do
                 post.set! :user_id, instance_post.user_id
                 post.set! :full_name, instance_post.user.full_name
-                post.set! :profile_picture, instance_post.user.profile_picture.try(:url)
+                post.set! :profile_picture_url, instance_post.user.profile_picture_url
               end
             end
           end
@@ -80,11 +80,12 @@ module Api
                   posts.editors_pick post.editors_pick
                   posts.likes_count post.likes_count
                   posts.quote post.quote
+                  posts.quote_image_url post.quote_image_url
                   posts.post_id post.id
                   posts.set! :user do
                     posts.set! :user_id, post.user_id 
                     posts.set! :full_name, post.user.full_name
-                    posts.set! :profile_picture, post.user.profile_picture.try(:url)
+                    posts.set! :profile_picture_url, post.user.profile_picture_url
                   end
                 end
               end

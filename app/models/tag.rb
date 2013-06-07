@@ -66,7 +66,7 @@ class Tag < ActiveRecord::Base
         data.tag do |tag|
           tag.(self, :name, :posts_count)
           tag.tag_id self.id
-          tag.posts(self.posts.find_with_conditions(options), :id, :caption, :editors_pick, :likes_count, :quote) if inclusion[:posts] and !bool_errors
+          tag.posts(self.posts.find_with_conditions(options), :id, :caption, :editors_pick, :likes_count, :quote, :quote_image_url) if inclusion[:posts] and !bool_errors
         end
         
         if bool_errors

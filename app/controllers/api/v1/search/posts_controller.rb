@@ -36,6 +36,7 @@ module Api
                     posts.editors_pick post.editors_pick
                     posts.likes_count post.likes_count
                     posts.quote post.quote
+                    posts.quote_image_url post.quote_image_url
                     posts.post_id post.id
                     posts.set! :user do
                       posts.set! :user_id, post.user_id 
