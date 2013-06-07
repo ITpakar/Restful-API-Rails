@@ -10,7 +10,7 @@ module Api
 
         json = Jbuilder.encode do |json|
           json.data do |data|
-            data.categories @categories, :id, :name, :preset_images_count
+            data.categories @categories, :id, :name, :preset_images_count, :preset_image_sample
           end
         end
 

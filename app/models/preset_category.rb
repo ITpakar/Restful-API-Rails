@@ -16,6 +16,16 @@ class PresetCategory < ActiveRecord::Base
 
   validates_presence_of :name
 
+  def preset_image_sample
+    image = self.preset_images.sample
+
+    if image.present?
+      image.preset_image_url
+    else
+      ''
+    end
+  end
+
   def to_builder
     Jbuilder.new do |json|
       json.data do |data|
@@ -25,7 +35,8 @@ class PresetCategory < ActiveRecord::Base
           category.images do |image|
             image.array! self.preset_images do |preset_image|
               image.image_id preset_image.id
-              image.image_url preset_image.preset_image.url
+              image.image_id preset_image.name
+              image.image_url preset_image.preset_image_url
             end
           end 
         end

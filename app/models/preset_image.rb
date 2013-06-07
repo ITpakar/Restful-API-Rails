@@ -36,12 +36,28 @@ class PresetImage < ActiveRecord::Base
     PresetCategory.reset_counters category.id, :preset_images
   end
 
+  def preset_image_url
+    if self.preset_image.present?
+      self.preset_image.jpg.url
+    else
+      ''
+    end
+  end
+
+  def preset_category_name
+    if self.preset_category.present?
+      self.preset_category.name
+    else
+      ''
+    end
+  end
+
   def to_builder
     Jbuilder.new do |json|
       json.data do |data|
         data.preset_image do |img|
-          img.image_url self.preset_image.try(:url)
-          img.category_name self.preset_category.try(:name)
+          img.image_url self.preset_image_url
+          img.category_name self.preset_category_name
           img.name self.name
         end
       end
