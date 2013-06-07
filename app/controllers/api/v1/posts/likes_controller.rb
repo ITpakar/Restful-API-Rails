@@ -14,7 +14,7 @@ module Api
                 info.array! @users do |user|
                   info.user_id user.id
                   info.full_name user.full_name
-                  info.profile_picture user.profile_picture
+                  info.profile_picture_url user.profile_picture_url
                 end
               end
             end

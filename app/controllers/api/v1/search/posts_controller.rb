@@ -40,7 +40,7 @@ module Api
                     posts.set! :user do
                       posts.set! :user_id, post.user_id 
                       posts.set! :full_name, post.user.full_name
-                      posts.set! :profile_picture, post.user.profile_picture.try(:url)
+                      posts.set! :profile_picture_url, post.user.profile_picture_url
                     end
                   end
                 end

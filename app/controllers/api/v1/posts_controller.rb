@@ -21,7 +21,7 @@ module Api
               post.post_id instance_post.id
               post.likes_count instance_post.likes_count
               post.quote instance_post.quote
-              post.quote_image instance_post.quote_image
+              post.quote_image_url instance_post.quote_image_url
               post.set! :user do
                 post.set! :user_id, instance_post.user_id
                 post.set! :full_name, instance_post.user.full_name

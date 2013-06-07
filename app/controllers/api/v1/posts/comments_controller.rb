@@ -16,7 +16,7 @@ module Api
                   comments.set! :user do
                     comments.set! :user_id, comment.user_id
                     comments.set! :full_name, comments.user.full_name
-                    comments.set! :profile_picture, comments.user.profile_picture.try(:url)
+                    comments.set! :profile_picture_url, comments.user.profile_picture_url
                   end
                 end
               end

@@ -37,7 +37,7 @@ module Api
                 info.post_id post.id
                 info.likes_count post.likes_count
                 info.quote post.quote
-                info.quote_image post.quote_image
+                info.quote_image_url post.quote_image_url
                 info.user post.user, :id, :full_name
                 info.set! :user do
                   info.set! :user_id, post.user_id
@@ -62,7 +62,7 @@ module Api
               info.array! @users do |user|
                 info.user_id user.id
                 info.full_name user.full_name
-                info.profile_picture user.profile_picture.try(:url)
+                info.profile_picture_url user.profile_picture_url
               end
             end
           end
@@ -81,7 +81,7 @@ module Api
               info.array! @users do |user|
                 info.user_id user.id
                 info.full_name user.full_name
-                info.profile_picture user.profile_picture.try(:url)
+                info.profile_picture_url user.profile_picture_url
               end
             end
           end
@@ -100,7 +100,7 @@ module Api
               info.array! @users do |user|
                 info.user_id user.id
                 info.full_name user.full_name
-                info.profile_picture user.profile_picture.try(:url)
+                info.profile_picture_url user.profile_picture_url
               end
             end
           end
@@ -127,18 +127,19 @@ module Api
                 info.post_id post.id
                 info.likes_count post.likes_count
                 info.quote post.quote
-                info.quote_image post.quote_image
+                info.quote_image_url post.quote_image_url
               end
             end
             data.user do |user|
               user.full_name instance_user.full_name
-              user.bio instance_user.bio
+              user.favorite_quote instance_user.favorite_quote
+              user.author_name instance_user.author_name
               user.website instance_user.website
               user.follows_count instance_user.follows_count
               user.followed_by_count instance_user.followed_by_count
               user.user_id instance_user.id
               user.posts_count instance_user.posts_count
-              user.profile_picture instance_user.profile_picture.try(:url)
+              user.profile_picture_url instance_user.profile_picture_url
             end
             
           end

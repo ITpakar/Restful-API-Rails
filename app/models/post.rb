@@ -78,6 +78,14 @@ class Post < ActiveRecord::Base
     return collection
   end
 
+  def quote_image_url
+    if quote_image.present?
+      quote_image.jpg.url
+    else
+      ''
+    end
+  end
+
   def to_builder
     bool_errors = self.errors.present?
     Jbuilder.new do |json|
@@ -85,12 +93,7 @@ class Post < ActiveRecord::Base
         data.post do |post|
           post.(self, :caption, :editors_pick, :likes_count, :quote)
           post.post_id self.id
-          
-          if self.quote_image.present?
-            post.quote_image_url = self.quote_image.jpg.url
-          else
-            post.quote_image_url = ''
-          end
+          post.quote_image_url self.quote_image_url
         end
         
         if bool_errors

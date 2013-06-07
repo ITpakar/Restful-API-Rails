@@ -146,6 +146,16 @@ class User < ActiveRecord::Base
     self.update_attribute(:active, false)
   end
 
+  def profile_picture_url
+    if self.profile_picture.present?
+      self.profile_picture.jpg.url
+    elsif self.facebook_id.present?
+      "http://graph.facebook.com/#{self.facebook_id}/picture?type=large"
+    else
+      ''
+    end
+  end
+
   def to_builder(options = {with_notifications: false, is_current_user: false})
     bool_errors = self.errors.present?
     Jbuilder.new do |json|
@@ -162,13 +172,7 @@ class User < ActiveRecord::Base
             user.(self, :email, :authentication_token)
           end
 
-          if self.profile_picture.present?
-            user.profile_picture = self.profile_picture.jpg.url
-          elsif self.facebook_id.present?
-            user.profile_picture = "http://graph.facebook.com/#{self.facebook_id}/picture?type=large"
-          else
-            user.profile_picture = ''
-          end
+          user.profile_picture self.profile_picture_url
         end
         
         if bool_errors
