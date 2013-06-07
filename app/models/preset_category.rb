@@ -35,7 +35,7 @@ class PresetCategory < ActiveRecord::Base
           category.images do |image|
             image.array! self.preset_images do |preset_image|
               image.image_id preset_image.id
-              image.image_id preset_image.name
+              image.image_name preset_image.name
               image.image_url preset_image.preset_image_url
             end
           end 

@@ -28,6 +28,8 @@
 #  posts_count            :integer          default(0)
 #  favorite_quote         :text
 #  author_name            :string(255)
+#  active                 :boolean          default(TRUE), not null
+#  deactivated_at         :datetime
 #
 
 class User < ActiveRecord::Base
