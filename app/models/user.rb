@@ -161,7 +161,7 @@ class User < ActiveRecord::Base
     Jbuilder.new do |json|
       json.data do |data|
         data.user do |user|
-          user.(self, :full_name, :bio, :website, :follows_count, :followed_by_count, :posts_count)
+          user.(self, :full_name, :favorite_quote, :author_name, :website, :follows_count, :followed_by_count, :posts_count)
           user.user_id self.id
 
           if options[:with_notifications]
