@@ -1,6 +1,7 @@
 .row
   table.span12.table.table-striped.table-bordered
     tr
+      th.text-center = content_tag(:i, '', :class => 'icon-user')
       th.text-center Name
       th.text-center Email
       th.text-center Followers
@@ -9,8 +10,9 @@
       th.text-center Actions
     - @users.each do |user|
       tr
+        td.span1 = image_tag(user.profile_picture_url('50x50#'), :class => 'img-polaroid')
         td.span3 = user.full_name
-        td.span3 = user.email
+        td.span2 = user.email
         td.span1.text-center = user.followed_by_count
         td.span1.text-center = user.follows_count
         td.span1.text-center = user.posts_count

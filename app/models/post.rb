@@ -78,9 +78,17 @@ class Post < ActiveRecord::Base
     return collection
   end
 
-  def quote_image_url
+  def quote_image_url(size = '')
     if quote_image.present?
-      quote_image.jpg.url
+      size.present? ? quote_image.thumb(size).url : quote_image.jpg.url
+    else
+      ''
+    end
+  end
+
+  def user_name
+    if user.present?
+      user.full_name
     else
       ''
     end

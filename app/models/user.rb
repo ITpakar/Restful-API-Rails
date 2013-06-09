@@ -148,10 +148,10 @@ class User < ActiveRecord::Base
     self.update_attribute(:active, false)
   end
 
-  def profile_picture_url
-    if self.profile_picture.present?
-      self.profile_picture.jpg.url
-    elsif self.facebook_id.present?
+  def profile_picture_url(size = '')
+    if profile_picture.present?
+      size.present? ? profile_picture.thumb(size).url : profile_picture.jpg.url
+    elsif facebook_id.present?
       "http://graph.facebook.com/#{self.facebook_id}/picture?type=large"
     else
       ''
