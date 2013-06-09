@@ -20,6 +20,16 @@ class Admin::UsersController < AdminController
     end
   end
 
+  def followers
+    @user = User.find(params[:id])
+    @users = @user.followed_by_users.order('full_name ASC, created_at DESC').page(params[:page]).per(20)
+  end
+
+  def following
+    @user = User.find(params[:id])
+    @users = @user.followed_by_self.order('full_name ASC, created_at DESC').page(params[:page]).per(20)
+  end
+
   def reactivate
     user = User.find(params[:id])
     user.reactivate!

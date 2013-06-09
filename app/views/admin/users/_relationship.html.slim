@@ -1,0 +1,18 @@
+.row
+  table.span12.table.table-striped.table-bordered
+    thead
+      tr
+        th.span1.text-center = content_tag(:i, '', :class => 'icon-user')
+        th.span3.text-center Name
+        th.span2.text-center Email
+        th.span4.text-center Favorite Quote
+        th.span2.text-center Author Name
+    tbody
+      - @users.each do |user|
+        tr
+          td = image_tag(user.profile_picture_url('50x50#'), :class => 'img-polaroid')
+          td = user.full_name
+          td = user.email
+          td = user.favorite_quote
+          td = user.author_name
+  .span12 = paginate @users

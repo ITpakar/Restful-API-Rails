@@ -19,6 +19,8 @@ Quotiful::Application.routes.draw do
     resources :users, except: [:new, :create, :show] do
       member do
         post :reactivate
+        get :followers
+        get :following
       end
     end
     resources :hashtags, only: [:index, :show]
