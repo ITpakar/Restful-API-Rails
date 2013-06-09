@@ -1,16 +1,18 @@
 .row
   table.span12.table.table-striped.table-bordered
-    tr
-      th.text-center Hashtag Name
-      th.text-center Posts
-      th.text-center Actions
-    - @tags.each do |tag|
+    thead
       tr
-        td.span4 = tag.name
-        td.span4
-          - tag.posts.limit(4).each do |post|
-            = image_tag(post.quote_image_url('50x50#'), :class => 'img-polaroid')
-          - if tag.posts.size > 4
-            small &nbsp;and #{tag.posts.size - 4} more
-        td.span4.text-center = link_to content_tag(:i, " Show Tagged Posts", :class => 'icon-list'), admin_hashtag_path(tag), :class => "btn btn-primary"
+        th.span4.text-center Hashtag Name
+        th.span4.text-center Posts
+        th.span4.text-center Actions
+    tbody
+      - @tags.each do |tag|
+        tr
+          td = tag.name
+          td
+            - tag.posts.limit(4).each do |post|
+              = image_tag(post.quote_image_url('50x50#'), :class => 'img-polaroid')
+            - if tag.posts.size > 4
+              small &nbsp;and #{tag.posts.size - 4} more
+          td.text-center = link_to content_tag(:i, " Show Tagged Posts", :class => 'icon-list'), admin_hashtag_path(tag), :class => "btn btn-primary"
   .span12 = paginate @tags

@@ -94,6 +94,14 @@ class Post < ActiveRecord::Base
     end
   end
 
+  def pick!
+    self.update_attribute(:editors_pick, true)
+  end
+
+  def unpick!
+    self.update_attribute(:editors_pick, false)
+  end
+
   def to_builder
     bool_errors = self.errors.present?
     Jbuilder.new do |json|

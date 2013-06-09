@@ -17,17 +17,17 @@ p.lead = @category.name
     table.span12.table.table-striped.table-bordered
       thead
         tr
-          th.text-center Category
-          th.text-center Name
-          th.text-center Image
-          th.text-center Actions
+          th.span4.text-center Category
+          th.span3.text-center Name
+          th.span2.text-center Image
+          th.span3.text-center Actions
       tbody
         - @images.each do |image|
           tr
-            td.span4 = image.preset_category.try(:name) || "-"
-            td.span3 = image.name
-            td.text-center.span2 = image_tag(image.preset_image.thumb("100x100#").url, :class => 'img-polaroid') rescue nil
-            td.span3
+            td = image.preset_category.try(:name) || "-"
+            td = image.name
+            td.text-center = image_tag(image.preset_image.thumb("100x100#").url, :class => 'img-polaroid') rescue nil
+            td
               = link_to content_tag(:i, " Unassign", :class => 'icon-remove'), unassign_admin_preset_image_path(image.id), :class => "btn btn-warning", method: :put
               | &nbsp;
               = link_to content_tag(:i, " Delete", :class => 'icon-trash'), admin_preset_image_path(image.id), confirm: "Are you sure?", method: :delete, :class => "btn btn-danger"

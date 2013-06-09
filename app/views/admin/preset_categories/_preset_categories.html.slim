@@ -7,12 +7,17 @@
       table.table
         caption No categories yet.
     - else
-      table.table.table-striped    
+      table.table.table-striped
+        thead
+          tr
+            th.span4
+            th.span4
+            th.span4
         tbody
           - @categories.each do |category|
             tr
-              td.span2 = category.name
-              td.span3
+              td = category.name
+              td
                 - images = category.preset_images.limit(2)
                 - if images.present?
                   - images.each do |image|
@@ -21,7 +26,7 @@
                     small &nbsp;and #{category.preset_images.size - 2} more
                 - else
                   small No images yet.
-              td.span1
+              td
                 = link_to content_tag(:i, ' View', :class => 'icon-list'), admin_preset_category_path(category.id), :class => 'btn btn-link'
                 = link_to content_tag(:i, ' Delete', :class => 'icon-trash'), admin_preset_category_path(category.id), confirm: "Are you sure?", method: :delete, :class => 'btn btn-danger'
   .modal-footer

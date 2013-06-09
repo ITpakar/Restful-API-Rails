@@ -22,6 +22,7 @@ Quotiful::Application.routes.draw do
       end
     end
     resources :hashtags, only: [:index, :show]
+    resources :posts, only: [:index, :update]
   end
 
   api vendor_string: "quotiful", default_version: 1 do

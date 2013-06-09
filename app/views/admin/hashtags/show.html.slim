@@ -7,19 +7,21 @@ p.lead = @tag.name
 
 .row
   table.span12.table.table-striped.table-bordered
-    tr
-      th.text-center = content_tag(:i, '', :class => 'icon-picture')
-      th.text-center Quote
-      th.text-center Author
-      th.text-center Caption
-      th.text-center Posted By
-      th.text-center Likes
-    - @posts.each do |post|
+    thead
       tr
-        td.span1 = image_tag(post.quote_image_url('50x50#'), :class => 'img-polaroid')
-        td.span3 = post.quote
-        td.span2 = post.author_name
-        td.span3 = post.caption
-        td.span2 = post.user_name
-        td.span1.text-center = post.likes_count
+        th.span1.text-center = content_tag(:i, '', :class => 'icon-picture')
+        th.span3.text-center Quote
+        th.span2.text-center Author
+        th.span3.text-center Caption
+        th.span2.text-center Posted By
+        th.span1.text-center Likes
+    tbody
+      - @posts.each do |post|
+        tr
+          td = image_tag(post.quote_image_url('50x50#'), :class => 'img-polaroid')
+          td = post.quote
+          td = post.author_name
+          td = post.caption
+          td = post.user_name
+          td.text-center = post.likes_count
   .span12 = paginate @posts

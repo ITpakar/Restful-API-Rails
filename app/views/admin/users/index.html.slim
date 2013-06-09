@@ -1,26 +1,28 @@
 .row
   table.span12.table.table-striped.table-bordered
-    tr
-      th.text-center = content_tag(:i, '', :class => 'icon-user')
-      th.text-center Name
-      th.text-center Email
-      th.text-center Followers
-      th.text-center Following
-      th.text-center Posts
-      th.text-center Actions
-    - @users.each do |user|
+    thead
       tr
-        td.span1 = image_tag(user.profile_picture_url('50x50#'), :class => 'img-polaroid')
-        td.span3 = user.full_name
-        td.span2 = user.email
-        td.span1.text-center = user.followed_by_count
-        td.span1.text-center = user.follows_count
-        td.span1.text-center = user.posts_count
-        td.span3
-          = link_to content_tag(:i, " Edit", :class => 'icon-edit'), edit_admin_user_path(user), :class => "btn btn-primary"
-          | &nbsp;
-          - if user.active?
-            = link_to content_tag(:i, " Deactivate", :class => 'icon-remove'), admin_user_path(user, page: params[:page]), method: :delete, :class => "btn btn-danger", confirm: "Are you sure?"
-          - else
-            = link_to content_tag(:i, " Reactivate", :class => 'icon-ok'), reactivate_admin_user_path(user, page: params[:page]), method: :post, :class => "btn btn-success", confirm: "Are you sure?"
+        th.span1.text-center = content_tag(:i, '', :class => 'icon-user')
+        th.span3.text-center Name
+        th.span2.text-center Email
+        th.span1.text-center Followers
+        th.span1.text-center Following
+        th.span1.text-center Posts
+        th.span3.text-center Actions
+    tbody
+      - @users.each do |user|
+        tr
+          td = image_tag(user.profile_picture_url('50x50#'), :class => 'img-polaroid')
+          td = user.full_name
+          td = user.email
+          td.text-center = user.followed_by_count
+          td.text-center = user.follows_count
+          td.text-center = user.posts_count
+          td
+            = link_to content_tag(:i, " Edit", :class => 'icon-edit'), edit_admin_user_path(user), :class => "btn btn-primary"
+            | &nbsp;
+            - if user.active?
+              = link_to content_tag(:i, " Deactivate", :class => 'icon-remove'), admin_user_path(user, page: params[:page]), method: :delete, :class => "btn btn-danger", confirm: "Are you sure?"
+            - else
+              = link_to content_tag(:i, " Reactivate", :class => 'icon-ok'), reactivate_admin_user_path(user, page: params[:page]), method: :post, :class => "btn btn-success", confirm: "Are you sure?"
   .span12 = paginate @users
