@@ -149,11 +149,14 @@ class User < ActiveRecord::Base
     self.update_attribute(:active, false)
   end
 
+  def facebook_id=(value)
+    write_attribute(:facebook_id, value)
+    write_attribute(:profile_picture_url, "http://graph.facebook.com/#{value}/picture?width=150&height=150")
+  end
+
   def profile_picture_url(size = '')
     if profile_picture.present?
       size.present? ? profile_picture.thumb(size).url : profile_picture.jpg.url
-    elsif facebook_id.present?
-      "http://graph.facebook.com/#{self.facebook_id}/picture?width=150&height=150"
     else
       ''
     end
