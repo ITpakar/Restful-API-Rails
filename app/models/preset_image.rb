@@ -36,9 +36,9 @@ class PresetImage < ActiveRecord::Base
     PresetCategory.reset_counters category.id, :preset_images
   end
 
-  def preset_image_url
-    if self.preset_image.present?
-      self.preset_image.jpg.url
+  def preset_image_url(size = '')
+    if preset_image.present?
+      size.present? ? preset_image.thumb(size).url : preset_image.jpg.url
     else
       ''
     end

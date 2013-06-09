@@ -42,7 +42,8 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation,
                   :full_name, :auto_accept, :facebook_id, :bio,
                   :website, :follows_count, :followed_by_count, :posts_count,
-                  :profile_picture, :favorite_quote, :author_name, :notifications
+                  :profile_picture, :favorite_quote, :author_name, :notifications,
+                  :profile_picture_url
 
   before_save :ensure_authentication_token
 
@@ -152,7 +153,7 @@ class User < ActiveRecord::Base
     if profile_picture.present?
       size.present? ? profile_picture.thumb(size).url : profile_picture.jpg.url
     elsif facebook_id.present?
-      "http://graph.facebook.com/#{self.facebook_id}/picture?type=large"
+      "http://graph.facebook.com/#{self.facebook_id}/picture?width=150&height=150"
     else
       ''
     end

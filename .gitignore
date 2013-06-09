@@ -20,3 +20,4 @@ database.yml
 *.rdb
 /solr/data/*
 /solr/pids/*
+/public/system/*

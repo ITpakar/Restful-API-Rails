@@ -19,7 +19,7 @@
           td.text-center = link_to_unless user.follows_count.zero?, user.follows_count, following_admin_user_path(user)
           td.text-center = user.posts_count
           td
-            = link_to content_tag(:i, " Edit", :class => 'icon-edit'), edit_admin_user_path(user), :class => "btn btn-primary"
+            = link_to content_tag(:i, " Edit", :class => 'icon-edit'), edit_admin_user_path(user), :class => "btn"
             | &nbsp;
             - if user.active?
               = link_to content_tag(:i, " Deactivate", :class => 'icon-remove'), admin_user_path(user, page: params[:page]), method: :delete, :class => "btn btn-danger", confirm: "Are you sure?"

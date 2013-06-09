@@ -29,7 +29,7 @@ p.lead Unassigned Images
               = form_for image, url: assign_admin_preset_image_path(image), html: {method: :put, :class => 'form-inline'} do |f|
                 = f.select :preset_category_id, options_from_collection_for_select(PresetCategory.all, :id, :name), include_blank: "Select category"
                 | &nbsp;
-                = f.submit "Assign", :class => 'btn btn-primary', id: 'appendedInputButtons'
+                = f.submit "Assign", :class => 'btn btn-primary'
                 | &nbsp;
                 = link_to content_tag(:i, " Delete", :class => 'icon-trash'), admin_preset_image_path(image.id), confirm: "Are you sure?", method: :delete, :class => "btn btn-danger"
     .span12= paginate @images

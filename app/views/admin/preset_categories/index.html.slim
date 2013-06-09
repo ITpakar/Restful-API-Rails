@@ -34,6 +34,6 @@
               - else
                 small No images yet.
             td
-              = link_to content_tag(:i, ' Show all', :class => 'icon-list'), admin_preset_category_path(category.id), :class => 'btn btn-link'
+              = link_to content_tag(:i, ' Show all', :class => 'icon-list'), admin_preset_category_path(category.id), :class => 'btn'
               | &nbsp;
               = link_to content_tag(:i, ' Delete', :class => 'icon-trash'), admin_preset_category_path(category.id), confirm: "Are you sure?", method: :delete, :class => 'btn btn-danger'

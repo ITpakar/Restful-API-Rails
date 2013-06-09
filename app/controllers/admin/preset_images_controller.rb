@@ -13,8 +13,24 @@ class Admin::PresetImagesController < AdminController
     end
   end
 
+  def edit
+    @image = PresetImage.find(params[:id])
+  end
+
   def update
-    
+    @image = PresetImage.find(params[:id])
+
+    image_params = params[:preset_image].dup
+
+    if image_params[:preset_image].blank?
+      image_params.delete(:preset_image)
+    end
+
+    if @image.update_attributes(image_params)
+      redirect_to admin_preset_images_url, notice: "Successfully updated image."
+    else
+      redirect_to :back, alert: "Failed to update image."
+    end
   end
 
   def destroy

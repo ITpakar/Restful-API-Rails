@@ -1,12 +1,12 @@
-#newImage.modal.hide.fade aria-hidden="true" aria-labelledby="newImageLabel" role="dialog" tabindex="-1"
-  .modal-header
-    button.close aria-hidden="true" data-dismiss="modal" type="button"
-    h3#newImageLabel Add an image
-  .modal-body
-    = form_for :preset_image, multipart: true, html: {:class => 'form-horizontal'} do |f|
+.row
+  .span12
+    = form_for @image, url: admin_preset_image_path(@image), multipart: true, html: {method: :put, :class => 'form-horizontal'} do |f|
       .control-group
         = f.label :name, :class => 'control-label'
         .controls= f.text_field :name, placeholder: "Image name"
+      .control-group
+        = label_tag :current_image, "Current Image", :class => 'control-label'
+        .controls= image_tag(@image.preset_image_url('50x50#'), :class => 'img-polaroid')
       .control-group
         = f.label :preset_image, "Image File", :class => 'control-label'
         .controls
@@ -21,10 +21,9 @@
             a.close.fileupload-exists data-dismiss="fileupload" href="#" style="float: none" x
       .control-group
         = f.label :preset_category_id, "Category", :class => 'control-label'
-        .controls= f.select :preset_category_id, options_from_collection_for_select(PresetCategory.all, :id, :name), include_blank: "Select category"
+        .controls= f.select :preset_category_id, options_from_collection_for_select(PresetCategory.all, :id, :name, @image.preset_category_id), include_blank: "Select category"
       .control-group
         .controls
           = f.submit "Submit", :class => 'btn btn-primary'
           | &nbsp;
-          button.btn aria-hidden="true" data-dismiss="modal" Cancel
-  .modal-footer
+          = link_to 'Cancel', admin_preset_images_path, :class => 'btn'
