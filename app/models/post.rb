@@ -82,7 +82,8 @@ class Post < ActiveRecord::Base
     if quote_image.present?
       size.present? ? quote_image.thumb(size).url : quote_image.jpg.url
     else
-      default = Dragonfly[:images].fetch_file(ActionController::Base.helpers.asset_path('default.png'))
+      path = File.join(Rails.root, 'public', 'default.png')
+      default = Dragonfly[:images].fetch_file(path)
       size.present? ? default.thumb(size).url : default.jpg.url
     end
   end

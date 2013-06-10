@@ -40,7 +40,8 @@ class PresetImage < ActiveRecord::Base
     if preset_image.present?
       size.present? ? preset_image.thumb(size).url : preset_image.jpg.url
     else
-      default = Dragonfly[:images].fetch_file(ActionController::Base.helpers.asset_path('default.png'))
+      path = File.join(Rails.root, 'public', 'default.png')
+      default = Dragonfly[:images].fetch_file(path)
       size.present? ? default.thumb(size).url : default.jpg.url
     end
   end
