@@ -6,6 +6,7 @@ html
       | <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
     = stylesheet_link_tag    "admin/application", :media => "all"
     = javascript_include_tag "application"
+    = favicon_link_tag(asset_path('logo.png'))
     = csrf_meta_tags
     meta content="width=(device-width,)initial-scale=1.0" name="viewport"
   body
@@ -16,7 +17,7 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          = link_to 'Quotiful', admin_index_path, :class => 'brand'
+          = link_to image_tag(asset_path('logo-text.png')), admin_index_path, :class => 'brand'
           .nav-collapse
             ul.nav
               li = link_to "Backgrounds", admin_preset_images_path
@@ -24,7 +25,7 @@ html
               li = link_to "Quotes", 'javascript:void(0)', 'data-toggle' => 'tooltip', title: "Coming soon!", rel: 'tooltip'
               li = link_to "Hashtags", admin_hashtags_path
               li = link_to "Posts", admin_posts_path
-            .pull-right= link_to "Sign Out", 'javascript:void(0)', :class => 'btn btn-danger'
+            .pull-right= link_to "Sign Out", destroy_admin_session_path, method: :delete, :class => 'btn btn-danger'
     .container
       .row
         .span12

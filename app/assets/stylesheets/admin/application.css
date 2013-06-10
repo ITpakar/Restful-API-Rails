@@ -26,3 +26,7 @@ table .text-center {
 .table td {
   vertical-align: middle;
 }
+
+.brand img {
+  height: 20px;
+}
