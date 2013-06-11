@@ -22,7 +22,7 @@ html
             ul.nav
               li = link_to "Backgrounds", admin_preset_images_path
               li = link_to "Users", admin_users_path
-              li = link_to "Quotes", 'javascript:void(0)', 'data-toggle' => 'tooltip', title: "Coming soon!", rel: 'tooltip'
+              li = link_to "Quote Library", 'javascript:void(0)', 'data-toggle' => 'tooltip', title: "Coming soon!", rel: 'tooltip'
               li = link_to "Hashtags", admin_hashtags_path
               li = link_to "Posts", admin_posts_path
             .pull-right= link_to "Sign Out", destroy_admin_session_path, method: :delete, :class => 'btn btn-danger'
