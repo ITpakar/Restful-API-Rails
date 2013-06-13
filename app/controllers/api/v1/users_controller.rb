@@ -38,7 +38,7 @@ module Api
                 info.likes_count post.likes_count
                 info.quote post.quote
                 info.quote_image_url post.quote_image_url
-                info.user post.user, :id, :full_name
+                info.posted_at post.created_at.to_i
                 info.set! :user do
                   info.set! :user_id, post.user_id
                   info.set! :full_name, post.user.full_name
