@@ -18,7 +18,7 @@ module Api
         user = User.new(user_params)
 
         if user.save
-          render json: user.to_builder.target!, status: 200
+          render json: user.to_builder.target!(is_current_user: true), status: 200
           return
         else
           warden.custom_failure!
@@ -49,7 +49,7 @@ module Api
           user = User.find_by_facebook_id(facebook_id)
           if user.present?
             # sign_in(:user, user)
-            render json: user.to_builder.target!, status: 200
+            render json: user.to_builder.target!(is_current_user: true), status: 200
           end
         end
 
