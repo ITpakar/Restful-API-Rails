@@ -24,15 +24,7 @@
         - @categories.each do |category|
           tr
             td = category.name
-            td
-              - images = category.preset_images.limit(4)
-              - if images.present?
-                - images.each do |image|
-                  = image_tag(image.preset_image.thumb("50x50#").url, :class => 'img-polaroid')
-                - if category.preset_images.size > 4
-                  small &nbsp;and #{category.preset_images.size - 2} more
-              - else
-                small No images yet.
+            td = category.preset_images.count
             td
               = link_to content_tag(:i, ' Show all', :class => 'icon-list'), admin_preset_category_path(category.id), :class => 'btn'
               | &nbsp;
