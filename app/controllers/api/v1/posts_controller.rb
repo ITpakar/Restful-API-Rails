@@ -22,6 +22,8 @@ module Api
               post.likes_count instance_post.likes_count
               post.quote instance_post.quote
               post.quote_image_url instance_post.quote_image_url
+              post.posted_at instance_post.created_at.to_i
+              post.user_liked instance_post.liked_by?(current_user.id)
               post.set! :user do
                 post.set! :user_id, instance_post.user_id
                 post.set! :full_name, instance_post.user.full_name
@@ -82,6 +84,8 @@ module Api
                   posts.quote post.quote
                   posts.quote_image_url post.quote_image_url
                   posts.post_id post.id
+                  posts.posted_at post.created_at.to_i
+                  posts.user_liked post.liked_by?(current_user.id)
                   posts.set! :user do
                     posts.set! :user_id, post.user_id 
                     posts.set! :full_name, post.user.full_name
@@ -95,7 +99,7 @@ module Api
         end
 
         def instance_post
-          @instance_post ||= Post.find(params[:id])
+          @instance_post ||= Post.where(id: params[:id]).includes?(:user, :likes).first
         end
 
         def ensure_params_id_exist

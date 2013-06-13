@@ -13,6 +13,7 @@ module Api
                 comments.array! @comments do |comment|
                   comments.body comment.body
                   comments.post_id comment.commentable_id
+                  comments.commented_at comment.created_at.to_i
                   comments.set! :user do
                     comments.set! :user_id, comment.user_id
                     comments.set! :full_name, comments.user.full_name

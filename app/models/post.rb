@@ -88,6 +88,10 @@ class Post < ActiveRecord::Base
     end
   end
 
+  def liked_by?(user_id)
+    self.likes.exists?(user_id: user_id)
+  end
+
   def user_name
     if user.present?
       user.full_name
@@ -112,6 +116,7 @@ class Post < ActiveRecord::Base
           post.(self, :caption, :editors_pick, :likes_count, :quote)
           post.post_id self.id
           post.quote_image_url self.quote_image_url
+          post.posted_at self.created_at.to_i
         end
         
         if bool_errors
