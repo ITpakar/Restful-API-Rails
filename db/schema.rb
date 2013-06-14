@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130606215616) do
+ActiveRecord::Schema.define(:version => 20130613232506) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",              :default => "", :null => false
@@ -125,12 +125,14 @@ ActiveRecord::Schema.define(:version => 20130606215616) do
   add_index "preset_images", ["preset_category_id"], :name => "index_preset_images_on_preset_category_id"
 
   create_table "quotes", :force => true do |t|
-    t.text     "body",       :null => false
+    t.text     "body",              :null => false
     t.integer  "author_id"
     t.text     "tags"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.text     "source"
+    t.string   "author_first_name"
+    t.string   "author_last_name"
   end
 
   add_index "quotes", ["author_id"], :name => "index_quotes_on_author_id"

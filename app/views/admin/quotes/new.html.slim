@@ -1,0 +1,45 @@
+.row
+  .span12
+    h1 Quote Import
+    p A CSV or Excel file can be used to import records. The first row should be the column name. The following columns are allowed:
+    ul
+      - Quote.columns.each do |column|
+        - if column.name.in?([*Quote.accessible_attributes] - ["", "author_id"])
+          li
+            strong = column.name
+            | &nbsp;-&nbsp;
+            | #{column.type.to_s.titleize} type
+    small
+      | For multiple tags, words should be&nbsp;
+      strong comma separated
+      | &nbsp;under the column&nbsp;
+      strong tags
+      | .
+
+.row.spacer
+  .span12
+    = form_for @quote_import, url: admin_quotes_path, html: {:class => 'form-inline'} do |f|
+      - if @quote_import.errors.any?
+        #error_explanation
+          h2
+            = pluralize(@quote_import.errors.count, "error")
+            | prohibited this import from completing:
+          ul
+            - @quote_import.errors.full_messages.each do |msg|
+              li= msg
+      
+      .control-group
+        .controls
+          .fileupload.fileupload-new data-provides="fileupload"
+            span.btn.btn-file
+              span.fileupload-new Select file
+              span.fileupload-exists Change
+              = f.file_field :file
+            | &nbsp;
+            span.fileupload-preview
+            | &nbsp;
+            a.close.fileupload-exists data-dismiss="fileupload" href="#" style="float: none" x
+            | &nbsp;
+            = f.submit "Import", :class => 'btn btn-primary fileupload-exists'
+            | &nbsp;
+            = link_to "Cancel", admin_quotes_path, :class => 'btn'

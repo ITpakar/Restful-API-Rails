@@ -7,6 +7,8 @@ gem 'api-versions', '~> 0.2.0'
 gem 'jbuilder'
 gem 'hashie'
 gem 'kaminari'
+gem 'roo'
+gem 'database_cleaner'
 
 gem 'slim'
 gem 'jquery-rails'
