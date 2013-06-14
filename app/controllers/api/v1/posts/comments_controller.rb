@@ -16,8 +16,8 @@ module Api
                   comments.commented_at comment.created_at.to_i
                   comments.set! :user do
                     comments.set! :user_id, comment.user_id
-                    comments.set! :full_name, comments.user.full_name
-                    comments.set! :profile_picture_url, comments.user.profile_picture_url
+                    comments.set! :full_name, comment.user.full_name
+                    comments.set! :profile_picture_url, comment.user.profile_picture_url
                   end
                 end
               end
