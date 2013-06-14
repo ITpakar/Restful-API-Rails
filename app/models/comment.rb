@@ -25,12 +25,12 @@ class Comment < ActiveRecord::Base
       json.data do |data|
         data.comment do |comment|
           comment.body self.body
-          comment.post_id comment.commentable_id
-          comment.commented_at comment.created_at.to_i
+          comment.post_id self.commentable_id
+          comment.commented_at self.created_at.to_i
           comment.set! :user do
-            comment.set! :user_id, comment.user_id
-            comment.set! :full_name, comment.user.full_name
-            comment.set! :full_name, comment.user.profile_picture_url
+            comment.set! :user_id, self.user_id
+            comment.set! :full_name, self.user.full_name
+            comment.set! :full_name, self.user.profile_picture_url
           end
         end
         
