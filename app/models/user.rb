@@ -164,6 +164,15 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << column_names
+      all.each do |user|
+        csv << user.attributes.values_at(*column_names)
+      end
+    end
+  end
+
   def to_builder(options = {with_notifications: false, is_current_user: false})
     bool_errors = self.errors.present?
     Jbuilder.new do |json|

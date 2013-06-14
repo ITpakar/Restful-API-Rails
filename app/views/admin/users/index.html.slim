@@ -1,4 +1,9 @@
 .row
+  .span12.navbar
+    ul.nav.nav-pills
+      li = link_to "Export to CSV", admin_users_path(format: 'csv'), target: '_blank'
+      
+.row
   table.span12.table.table-striped.table-bordered
     thead
       tr

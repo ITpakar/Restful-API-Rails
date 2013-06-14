@@ -1,6 +1,19 @@
 class Admin::UsersController < AdminController
   def index
-    @users = User.page(params[:page]).per(15).order("full_name ASC, email ASC")
+    respond_to do |format|
+      format.html do
+        @users = User.page(params[:page]).per(15).order("full_name ASC, email ASC")
+      end
+
+      format.csv do
+        @users = User.order(:full_name)
+        send_data @users.to_csv
+      end
+
+      # format.xls do
+      #   @users = User.all
+      # end
+    end
   end
 
   def edit
