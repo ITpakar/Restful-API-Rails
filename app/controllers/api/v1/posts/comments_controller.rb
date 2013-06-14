@@ -29,7 +29,7 @@ module Api
         end
 
         def create
-          instance_post.comments.create(user_id: current_user.id, body: params[:body])
+          instance_post.comments.create(user_id: current_user.id, body: params[:comment][:body])
           json = {success: true, data: nil}.to_json
 
           render json: json, status: 200
