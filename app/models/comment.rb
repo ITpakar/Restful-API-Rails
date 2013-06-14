@@ -18,4 +18,27 @@ class Comment < ActiveRecord::Base
   belongs_to :user
 
   validates_presence_of :body
+
+  def to_builder
+    bool_errors = self.errors.present?
+    Jbuilder.new do |json|
+      json.data do |data|
+        data.comment do |comment|
+          comment.body self.body
+          comment.post_id comment.commentable_id
+          comment.commented_at comment.created_at.to_i
+          comment.set! :user do
+            comment.set! :user_id, comment.user_id
+            comment.set! :full_name, comment.user.full_name
+            comment.set! :full_name, comment.user.profile_picture_url
+          end
+        end
+        
+        if bool_errors
+          data.errors self.errors.full_messages
+        end
+      end
+      json.success !bool_errors
+    end
+  end
 end

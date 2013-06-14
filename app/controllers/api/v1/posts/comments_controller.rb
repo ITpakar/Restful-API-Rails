@@ -29,10 +29,9 @@ module Api
         end
 
         def create
-          instance_post.comments.create(user_id: current_user.id, body: params[:comment][:body])
-          json = {success: true, data: nil}.to_json
-
-          render json: json, status: 200
+          comment = instance_post.comments.create(user_id: current_user.id, body: params[:comment][:body])
+          
+          render json: comment.to_builder.target!, status: 200
         end
 
         def destroy
