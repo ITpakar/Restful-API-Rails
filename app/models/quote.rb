@@ -58,6 +58,15 @@ class Quote < ActiveRecord::Base
     write_attribute(:tags, array)
   end
 
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << %w(author_first_name author_last_name source body tags)
+      all.each do |quote|
+        csv << [quote.author_first_name, quote.author_last_name, quote.source, quote.body, quote.tags.join(',')]
+      end
+    end
+  end
+
   protected
 
     def associate_with_author

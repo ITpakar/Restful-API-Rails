@@ -1,6 +1,9 @@
 class Admin::QuotesController < ApplicationController
   def index
-    @quotes = Quote.order('author_last_name ASC, author_first_name ASC, id ASC').page(params[:page]).per(20)
+    respond_to do |format|
+      format.html { @quotes = Quote.order('author_last_name ASC, author_first_name ASC, id ASC').page(params[:page]).per(20) }
+      format.csv { send_data Quote.order('author_last_name ASC, author_first_name ASC, id ASC').to_csv }
+    end
   end
 
   def new

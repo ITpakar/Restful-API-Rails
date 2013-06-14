@@ -1,7 +1,8 @@
 .row
   .span12.navbar
     ul.nav.nav-pills
-      li = link_to "Import Quote Library", new_admin_quote_path
+      li = link_to "Import Library", new_admin_quote_path
+      li = link_to "Export to CSV", admin_quotes_path(format: 'csv'), target: '_blank'
    
 .row
   table.span12.table.table-striped.table-bordered
@@ -19,5 +20,5 @@
           td = quote.author_last_name
           td = quote.source
           td = quote.body
-          td = quote.tags.join(', ')
+          td = quote.tags.join(',') rescue ''
   .span12 = paginate @quotes
