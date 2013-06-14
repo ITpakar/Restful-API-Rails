@@ -30,7 +30,7 @@ class Comment < ActiveRecord::Base
           comment.set! :user do
             comment.set! :user_id, self.user_id
             comment.set! :full_name, self.user.full_name
-            comment.set! :full_name, self.user.profile_picture_url
+            comment.set! :profile_picture_url, self.user.profile_picture_url
           end
         end
         
