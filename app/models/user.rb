@@ -122,15 +122,10 @@ class User < ActiveRecord::Base
     return hash
   end
 
-  def authenticated_feed(options = {min_id: nil, max_id: nil, count: 10})
-    arr_condition = []
-    arr_condition << "posts.id > %s" % options[:min_id] if options[:min_id].present?
-    arr_condition << "posts.id < %s" % options[:max_id] if options[:max_id].present?
-    str_condition = arr_condition.join(" AND ")
+  def authenticated_feed(options = {page: 1, count: 10})
     Post.where(user_id: [self.follows.map(&:user_id), self.id].flatten)
-        .where(str_condition)
-        .limit(options[:count])
         .order('created_at DESC')
+        .page(options[:page]).per(options[:count])
   end
 
   def active_for_authentication?

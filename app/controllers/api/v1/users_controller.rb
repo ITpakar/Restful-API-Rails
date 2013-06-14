@@ -25,7 +25,7 @@ module Api
       end
 
       def feed
-        hash_conditions = {min_id: params[:min_id], max_id: params[:max_id], count: params[:count]}
+        hash_conditions = {page: params[:page], count: params[:count]}
         hash_conditions.reject!{ |k,v| v.blank? }
 
         json = Jbuilder.encode do |json|
@@ -47,6 +47,7 @@ module Api
                 end
               end  
             end
+            data.page (params[:page] || 1)
           end
           json.success true
         end
