@@ -15,4 +15,17 @@ class Admin::PostsController < AdminController
 
     redirect_to admin_posts_path(page: params[:page], sort: params[:sort])
   end
+
+  def destroy
+    post = Post.find(params[:id])
+    post.destroy
+
+    redirect_to :back, page: params[:page], sort: params[:sort]
+  end
+
+  def flagged
+    condition = params[:sort].present? and params[:sort].in?(%(editors_pick likes_count))
+    sort = condition ? params[:sort].dup : 'created_at'
+    @posts = Post.flagged.order("#{sort} DESC, created_at DESC").page(params[:page]).per(20)
+  end
 end

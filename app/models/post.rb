@@ -13,10 +13,14 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  author_name      :string(255)      default("")
+#  flagged          :boolean          default(FALSE), not null
+#  flagged_count    :integer          default(0), not null
 #
 
 class Post < ActiveRecord::Base
-  attr_accessible :author_name, :caption, :editors_pick, :likes_count, :quote, :quote_image
+  attr_accessible :author_name, :caption, :editors_pick,
+                  :likes_count, :quote, :quote_image,
+                  :flagged, :flagged_count
 
   belongs_to :user
 
@@ -30,6 +34,8 @@ class Post < ActiveRecord::Base
   validates_presence_of :quote
 
   image_accessor :quote_image
+
+  scope :flagged, where(flagged: true)
 
   searchable do
     string :author_name
@@ -106,6 +112,10 @@ class Post < ActiveRecord::Base
 
   def unpick!
     self.update_attribute(:editors_pick, false)
+  end
+
+  def flag!
+    self.update_attributes(flagged: true, flagged_count: self.flagged_count.next)
   end
 
   def to_builder

@@ -4,19 +4,22 @@
       li = link_to "Sort by Latest", admin_posts_path(sort: 'created_at')
       li = link_to "Sort by Popularity", admin_posts_path(sort: 'likes_count')
       li = link_to "Sort by Editor's Pick", admin_posts_path(sort: 'editors_pick')
+      li.divider-vertical
+      li = link_to "See flagged posts", flagged_admin_posts_path
 
 .row
   table.span12.table.table-striped.table-bordered
     thead
       tr
         th.span1.text-center = content_tag(:i, '', :class => 'icon-picture')
-        th.span4.text-center Quote
+        th.span3.text-center Quote
         th.span1.text-center Author
         th.span3.text-center Description
         th.span1.text-center Posted By
         th.span1.text-center Likes
         th.span1.text-center
           small Editor's Pick?
+        th.span1.text-center Actions
     tbody
       - @posts.each do |post|
         tr
@@ -31,4 +34,5 @@
               = link_to "Yes", admin_post_path(post, pick: false, page: params[:page], sort: params[:sort]), method: :put, confirm: "Remove this post in editor's picks?", :class => 'btn btn-success'
             - else
               = link_to "No", admin_post_path(post, pick: true, page: params[:page], sort: params[:sort]), method: :put, confirm: "Add this post in editor's picks?", :class => 'btn'
+          td = link_to "Delete", admin_post_path(post), confirm: "Are you sure?", method: :delete, :class => "btn btn-danger"
   .span12 = paginate @posts

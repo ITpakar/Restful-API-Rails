@@ -21,3 +21,4 @@ database.yml
 /solr/data/*
 /solr/pids/*
 /public/system/*
+log/sunspot-solr*

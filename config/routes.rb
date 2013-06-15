@@ -24,7 +24,11 @@ Quotiful::Application.routes.draw do
       end
     end
     resources :hashtags, only: [:index, :show]
-    resources :posts, only: [:index, :update]
+    resources :posts, only: [:index, :update, :destroy] do
+      collection do
+        get :flagged
+      end
+    end
     resources :quotes, only: [:index, :new, :create]
   end
 

@@ -1,4 +1,4 @@
-class Admin::QuotesController < ApplicationController
+class Admin::QuotesController < AdminController
   def index
     respond_to do |format|
       format.html { @quotes = Quote.order('author_last_name ASC, author_first_name ASC, id ASC').page(params[:page]).per(20) }
