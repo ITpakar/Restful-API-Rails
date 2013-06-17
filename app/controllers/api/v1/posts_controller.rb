@@ -38,16 +38,7 @@ module Api
       end
 
       def editors_picks
-        options = {
-          start_date: params[:start_date],
-          end_date: params[:end_date],
-          min_id: params[:min_id],
-          max_id: params[:max_id],
-          count: params[:count]
-        }
-        options.reject!{ |k,v| v.blank? }
-
-        @posts = Post.editors_picked(options)
+        @posts = Post.editors_picked.page(params[:page]).per(params[:count] || 10)
 
         json = posts_collection
 
@@ -55,16 +46,7 @@ module Api
       end
 
       def popular
-        options = {
-          start_date: params[:start_date],
-          end_date: params[:end_date],
-          min_id: params[:min_id],
-          max_id: params[:max_id],
-          count: params[:count]
-        }
-        options.reject!{ |k,v| v.blank? }
-
-        @posts = Post.popular(options)
+        @posts = Post.popular.page(params[:page]).per(params[:count] || 10)
 
         json = posts_collection
 
