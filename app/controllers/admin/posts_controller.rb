@@ -18,7 +18,9 @@ class Admin::PostsController < AdminController
 
   def destroy
     post = Post.find(params[:id])
+    user = post.user
     post.destroy
+    Posts::Mailer.deleted_post(user.id).deliver
 
     redirect_to :back, page: params[:page], sort: params[:sort]
   end
