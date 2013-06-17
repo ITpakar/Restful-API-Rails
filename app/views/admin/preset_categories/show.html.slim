@@ -26,9 +26,11 @@ p.lead = @category.name
           tr
             td = image.preset_category.try(:name) || "-"
             td = image.name
-            td.text-center = image_tag(image.preset_image.thumb("100x100#").url, :class => 'img-polaroid') rescue nil
+            td.text-center = link_to image_tag(image.preset_image_url("100x100#"), :class => 'img-polaroid'), "#thumbnailView", "data-toggle" => "modal", "data-src" => image.preset_image_url
             td
               = link_to content_tag(:i, " Unassign", :class => 'icon-remove'), unassign_admin_preset_image_path(image.id), :class => "btn btn-warning", method: :put
               | &nbsp;
               = link_to content_tag(:i, " Delete", :class => 'icon-trash'), admin_preset_image_path(image.id), confirm: "Are you sure?", method: :delete, :class => "btn btn-danger"
     .span12= paginate @images
+
+= render 'preview_modal'

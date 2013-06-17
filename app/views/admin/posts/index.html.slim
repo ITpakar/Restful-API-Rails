@@ -37,10 +37,4 @@
           td = link_to "Delete", admin_post_path(post), confirm: "Are you sure?", method: :delete, :class => "btn btn-danger"
   .span12 = paginate @posts
 
-#thumbnailView.modal.hide.fade aria-hidden="true" aria-labelledby="imagePreview" role="dialog" tabindex="-1"
-  .modal-header
-    button.close aria-hidden="true" data-dismiss="modal" type="button"
-    h3#imagePreview Preview
-  .modal-body
-  .modal-footer
-    button.btn aria-hidden="true" data-dismiss="modal" Close
+= render 'preview_modal'

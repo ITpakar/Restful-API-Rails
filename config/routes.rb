@@ -25,9 +25,6 @@ Quotiful::Application.routes.draw do
     end
     resources :hashtags, only: [:index, :show]
     resources :posts, only: [:index, :update, :destroy] do
-      member do
-        get :preview
-      end
       collection do
         get :flagged
       end

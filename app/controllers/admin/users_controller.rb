@@ -9,10 +9,6 @@ class Admin::UsersController < AdminController
         @users = User.order(:full_name)
         send_data @users.to_csv
       end
-
-      # format.xls do
-      #   @users = User.all
-      # end
     end
   end
 

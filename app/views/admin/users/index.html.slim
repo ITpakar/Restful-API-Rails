@@ -17,7 +17,7 @@
     tbody
       - @users.each do |user|
         tr
-          td = image_tag(user.profile_picture_url('50x50#'), :class => 'img-polaroid')
+          td = link_to image_tag(user.profile_picture_url('50x50#'), :class => 'img-polaroid'), "#thumbnailView", "data-toggle" => "modal", "data-src" => user.profile_picture_url
           td = user.full_name
           td = user.email
           td.text-center = link_to_unless user.followed_by_count.zero?, user.followed_by_count, followers_admin_user_path(user)
@@ -31,3 +31,5 @@
             - else
               = link_to content_tag(:i, " Reactivate", :class => 'icon-ok'), reactivate_admin_user_path(user, page: params[:page]), method: :post, :class => "btn btn-success", confirm: "Are you sure?"
   .span12 = paginate @users
+
+= render 'preview_modal'

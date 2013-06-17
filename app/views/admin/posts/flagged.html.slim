@@ -29,3 +29,5 @@
           td.text-center = post.likes_count
           td = link_to "Delete", admin_post_path(post), confirm: "Are you sure?", method: :delete, :class => "btn btn-danger"
   .span12 = paginate @posts
+
+= render 'preview_modal'
