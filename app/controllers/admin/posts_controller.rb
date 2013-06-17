@@ -25,6 +25,12 @@ class Admin::PostsController < AdminController
     redirect_to :back, page: params[:page], sort: params[:sort]
   end
 
+  def preview
+    @post = Post.find(params[:id])
+
+    render layout: false
+  end
+
   def flagged
     condition = params[:sort].present? and params[:sort].in?(%(editors_pick likes_count))
     sort = condition ? params[:sort].dup : 'created_at'

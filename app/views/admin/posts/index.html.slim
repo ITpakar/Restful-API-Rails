@@ -23,7 +23,7 @@
     tbody
       - @posts.each do |post|
         tr
-          td = image_tag(post.quote_image_url('50x50#'), :class => 'img-polaroid')
+          td = link_to image_tag(post.quote_image_url('50x50#'), :class => 'img-polaroid'), preview_admin_post_path(post), "data-toggle" => "modal", "data-target" => "#thumbnailView"
           td = post.quote
           td = post.author_name
           td = post.caption
@@ -36,3 +36,11 @@
               = link_to "No", admin_post_path(post, pick: true, page: params[:page], sort: params[:sort]), method: :put, confirm: "Add this post in editor's picks?", :class => 'btn'
           td = link_to "Delete", admin_post_path(post), confirm: "Are you sure?", method: :delete, :class => "btn btn-danger"
   .span12 = paginate @posts
+
+#thumbnailView.modal.hide.fade aria-hidden="true" aria-labelledby="imagePreview" role="dialog" tabindex="-1"
+  .modal-header
+    button.close aria-hidden="true" data-dismiss="modal" type="button"
+    h3#imagePreview Preview
+  .modal-body
+  .modal-footer
+    button.btn aria-hidden="true" data-dismiss="modal" Close

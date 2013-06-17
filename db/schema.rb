@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130613232506) do
+ActiveRecord::Schema.define(:version => 20130614120835) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",              :default => "", :null => false
@@ -101,6 +101,8 @@ ActiveRecord::Schema.define(:version => 20130613232506) do
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
     t.string   "author_name",      :default => ""
+    t.boolean  "flagged",          :default => false, :null => false
+    t.integer  "flagged_count",    :default => 0,     :null => false
   end
 
   add_index "posts", ["editors_pick"], :name => "index_posts_on_editors_pick"
