@@ -17,10 +17,10 @@ class PresetCategory < ActiveRecord::Base
   validates_presence_of :name
 
   def preset_image_sample
-    image = self.preset_images.sample
+    image = self.preset_images.first
 
     if image.present?
-      image.preset_image_url
+      image.preset_image_url('75x75#')
     else
       ''
     end
@@ -36,6 +36,7 @@ class PresetCategory < ActiveRecord::Base
             image.array! self.preset_images do |preset_image|
               image.image_id preset_image.id
               image.image_name preset_image.name
+              image.image_thumbnail_url preset_image.preset_image_url('75x75#')
               image.image_url preset_image.preset_image_url
             end
           end 
