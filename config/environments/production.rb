@@ -51,6 +51,17 @@ Quotiful::Application.configure do
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 
+  config.action_mailer.default_url_options = { :host => 'quotiful.sourcepadstage.com' }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :user_name => 'sourcepad@gmail.com',
+    :password => 'b11423f7-d3e6-4fbe-b636-9a75d329afb2',
+    :port => 2525,
+    :address => 'smtp.elasticemail.com',
+    :enable_starttls_auto => true,
+    :authentication => :login
+  }
+
   # Enable threaded mode
   # config.threadsafe!
 
