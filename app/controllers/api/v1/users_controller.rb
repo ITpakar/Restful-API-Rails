@@ -113,17 +113,10 @@ module Api
       end
 
       def recent
-        hash_conditions = {}
-        hash_conditions.update(min_id: params[:min_id]) if params[:min_id].present?
-        hash_conditions.update(max_id: params[:max_id]) if params[:max_id].present?
-        hash_conditions.update(min_timestamp: params[:min_timestamp]) if params[:min_timestamp].present?
-        hash_conditions.update(max_timestamp: params[:max_timestamp]) if params[:max_timestamp].present?
-        hash_conditions.update(count: params[:count]) if params[:count].present?
-
         json = Jbuilder.encode do |json|
           json.data do |data|
             data.posts do |info|
-              info.array! instance_user.posts.order('posts.created_at DESC') do |post|
+              info.array! instance_user.posts.order('posts.created_at DESC').page(params[:page]).per(params[:count] || 10) do |post|
                 info.caption post.caption
                 info.editors_pick post.editors_pick
                 info.post_id post.id
@@ -143,7 +136,7 @@ module Api
               user.posts_count instance_user.posts_count
               user.profile_picture_url instance_user.profile_picture_url
             end
-            
+            data.page params[:page] || 1
           end
           json.success true
         end
