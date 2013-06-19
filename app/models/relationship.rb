@@ -18,6 +18,8 @@ class Relationship < ActiveRecord::Base
 
   scope :approved, where(status: 'approved')
   scope :blocked, where(status: 'blocked')
+  scope :find_thru_follows, lambda { |user_id| where(user_id: user_id) }
+  scope :find_thru_followers, lambda { |user_id| where(follower_id: user_id) }
 
   def approve!
     update_attribute(:status, 'approved')

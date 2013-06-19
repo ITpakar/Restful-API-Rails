@@ -56,7 +56,7 @@ module Api
       end
 
       def follows
-        @users = instance_user.followed_by_self
+        @users = instance_user.followed_by_self.includes(:follows, :followers)
 
         json = Jbuilder.encode do |json|
           json.data do |data|
@@ -65,6 +65,10 @@ module Api
                 info.user_id user.id
                 info.full_name user.full_name
                 info.profile_picture_url user.profile_picture_url
+                info.is_following instance_user.is_following?(user.id)
+                info.is_follower instance_user.is_follower?(user.id)
+                info.following_date instance_user.following_date(user.id)
+                info.follower_date instance_user.follower_date(user.id)
               end
             end
           end
@@ -75,7 +79,7 @@ module Api
       end
 
       def followed_by
-        @users = instance_user.followed_by_users
+        @users = instance_user.followed_by_users.includes(:follows, :followers)
 
         json = Jbuilder.encode do |json|
           json.data do |data|
@@ -84,6 +88,10 @@ module Api
                 info.user_id user.id
                 info.full_name user.full_name
                 info.profile_picture_url user.profile_picture_url
+                info.is_following instance_user.is_following?(user.id)
+                info.is_follower instance_user.is_follower?(user.id)
+                info.following_date instance_user.following_date(user.id)
+                info.follower_date instance_user.follower_date(user.id)
               end
             end
           end
