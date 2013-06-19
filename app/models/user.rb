@@ -168,6 +168,26 @@ class User < ActiveRecord::Base
     end
   end
 
+  def is_following?(user_id)
+    relationship = follows.find_thru_follows(user_id)
+    relationship.present? && relationship.status.eql?('approved')
+  end
+
+  def is_follower?(user_id)
+    relationship = followers.find_thru_followers(user_id)
+    relationship.present? && relationship.status.eql?('approved')
+  end
+
+  def following_date
+    relationship = follows.find_thru_follows(user_id)
+    relationship.try(:created_at).to_i
+  end
+
+  def follower_date
+    relationship = followers.find_thru_followers(user_id)
+    relationship.try(:created_at).to_i
+  end
+
   def to_builder(options = {with_notifications: false, is_current_user: false})
     bool_errors = self.errors.present?
     Jbuilder.new do |json|
