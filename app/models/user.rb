@@ -169,22 +169,22 @@ class User < ActiveRecord::Base
   end
 
   def is_following?(user_id)
-    relationship = follows.find_thru_follows(user_id)
+    relationship = follows.find_thru_follows(user_id).first
     relationship.present? && relationship.status.eql?('approved')
   end
 
   def is_follower?(user_id)
-    relationship = followers.find_thru_followers(user_id)
+    relationship = followers.find_thru_followers(user_id).first
     relationship.present? && relationship.status.eql?('approved')
   end
 
   def following_date
-    relationship = follows.find_thru_follows(user_id)
+    relationship = self.follows.find_thru_follows(user_id).first
     relationship.try(:created_at).to_i
   end
 
   def follower_date
-    relationship = followers.find_thru_followers(user_id)
+    relationship = self.followers.find_thru_followers(user_id).first
     relationship.try(:created_at).to_i
   end
 
