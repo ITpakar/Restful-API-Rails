@@ -178,12 +178,12 @@ class User < ActiveRecord::Base
     relationship.present? && relationship.status.eql?('approved')
   end
 
-  def following_date
+  def following_date(user_id)
     relationship = self.follows.find_thru_follows(user_id).first
     relationship.try(:created_at).to_i
   end
 
-  def follower_date
+  def follower_date(user_id)
     relationship = self.followers.find_thru_followers(user_id).first
     relationship.try(:created_at).to_i
   end
