@@ -1,4 +1,21 @@
 .row
+  .span12.navbar
+    ul.nav.nav-pills
+      li = link_to "Sort by Latest", admin_hashtags_path(sort: 'name')
+      li
+        .btn-group
+          a.btn.dropdown-toggle data-toggle="dropdown" href="javascript:void(0)"
+            | Sort by Popularity&nbsp;
+            span.caret
+          ul.dropdown-menu
+            li = link_to "all time", admin_hashtags_path(sort: 'likes_count')
+            li = link_to "today", admin_hashtags_path(sort: 'likes_count', by: 'today')
+            li = link_to "yesterday", admin_hashtags_path(sort: 'likes_count', by: 'yesterday')
+            li = link_to "last week", admin_hashtags_path(sort: 'likes_count', by: 'last_week')
+            li = link_to "this month", admin_hashtags_path(sort: 'likes_count', by: 'this_month')
+            li = link_to "this year", admin_hashtags_path(sort: 'likes_count', by: 'this_year')
+
+.row
   table.span12.table.table-striped.table-bordered
     thead
       tr

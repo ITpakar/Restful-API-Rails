@@ -15,7 +15,11 @@ Quotiful::Application.routes.draw do
         get :unassigned
       end
     end
-    resources :preset_categories, except: [:new, :edit, :update], path: "background-categories"
+    resources :preset_categories, except: [:new, :edit, :update], path: "background-categories" do
+      member do
+        put :set_primary
+      end
+    end
     resources :users, except: [:new, :create, :show] do
       member do
         post :reactivate

@@ -9,6 +9,7 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  name               :string(255)      default("")
+#  primary            :boolean          default(FALSE), not null
 #
 
 class PresetImage < ActiveRecord::Base
@@ -20,6 +21,7 @@ class PresetImage < ActiveRecord::Base
 
   validates_presence_of :preset_image
 
+  scope :primary, where(primary: true)
   scope :unassigned, where(preset_category_id: nil).order('updated_at DESC')
 
   def assign!(category_id)

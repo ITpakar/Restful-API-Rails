@@ -26,6 +26,11 @@ class PresetCategory < ActiveRecord::Base
     end
   end
 
+  def set_primary!(preset_image_id)
+    preset_images.primary.update_all(primary: false)
+    preset_images.update_all({primary: true}, {id: preset_image_id})
+  end
+
   def to_builder
     Jbuilder.new do |json|
       json.data do |data|

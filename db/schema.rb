@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130614120835) do
+ActiveRecord::Schema.define(:version => 20130620111049) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",              :default => "", :null => false
@@ -119,9 +119,10 @@ ActiveRecord::Schema.define(:version => 20130614120835) do
     t.string   "preset_image_uid"
     t.string   "preset_image_name"
     t.integer  "preset_category_id"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
     t.string   "name",               :default => ""
+    t.boolean  "primary",            :default => false, :null => false
   end
 
   add_index "preset_images", ["preset_category_id"], :name => "index_preset_images_on_preset_category_id"
