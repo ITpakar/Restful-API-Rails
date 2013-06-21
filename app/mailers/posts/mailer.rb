@@ -1,5 +1,5 @@
 class Posts::Mailer < ActionMailer::Base
-  default from: "no-reply@quotiful.com"
+  default from: "Quotiful <no-reply@quotiful.com>"
 
   def deleted_post(user_id)
     @user = User.find(user_id)
