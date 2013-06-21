@@ -34,3 +34,7 @@ table .text-center {
 .spacer {
   margin-top: 30px;
 }
+
+.modal-body {
+  max-height: 700px;
+}
