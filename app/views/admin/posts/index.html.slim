@@ -28,8 +28,6 @@
         th.span3.text-center Description
         th.span1.text-center Posted By
         th.span1.text-center Likes
-        th.span1.text-center
-          small Editor's Pick?
         th.span1.text-center Actions
     tbody
       - @posts.each do |post|
@@ -41,11 +39,16 @@
           td = post.user_name
           td.text-center = post.likes_count
           td
-            - if post.editors_pick?
-              = link_to "Yes", admin_post_path(post, pick: false, page: params[:page], sort: params[:sort]), method: :put, confirm: "Remove this post in editor's picks?", :class => 'btn btn-success'
-            - else
-              = link_to "No", admin_post_path(post, pick: true, page: params[:page], sort: params[:sort]), method: :put, confirm: "Add this post in editor's picks?", :class => 'btn'
-          td = link_to "Delete", admin_post_path(post), confirm: "Are you sure?", method: :delete, :class => "btn btn-danger"
+            .btn-group
+              - if post.editors_pick?
+                = link_to "Remove to Editor's Pick", admin_post_path(post, pick: false, page: params[:page], sort: params[:sort]), method: :put, confirm: "Remove this post in editor's picks?", :class => 'btn'
+              - else
+                = link_to "Add to Editor's Pick", admin_post_path(post, pick: true, page: params[:page], sort: params[:sort]), method: :put, confirm: "Add this post in editor's picks?", :class => 'btn'
+              button.btn.dropdown-toggle data-toggle="dropdown"
+                span.caret style="margin-bottom:8px;"
+              ul.dropdown-menu
+                li = link_to "Show Web View", post_path(post.created_at.to_i), target: '_blank'
+                li = link_to "Delete", admin_post_path(post), confirm: "Are you sure?", method: :delete
   .span12 = paginate @posts
 
 = render 'preview_modal'
