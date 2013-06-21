@@ -17,7 +17,7 @@ class PresetCategory < ActiveRecord::Base
   validates_presence_of :name
 
   def preset_image_sample
-    image = self.preset_images.first
+    image = self.preset_images.primary.first
 
     if image.present?
       image.preset_image_url('75x75#')

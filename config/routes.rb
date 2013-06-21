@@ -5,6 +5,9 @@ Quotiful::Application.routes.draw do
   devise_for :admins, path: :admin
 
   resources :admin, only: [:index]
+
+  resources :posts, only: [:show], path: 'q'
+
   namespace :admin do
     resources :preset_images, except: [:new], path: "background-images" do
       member do

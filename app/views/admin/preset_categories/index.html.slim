@@ -18,12 +18,14 @@
       thead
         tr
           th.span4.text-center Name
-          th.span5.text-center Images
+          th.span1.text-center Default
+          th.span4.text-center Images
           th.span3.text-center Actions
       tbody
         - @categories.each do |category|
           tr
             td = category.name
+            td.text-center = image_tag(category.preset_image_sample, :class => 'img-polaroid')
             td = category.preset_images.count
             td
               = link_to content_tag(:i, ' Show all', :class => 'icon-list'), admin_preset_category_path(category.id), :class => 'btn'
