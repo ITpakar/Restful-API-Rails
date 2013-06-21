@@ -153,7 +153,7 @@ class User < ActiveRecord::Base
     if profile_picture.present?
       size.present? ? profile_picture.thumb(size).url : profile_picture.jpg.url
     else
-      path = File.join(Rails.root, 'public', 'default.png')
+      path = File.join(Rails.root, 'public', 'default-avatar.png')
       default = Dragonfly[:images].fetch_file(path)
       size.present? ? default.thumb(size).url : default.jpg.url
     end
