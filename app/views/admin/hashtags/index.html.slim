@@ -26,6 +26,6 @@
       - @tags.each do |tag|
         tr
           td = tag.name
-          td = tag.posts.count
+          td = tag.posts_ctr
           td.text-center = link_to content_tag(:i, " Show Tagged Posts", :class => 'icon-list'), admin_hashtag_path(tag), :class => "btn"
   .span12 = paginate @tags
