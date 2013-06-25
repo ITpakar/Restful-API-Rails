@@ -6,7 +6,9 @@ class Admin::HashtagsController < AdminController
     if sort.eql?('likes_count')
       case params[:by]
       when 'today' then start_date = Time.zone.now.midnight
-      when 'yesterday' then start_date = Time.zone.now.yesterday.midnight
+      when 'yesterday'
+        start_date = Time.zone.now.yesterday.midnight
+        end_date = Time.zone.now.midnight
       when 'last_week'
         start_date = Time.zone.now.prev_week
         end_date = Time.zone.now.prev_week.end_of_week
