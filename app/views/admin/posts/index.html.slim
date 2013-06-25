@@ -8,12 +8,12 @@
             | Sort by Popularity&nbsp;
             span.caret
           ul.dropdown-menu
-            li = link_to "all time", admin_posts_path(sort: 'likes_count')
-            li = link_to "today", admin_posts_path(sort: 'likes_count', by: 'today')
-            li = link_to "yesterday", admin_posts_path(sort: 'likes_count', by: 'yesterday')
-            li = link_to "last week", admin_posts_path(sort: 'likes_count', by: 'last_week')
-            li = link_to "this month", admin_posts_path(sort: 'likes_count', by: 'this_month')
-            li = link_to "this year", admin_posts_path(sort: 'likes_count', by: 'this_year')
+            li = link_to currently_sorted_by?('all_time', params[:by]), admin_posts_path(sort: 'likes_count')
+            li = link_to currently_sorted_by?('today', params[:by]), admin_posts_path(sort: 'likes_count', by: 'today')
+            li = link_to currently_sorted_by?('yesterday', params[:by]), admin_posts_path(sort: 'likes_count', by: 'yesterday')
+            li = link_to currently_sorted_by?('last_week', params[:by]), admin_posts_path(sort: 'likes_count', by: 'last_week')
+            li = link_to currently_sorted_by?('this_month', params[:by]), admin_posts_path(sort: 'likes_count', by: 'this_month')
+            li = link_to currently_sorted_by?('this_year', params[:by]), admin_posts_path(sort: 'likes_count', by: 'this_year')
       li = link_to "Sort by Editor's Pick", admin_posts_path(sort: 'editors_pick')
       li.divider-vertical
       li = link_to "See flagged posts", flagged_admin_posts_path
