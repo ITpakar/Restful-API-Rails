@@ -19,6 +19,10 @@ class PresetCategory < ActiveRecord::Base
   def preset_image_sample
     image = self.preset_images.primary.first
 
+    unless image.present?
+      image = self.preset_images.order('name ASC').first
+    end
+
     if image.present?
       image.preset_image_url('75x75#')
     else
