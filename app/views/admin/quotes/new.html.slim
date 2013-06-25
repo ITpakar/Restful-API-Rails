@@ -40,6 +40,6 @@
             | &nbsp;
             a.close.fileupload-exists data-dismiss="fileupload" href="#" style="float: none" x
             | &nbsp;
-            = f.submit "Import", :class => 'btn btn-primary fileupload-exists'
+            = f.submit "Import", data: { disable_with: "Please wait..." }, :class => 'btn btn-primary fileupload-exists'
             | &nbsp;
             = link_to "Cancel", admin_quotes_path, :class => 'btn'
