@@ -35,6 +35,6 @@ table .text-center {
   margin-top: 30px;
 }
 
-.modal-body {
-  max-height: 700px;
+.modal-body img{
+  max-height: 300px;
 }
