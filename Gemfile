@@ -7,7 +7,7 @@ gem 'api-versions', '~> 0.2.0'
 gem 'jbuilder'
 gem 'hashie'
 gem 'kaminari'
-gem 'roo'
+gem 'roo', git: 'https://github.com/Empact/roo.git'
 gem 'database_cleaner'
 
 gem 'slim'
@@ -21,6 +21,8 @@ gem 'doorkeeper', '~> 0.6.7'
 gem 'ledermann-rails-settings', :require => 'rails-settings'
 
 gem 'resque', '~> 1.24.1'
+gem 'em-synchrony', '~> 1.0.3'
+gem 'activerecord-import', '~> 0.2.11'
 
 gem 'sunspot_rails'
 gem 'sunspot_solr'
