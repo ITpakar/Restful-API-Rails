@@ -1,11 +1,7 @@
 #thumbnailView.modal.hide.fade aria-hidden="true" aria-labelledby="imagePreview" role="dialog" tabindex="-1"
-  .modal-header
-    button.close aria-hidden="true" data-dismiss="modal" type="button"
-    h3#imagePreview Preview
   .modal-body
-    center = image_tag(placeholder_image_path, :class => 'img-polaroid')
-  .modal-footer
-    button.btn aria-hidden="true" data-dismiss="modal" Close
+    button.close aria-hidden="true" data-dismiss="modal" type="button" x
+    center = image_tag(placeholder_image_path, :class => 'img-polaroid')    
 
 javascript:
   $('a > img').on({
