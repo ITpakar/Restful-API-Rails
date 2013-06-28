@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
                   :full_name, :auto_accept, :facebook_id, :bio,
                   :website, :follows_count, :followed_by_count, :posts_count,
                   :profile_picture, :favorite_quote, :author_name, :notifications,
-                  :profile_picture_url
+                  :profile_picture_url, :birth_date, :gender
 
   before_save :ensure_authentication_token
 
