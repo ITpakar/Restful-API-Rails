@@ -30,6 +30,9 @@
 #  author_name            :string(255)
 #  active                 :boolean          default(TRUE), not null
 #  deactivated_at         :datetime
+#  collection_count       :integer          default(0), not null
+#  birth_date             :date
+#  gender                 :string(255)
 #
 
 class User < ActiveRecord::Base
@@ -54,6 +57,9 @@ class User < ActiveRecord::Base
   has_many :liked_posts, through: :likes, source: :likable, source_type: 'Post'
   has_many :comments, dependent: :destroy
   has_many :commented_posts, through: :comments, source: :commentable, source_type: 'Post'
+  has_many :devices
+  has_many :collections
+  has_many :collected_posts, through: :collections, source: :post
   
   has_many :relationships
   # REFACTOR: naming problem, list of users that the current user follows
@@ -99,6 +105,14 @@ class User < ActiveRecord::Base
       tagged_in_post: true,
       post_gets_featured: false
     }
+  end
+
+  def using_this_device(device_token)
+    if device_token.present?
+      device = DeviceToken.find_or_initialize_by_device_token(device_token)
+      device.user = self
+      device.save
+    end
   end
 
   def notifications=(value)

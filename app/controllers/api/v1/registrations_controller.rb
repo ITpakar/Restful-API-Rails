@@ -18,6 +18,7 @@ module Api
         user = User.new(user_params)
 
         if user.save
+          user.using_this_device(params[:device_token])
           render json: user.to_builder(is_current_user: true).target!, status: 200
           return
         else
@@ -49,6 +50,7 @@ module Api
           user = User.find_by_facebook_id(facebook_id)
           if user.present?
             # sign_in(:user, user)
+            user.using_this_device(params[:device_token])
             render json: user.to_builder(is_current_user: true).target!, status: 200
           end
         end

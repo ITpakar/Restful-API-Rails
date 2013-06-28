@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130620111049) do
+ActiveRecord::Schema.define(:version => 20130628055206) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",              :default => "", :null => false
@@ -28,6 +28,15 @@ ActiveRecord::Schema.define(:version => 20130620111049) do
     t.datetime "updated_at",                 :null => false
   end
 
+  create_table "collections", :force => true do |t|
+    t.integer  "user_id",    :null => false
+    t.integer  "post_id",    :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "collections", ["user_id", "post_id"], :name => "index_collections_on_user_id_and_post_id", :unique => true
+
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id"
     t.string   "commentable_type"
@@ -39,6 +48,16 @@ ActiveRecord::Schema.define(:version => 20130620111049) do
 
   add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
+
+  create_table "devices", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "device_token", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "devices", ["device_token"], :name => "index_devices_on_device_token"
+  add_index "devices", ["user_id"], :name => "index_devices_on_user_id"
 
   create_table "likes", :force => true do |t|
     t.integer  "likable_id",   :null => false
@@ -211,6 +230,9 @@ ActiveRecord::Schema.define(:version => 20130620111049) do
     t.string   "author_name"
     t.boolean  "active",                 :default => true, :null => false
     t.datetime "deactivated_at"
+    t.integer  "collection_count",       :default => 0,    :null => false
+    t.date     "birth_date"
+    t.string   "gender"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true

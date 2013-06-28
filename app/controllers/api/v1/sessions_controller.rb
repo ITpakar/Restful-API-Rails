@@ -11,6 +11,7 @@ module Api
      
         if user.valid_password?(params[:user][:password])
           # sign_in(:user, user) unless signed_in?
+          user.using_this_device(params[:device_token])
           render json: user.to_builder(is_current_user: true).target!, status: 200
           return
         end
@@ -20,6 +21,7 @@ module Api
       
       def destroy
         # sign_out(current_user) if signed_in?
+        Device.signs_out_in(params[:device_token])
         render json: { success: true }, status: 200
       end
      

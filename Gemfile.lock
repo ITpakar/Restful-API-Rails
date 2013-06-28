@@ -75,6 +75,7 @@ GEM
     execjs (1.4.0)
       multi_json (~> 1.0)
     fattr (2.2.1)
+    grocer (0.4.1)
     hashie (2.0.4)
     highline (1.6.19)
     hike (1.2.2)
@@ -223,6 +224,7 @@ DEPENDENCIES
   doorkeeper (~> 0.6.7)
   dragonfly (~> 0.9.15)
   em-synchrony (~> 1.0.3)
+  grocer
   hashie
   jbuilder
   jquery-rails
