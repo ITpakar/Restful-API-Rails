@@ -58,6 +58,7 @@ Quotiful::Application.routes.draw do
             get 'recent'
           end
 
+          resources :collections, only: [:index, :create, :destroy]
           resources :relationships, path: :relationship, only: [:index, :create], controller: 'users/relationships'
         end
 
