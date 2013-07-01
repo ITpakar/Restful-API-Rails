@@ -109,7 +109,7 @@ class User < ActiveRecord::Base
 
   def using_this_device(device_token)
     if device_token.present?
-      device = DeviceToken.find_or_initialize_by_device_token(device_token)
+      device = Device.find_or_initialize_by_device_token(device_token)
       device.user = self
       device.save
     end
