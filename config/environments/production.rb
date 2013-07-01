@@ -1,3 +1,5 @@
+DEFAULT_HOST = 'quotiful.sourcepadstage.com'
+
 Quotiful::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -51,7 +53,7 @@ Quotiful::Application.configure do
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 
-  config.action_mailer.default_url_options = { :host => 'quotiful.sourcepadstage.com' }
+  config.action_mailer.default_url_options = { :host => DEFAULT_HOST }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     :user_name => 'sourcepad@gmail.com',

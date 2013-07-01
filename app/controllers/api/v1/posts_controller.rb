@@ -24,6 +24,7 @@ module Api
               post.quote_image_url instance_post.quote_image_url
               post.posted_at instance_post.created_at.to_i
               post.user_liked instance_post.liked_by?(current_user.id)
+              post.web_url post_url(instance_post)
               post.set! :user do
                 post.set! :user_id, instance_post.user_id
                 post.set! :full_name, instance_post.user.full_name
@@ -68,6 +69,7 @@ module Api
                   posts.post_id post.id
                   posts.posted_at post.created_at.to_i
                   posts.user_liked post.liked_by?(current_user.id)
+                  posts.web_url post_url(post)
                   posts.set! :user do
                     posts.set! :user_id, post.user_id 
                     posts.set! :full_name, post.user.full_name

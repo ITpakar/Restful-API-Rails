@@ -18,6 +18,8 @@
 #
 
 class Post < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
+
   attr_accessible :author_name, :caption, :editors_pick,
                   :likes_count, :quote, :quote_image,
                   :flagged, :flagged_count
@@ -95,6 +97,7 @@ class Post < ActiveRecord::Base
           post.post_id self.id
           post.quote_image_url self.quote_image_url
           post.posted_at self.created_at.to_i
+          post.web_url post_url(self, host: DEFAULT_HOST)
         end
         
         if bool_errors
