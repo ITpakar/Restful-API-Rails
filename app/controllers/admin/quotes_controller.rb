@@ -1,7 +1,11 @@
 class Admin::QuotesController < AdminController
   def index
     respond_to do |format|
-      format.html { @quotes = Quote.order('author_last_name ASC, author_first_name ASC, id ASC').page(params[:page]).per(20) }
+      format.html do
+        @quotes = Quote.order('author_last_name ASC, author_first_name ASC, id ASC').page(params[:page]).per(20)
+        @db_count = Quote.count
+        @solr_count = Quote.search.results.total_entries
+      end
       format.csv { send_data Quote.order('author_last_name ASC, author_first_name ASC, id ASC').to_csv }
     end
   end

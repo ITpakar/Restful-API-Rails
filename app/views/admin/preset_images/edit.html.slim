@@ -6,7 +6,7 @@
         .controls= f.text_field :name, placeholder: "Image name"
       .control-group
         = label_tag :current_image, "Current Image", :class => 'control-label'
-        .controls = link_to image_tag(@image.preset_image_url('50x50#'), :class => 'img-polaroid'), "#thumbnailView", "data-toggle" => "modal", "data-src" => @image.preset_image_url
+        .controls = link_to image_tag(@image.preset_image_url('35x35#'), :class => 'img-polaroid'), "#thumbnailView", "data-toggle" => "modal", "data-src" => @image.preset_image_url
       .control-group
         = f.label :preset_image, "Image File", :class => 'control-label'
         .controls

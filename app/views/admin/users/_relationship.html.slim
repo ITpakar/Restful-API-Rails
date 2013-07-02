@@ -10,7 +10,7 @@
     tbody
       - @users.each do |user|
         tr
-          td = link_to image_tag(user.profile_picture_url('50x50#'), :class => 'img-polaroid'), "#thumbnailView", "data-toggle" => "modal", "data-src" => user.profile_picture_url
+          td = link_to image_tag(user.profile_picture_url('35x35#'), :class => 'img-polaroid'), "#thumbnailView", "data-toggle" => "modal", "data-src" => user.profile_picture_url
           td = user.full_name
           td = user.email
           td = user.favorite_quote

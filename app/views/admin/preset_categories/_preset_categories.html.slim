@@ -21,7 +21,7 @@
                 - images = category.preset_images.limit(2)
                 - if images.present?
                   - images.each do |image|
-                    = image_tag(image.preset_image.thumb("50x50#").url, :class => 'img-polaroid')
+                    = image_tag(image.preset_image.thumb("35x35#").url, :class => 'img-polaroid')
                   - if category.preset_images.size > 2
                     small &nbsp;and #{category.preset_images.size - 2} more
                 - else

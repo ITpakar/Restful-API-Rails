@@ -1,9 +1,14 @@
 .row
-  .span12.navbar
+  .span6.navbar
     ul.nav.nav-pills
       li = link_to "Import Library", new_admin_quote_path
-      li = link_to "Export to CSV", admin_quotes_path(format: 'csv'), target: '_blank'
-   
+      li = link_to "Export to CSV", admin_quotes_path(format: 'csv'), target: '_blank'  
+  dl.dl-horizontal.span5
+    dt = pluralize(@db_count, 'quote')
+    dd in database
+    dt = pluralize(@solr_count, 'quote')
+    dd searchable
+
 .row
   table.span12.table.table-striped.table-bordered
     thead
