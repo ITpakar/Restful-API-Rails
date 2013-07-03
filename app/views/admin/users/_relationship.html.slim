@@ -1,0 +1,20 @@
+.row
+  table.span12.table.table-striped.table-bordered
+    thead
+      tr
+        th.span1.text-center = content_tag(:i, '', :class => 'icon-user')
+        th.span3.text-center Name
+        th.span2.text-center Email
+        th.span4.text-center Favorite Quote
+        th.span2.text-center Author Name
+    tbody
+      - @users.each do |user|
+        tr
+          td = link_to image_tag(user.profile_picture_url('35x35#'), :class => 'img-polaroid'), "#thumbnailView", "data-toggle" => "modal", "data-src" => user.profile_picture_url
+          td = user.full_name
+          td = user.email
+          td = user.favorite_quote
+          td = user.author_name
+  .span12 = paginate @users
+
+= render 'preview_modal'

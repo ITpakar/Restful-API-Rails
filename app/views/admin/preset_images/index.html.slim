@@ -1,0 +1,38 @@
+= render 'admin/preset_categories/form'
+= render 'form'
+.row
+  .span12.navbar
+    ul.nav.nav-pills
+      li = link_to "Add a category", '#newCategory', 'data-toggle' => 'modal', :role => 'button'
+      li = link_to "Show all categories", admin_preset_categories_path
+      li.divider-vertical
+      li = link_to "Add an image", '#newImage', 'data-toggle' => 'modal', :role => 'button'
+      li = link_to "See unassigned images", unassigned_admin_preset_images_path
+
+.row
+  - unless @images.present?
+    table.span12.table
+      caption
+        | No images uploaded.&nbsp;
+        = link_to "Upload now.", '#newImage', 'data-toggle' => 'modal', :role => 'button'
+  - else
+    table.span12.table.table-striped.table-bordered
+      thead
+        tr
+          th.span4.text-center Category
+          th.span3.text-center Name
+          th.span2.text-center Image
+          th.span3.text-center Actions
+      tbody
+        - @images.each do |image|
+          tr
+            td = image.preset_category.try(:name) || "-"
+            td = image.name
+            td.text-center = link_to image_tag(image.preset_image_url('100x100#'), :class => 'img-polaroid'), "#thumbnailView", "data-toggle" => "modal", "data-src" => image.preset_image_url
+            td
+              = link_to content_tag(:i, " Edit", :class => 'icon-edit'), edit_admin_preset_image_path(image), :class => "btn"
+              | &nbsp;
+              = link_to content_tag(:i, " Delete", :class => 'icon-trash'), admin_preset_image_path(image), confirm: "Are you sure?", method: :delete, :class => "btn btn-danger"
+  .span12= paginate @images
+
+= render 'preview_modal'

@@ -1,0 +1,41 @@
+.row
+  .span12.navbar
+    ul.nav.nav-pills
+      li = link_to "Back to categories list", admin_preset_categories_path
+      li.divider-vertical
+      li = link_to "Back to images list", admin_preset_images_path
+
+p.lead = @category.name
+
+.row
+  - unless @images.present?
+    table.span12.table
+      caption
+        | No images assigned to this category.&nbsp;
+        = link_to "Check unassigned images.", unassigned_admin_preset_images_path
+  - else
+    table.span12.table.table-striped.table-bordered
+      thead
+        tr
+          th.span4.text-center Category
+          th.span3.text-center Name
+          th.span2.text-center Image
+          th.span3.text-center Actions
+      tbody
+        - @images.each do |image|
+          tr
+            td = image.preset_category.try(:name) || "-"
+            td = image.name
+            td.text-center = link_to image_tag(image.preset_image_url("100x100#"), :class => 'img-polaroid'), "#thumbnailView", "data-toggle" => "modal", "data-src" => image.preset_image_url
+            td
+              - unless image.primary?
+                = link_to content_tag(:i, " Set as Default", :class => 'icon-ok'), set_primary_admin_preset_category_path(@category, preset_image_id: image.id), :class => "btn", method: :put
+              - else
+                = link_to content_tag(:i, " Default Image", :class => 'icon-ok'), 'javascript:void(0)', :class => "btn btn-success disabled"
+              | &nbsp;
+              = link_to content_tag(:i, " Unassign", :class => 'icon-remove'), unassign_admin_preset_image_path(image.id), :class => "btn btn-warning", method: :put
+              | &nbsp;
+              = link_to content_tag(:i, " Delete", :class => 'icon-trash'), admin_preset_image_path(image.id), confirm: "Are you sure?", method: :delete, :class => "btn btn-danger"
+    .span12= paginate @images
+
+= render 'preview_modal'

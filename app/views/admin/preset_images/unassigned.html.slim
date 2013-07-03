@@ -1,0 +1,37 @@
+.row
+  .span12.navbar
+    ul.nav.nav-pills
+      li = link_to "Back to categories list", admin_preset_categories_path
+      li.divider-vertical
+      li = link_to "Back to images list", admin_preset_images_path
+
+p.lead Unassigned Images
+
+.row
+  - unless @images.present?
+    table.span12.table
+      caption
+        | Yey! No images unassigned.&nbsp;
+        = link_to "Show all images.", admin_preset_images_path
+  - else
+    table.span12.table.table-striped.table-bordered
+      thead
+        tr
+          th.span4.text-center Name
+          th.span4.text-center Image
+          th.span4.text-center Actions
+      tbody
+        - @images.each do |image|
+          tr
+            td = image.name
+            td.text-center = link_to image_tag(image.preset_image_url('100x100#'), :class => 'img-polaroid'), "#thumbnailView", "data-toggle" => "modal", "data-src" => image.preset_image_url
+            td
+              = form_for image, url: assign_admin_preset_image_path(image), html: {method: :put, :class => 'form-inline'} do |f|
+                = f.select :preset_category_id, options_from_collection_for_select(PresetCategory.all, :id, :name), include_blank: "Select category"
+                | &nbsp;
+                = f.submit "Assign", :class => 'btn btn-primary'
+                | &nbsp;
+                = link_to content_tag(:i, " Delete", :class => 'icon-trash'), admin_preset_image_path(image.id), confirm: "Are you sure?", method: :delete, :class => "btn btn-danger"
+    .span12= paginate @images
+
+= render 'preview_modal'

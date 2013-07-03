@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  likable_id: 1
+  likable_type: MyString
+  user_id: 1
+
+two:
+  likable_id: 1
+  likable_type: MyString
+  user_id: 1

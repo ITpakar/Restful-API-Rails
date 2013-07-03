@@ -1,0 +1,138 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require bootstrap_and_overrides_fixed
+ *= require_self
+ *= require_tree .
+ *
+ */
+
+body {
+  background-color: #ECE4E1;
+  padding-top:0;
+}
+
+.card {
+  margin: 50px auto 0;
+  background-color: #FFFFFF;
+  height: 612px;
+  width: 970px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+  font-weight: 300;
+}
+
+.card .media {
+  margin-left:50px;
+  height:612px;
+  width:615px;
+  float:left;
+  background-image:linear-gradient(bottom, #E53C53 0%, #C3C3C3 50%, #6CCAD1 100%);
+  background-image:-o-linear-gradient(bottom, #E53C53 0%, #C3C3C3 50%, #6CCAD1 100%);
+  background-image:-moz-linear-gradient(bottom, #E53C53 0%, #C3C3C3 50%, #6CCAD1 100%);
+  background-image:-webkit-linear-gradient(bottom, #E53C53 0%, #C3C3C3 50%, #6CCAD1 100%);
+  background-image:-ms-linear-gradient(bottom, #E53C53 0%, #C3C3C3 50%, #6CCAD1 100%);
+  background-image:-webkit-gradient(linear,left bottom,left top,color-stop(0, #E53C53),color-stop(0.5, #C3C3C3),color-stop(1, #6CCAD1));
+}
+
+.card .info {
+  float:left;
+  margin:0 30px;
+  height:612px;
+  width:245px;
+  text-align:center;
+  vertical-align:middle;
+}
+
+.card .info .user {
+  margin:60px 0 10px;
+  color:#6CCAD1;
+  height:175px;
+}
+
+.card .info .user h3 {
+  font-weight:normal;
+  margin-top:10px;
+}
+
+.card .info .description {
+  margin:10px 0;
+  height:150px;
+}
+
+.card .info .description h4 {
+  font-weight:normal;
+  line-height:22px;
+}
+
+.card .info .download {
+  margin:10px 0;
+}
+
+.card .info .download h5 {
+  color:#ACADAF;
+  font-size:15px;
+  font-weight:normal;
+}
+
+.card .info .download img.logo-text {
+  width:178px;
+}
+
+.card .info .download .btn-download {
+  font-weight:bold;
+  color:#FFFFFF;
+  font-family:"Arial Narrow",Arial,sans-serif;
+  font-size:22px;
+  background-color:#61D2D6;
+}
+
+.card .info .download .btn-download:hover {
+  background-color:#EA3556;
+}
+
+.btn-download {
+  color: #FFFFFF;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #54B0B3;
+  *background-color: #54B0B3;
+  background-image: -moz-linear-gradient(top, #61D2D6, #54B0B3);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#61D2D6), to(#54B0B3));
+  background-image: -webkit-linear-gradient(top, #61D2D6, #54B0B3);
+  background-image: -o-linear-gradient(top, #61D2D6, #54B0B3);
+  background-image: linear-gradient(to bottom, #61D2D6, #54B0B3);
+  background-repeat: repeat-x;
+  border-color: #54B0B3;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#61D2D6', endColorstr='#54B0B3', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+.btn-download:hover,
+.btn-download:active,
+.btn-download.active,
+.btn-download.disabled,
+.btn-download[disabled] {
+  color: #FFFFFF;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #EA3556;
+  *background-color: #003bb3;
+  background-image: -moz-linear-gradient(top, #ED264B, #EA3556);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ED264B), to(#EA3556));
+  background-image: -webkit-linear-gradient(top, #ED264B, #EA3556);
+  background-image: -o-linear-gradient(top, #ED264B, #EA3556);
+  background-image: linear-gradient(to bottom, #ED264B, #EA3556);
+  background-repeat: repeat-x;
+  border-color: #EA3556;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ED264B', endColorstr='#EA3556', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
