@@ -24,8 +24,8 @@ module Api
                   info.user_id user.id
                   info.full_name user.full_name
                   info.profile_picture_url user.profile_picture_url
-                  info.following_me user.following_me?(current_user.id)
-                  info.am_follower user.am_follower?(current_user.id)
+                  info.following_me current_user.following_me?(user.id)
+                  info.am_follower current_user.am_follower?(user.id)
                 end
               end
             end
