@@ -1,0 +1,21 @@
+.row
+  .span12
+    = form_for @user, url: admin_user_path(@user), html: {:class => 'form-horizontal'} do |f|
+      .control-group
+        = f.label :full_name, "Name", :class => 'control-label'
+        .controls = f.text_field :full_name, placeholder: "Name"
+      .control-group
+        = f.label :email, :class => 'control-label'
+        .controls 
+          span.uneditable-input = @user.email
+      .control-group
+        = f.label :favorite_quote, :class => 'control-label'
+        .controls = f.text_area :favorite_quote, rows: 6
+      .control-group
+        = f.label :author_name, :class => 'control-label'
+        .controls = f.text_field :author_name
+      .control-group
+        .controls
+          = f.submit "Update Info", :class => 'btn btn-primary'
+          | &nbsp;
+          = link_to "Cancel", admin_users_path, :class => 'btn'

@@ -1,0 +1,11 @@
+#newCategory.modal.hide.fade aria-hidden="true" aria-labelledby="newCategoryLabel" role="dialog" tabindex="-1"
+  .modal-header
+    button.close aria-hidden="true" data-dismiss="modal" type="button"
+    h3#newCategoryLabel Add a category
+  = form_for :preset_category, url: admin_preset_categories_url, html: {:class => 'form-inline'} do |f|
+    .modal-body
+      .input-append
+        = f.text_field :name, placeholder: "Category name", id: 'appendedInputButtons', :class => 'input-xlarge'
+        = f.submit "Submit", :class => 'btn btn-primary'
+        button.btn aria-hidden="true" data-dismiss="modal" Cancel
+  .modal-footer
