@@ -65,8 +65,8 @@ module Api
                 info.user_id user.id
                 info.full_name user.full_name
                 info.profile_picture_url user.profile_picture_url
-                info.is_following instance_user.is_following?(user.id)
-                info.is_follower instance_user.is_follower?(user.id)
+                info.following_me instance_user.following_me?(user.id)
+                info.am_follower instance_user.am_follower?(user.id)
                 info.following_date instance_user.following_date(user.id)
                 info.follower_date instance_user.follower_date(user.id)
               end
@@ -88,8 +88,8 @@ module Api
                 info.user_id user.id
                 info.full_name user.full_name
                 info.profile_picture_url user.profile_picture_url
-                info.is_following instance_user.is_following?(user.id)
-                info.is_follower instance_user.is_follower?(user.id)
+                info.following_me instance_user.following_me?(user.id)
+                info.am_follower instance_user.am_follower?(user.id)
                 info.following_date instance_user.following_date(user.id)
                 info.follower_date instance_user.follower_date(user.id)
               end

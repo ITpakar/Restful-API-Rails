@@ -13,10 +13,10 @@ module Api
             json.data do |data|
               data.outgoing_status as_follower.try(:status)
               data.incoming_status as_followed_by.try(:status)
-              data.is_following (as_follower.present? && as_follower.status.eql?('approved'))
-              data.is_follower (as_followed_by.present? && as_followed_by.status.eql?('approved'))
-              data.following_date as_follower.try(:created_at).to_i
-              data.follower_date as_followed_by.try(:created_at).to_i
+              data.following_me (as_followed_by.present? && as_followed_by.status.eql?('approved'))
+              data.am_follower (as_follower.present? && as_follower.status.eql?('approved'))
+              data.following_date as_followed_by.try(:created_at).to_i
+              data.follower_date as_follower.try(:created_at).to_i
             end
             json.success true
           end
@@ -47,10 +47,10 @@ module Api
             json.data do |data|
               data.outgoing_status as_follower.try(:status)
               data.incoming_status as_followed_by.try(:status)
-              data.is_following (as_follower.present? && as_follower.status.eql?('approved'))
-              data.is_follower (as_followed_by.present? && as_followed_by.status.eql?('approved'))
-              data.following_date as_follower.try(:created_at).to_i
-              data.follower_date as_followed_by.try(:created_at).to_i
+              data.following_me (as_followed_by.present? && as_followed_by.status.eql?('approved'))
+              data.am_follower (as_follower.present? && as_follower.status.eql?('approved'))
+              data.following_date as_followed_by.try(:created_at).to_i
+              data.follower_date as_follower.try(:created_at).to_i
             end
             json.success true
           end
