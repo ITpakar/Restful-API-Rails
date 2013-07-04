@@ -91,7 +91,11 @@ Quotiful::Application.routes.draw do
           resources :posts, only: [:index]
           resources :quotes, only: [:index]
           resources :tags, only: [:index]
-          resources :users, only: [:index]
+          resources :users, only: [:index] do
+            collection do
+              get 'facebook'
+            end
+          end
         end
 
         # ROUTES: api/v1/backgrounds

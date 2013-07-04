@@ -17,6 +17,21 @@ module Api
 
         user = User.new(user_params)
 
+        if user_params[:facebook_id].present? and !User.exists?(facebook_id: params[:facebook_id]) and params[:fb_friend_ids].present?
+          fb_friend_ids = params[:fb_friend_ids].dup.to_a
+
+          friends = User.find_by_facebook_id(fb_friend_ids)
+          raw_device_tokens = []
+          friends.each do |friend|
+            raw_device_tokens << friend.devices.map(&:device_token)
+          end
+          device_tokens = raw_device_tokens.flatten.uniq.compact
+
+          device_tokens.each do |token|
+            PushNotification.new(token, "#{like.user.full_name} joined from Facebook")
+          end
+        end
+
         if user.save
           user.using_this_device(params[:device_token])
           render json: user.to_builder(is_current_user: true).target!, status: 200
