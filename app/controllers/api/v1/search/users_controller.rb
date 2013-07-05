@@ -44,6 +44,7 @@ module Api
               data.users do |info|
                 info.array! @users do |user|
                   info.user_id user.id
+                  info.facebook_id user.facebook_id
                   info.full_name user.full_name
                   info.profile_picture_url user.profile_picture_url
                   info.following_me current_user.following_me?(user.id)
