@@ -131,6 +131,13 @@ module Api
                 info.likes_count post.likes_count
                 info.quote post.quote
                 info.quote_image_url post.quote_image_url
+                info.posted_at post.created_at.to_i
+                info.user_liked post.liked_by?(current_user.id)
+                info.set! :user do
+                  info.set! :user_id, post.user_id
+                  info.set! :full_name, post.user.full_name
+                  info.set! :profile_picture, post.user.profile_picture.try(:url)
+                end
               end
             end
             data.user do |user|
