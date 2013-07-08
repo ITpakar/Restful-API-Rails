@@ -21,7 +21,7 @@ module Api
       end
 
       def show
-        render json: instance_user.to_builder(with_notifications: is_current_user?, is_current_user: is_current_user?).target!, status: 200
+        render json: instance_user.to_builder(with_notifications: is_current_user?, is_current_user: is_current_user?, current_user_id: current_user.id).target!, status: 200
       end
 
       def feed

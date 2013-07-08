@@ -202,8 +202,9 @@ class User < ActiveRecord::Base
     relationship.try(:created_at).to_i
   end
 
-  def to_builder(options = {with_notifications: false, is_current_user: false})
+  def to_builder(options = {with_notifications: false, is_current_user: false, current_user_id: ''})
     bool_errors = self.errors.present?
+    current_user = options[:current_user_id].present? ? User.find_or_initialize_by_id(options[:current_user_id]) : User.new
     Jbuilder.new do |json|
       json.data do |data|
         data.user do |user|
@@ -216,6 +217,11 @@ class User < ActiveRecord::Base
 
           if options[:is_current_user]
             user.(self, :email, :authentication_token)
+          elsif options[:current_user_id].present?
+            user.following_me current_user.following_me?(self.id)
+            user.am_follower current_user.am_follower?(self.id)
+            user.following_date current_user.following_date(self.id)
+            user.follower_date current_user.follower_date(self.id)
           end
 
           user.profile_picture self.profile_picture_url
