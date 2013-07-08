@@ -25,6 +25,11 @@ module Api
               post.posted_at instance_post.created_at.to_i
               post.user_liked instance_post.liked_by?(current_user.id)
               post.web_url post_url(instance_post)
+              post.background_image_url instance_post.background_image_url
+              post.quote_attr instance_post.quote_attr
+              post.author_attr instance_post.author_attr
+              post.quotebox_attr instance_post.quotebox_attr
+              post.origin_id instance_post.origin_id
               post.set! :user do
                 post.set! :user_id, instance_post.user_id
                 post.set! :full_name, instance_post.user.full_name

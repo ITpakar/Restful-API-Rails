@@ -2,19 +2,25 @@
 #
 # Table name: posts
 #
-#  id               :integer          not null, primary key
-#  quote            :text             default(""), not null
-#  caption          :text             default(""), not null
-#  quote_image_uid  :string(255)
-#  quote_image_name :string(255)
-#  editors_pick     :boolean          default(FALSE), not null
-#  likes_count      :integer          default(0), not null
-#  user_id          :integer
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  author_name      :string(255)      default("")
-#  flagged          :boolean          default(FALSE), not null
-#  flagged_count    :integer          default(0), not null
+#  id                    :integer          not null, primary key
+#  quote                 :text             default(""), not null
+#  caption               :text             default(""), not null
+#  quote_image_uid       :string(255)
+#  quote_image_name      :string(255)
+#  editors_pick          :boolean          default(FALSE), not null
+#  likes_count           :integer          default(0), not null
+#  user_id               :integer
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  author_name           :string(255)      default("")
+#  flagged               :boolean          default(FALSE), not null
+#  flagged_count         :integer          default(0), not null
+#  origin_id             :integer
+#  background_image_uid  :string(255)
+#  background_image_name :string(255)
+#  quote_attr            :text
+#  author_attr           :text
+#  quotebox_attr         :text
 #
 
 class Post < ActiveRecord::Base
@@ -22,9 +28,11 @@ class Post < ActiveRecord::Base
 
   attr_accessible :author_name, :caption, :editors_pick,
                   :likes_count, :quote, :quote_image,
-                  :flagged, :flagged_count
+                  :background_image, :flagged, :flagged_count,
+                  :origin_id, :quote_attr, :author_attr, :quotebox_attr
 
   belongs_to :user
+  belongs_to :origin, class_name: 'Post'
 
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings
@@ -36,6 +44,11 @@ class Post < ActiveRecord::Base
   validates_presence_of :quote
 
   image_accessor :quote_image
+  image_accessor :background_image
+
+  serialize :quote_attr, Hash
+  serialize :author_attr, Hash
+  serialize :quotebox_attr, Hash
 
   scope :flagged, where(flagged: true)
   scope :editors_picked, where(editors_pick: true).order('posts.created_at DESC, posts.likes_count DESC')
@@ -98,6 +111,11 @@ class Post < ActiveRecord::Base
           post.quote_image_url self.quote_image_url
           post.posted_at self.created_at.to_i
           post.web_url post_url(self, host: DEFAULT_HOST)
+          post.background_image_url self.background_image_url
+          post.quote_attr self.quote_attr
+          post.author_attr self.author_attr
+          post.quotebox_attr self.quotebox_attr
+          post.origin_id self.origin_id
         end
         
         if bool_errors

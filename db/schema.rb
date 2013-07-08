@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130628055206) do
+ActiveRecord::Schema.define(:version => 20130708064257) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",              :default => "", :null => false
@@ -110,18 +110,24 @@ ActiveRecord::Schema.define(:version => 20130628055206) do
   add_index "oauth_applications", ["uid"], :name => "index_oauth_applications_on_uid", :unique => true
 
   create_table "posts", :force => true do |t|
-    t.text     "quote",                               :null => false
-    t.text     "caption",                             :null => false
+    t.text     "quote",                                    :null => false
+    t.text     "caption",                                  :null => false
     t.string   "quote_image_uid"
     t.string   "quote_image_name"
-    t.boolean  "editors_pick",     :default => false, :null => false
-    t.integer  "likes_count",      :default => 0,     :null => false
+    t.boolean  "editors_pick",          :default => false, :null => false
+    t.integer  "likes_count",           :default => 0,     :null => false
     t.integer  "user_id"
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
-    t.string   "author_name",      :default => ""
-    t.boolean  "flagged",          :default => false, :null => false
-    t.integer  "flagged_count",    :default => 0,     :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
+    t.string   "author_name",           :default => ""
+    t.boolean  "flagged",               :default => false, :null => false
+    t.integer  "flagged_count",         :default => 0,     :null => false
+    t.integer  "origin_id"
+    t.string   "background_image_uid"
+    t.string   "background_image_name"
+    t.text     "quote_attr"
+    t.text     "author_attr"
+    t.text     "quotebox_attr"
   end
 
   add_index "posts", ["editors_pick"], :name => "index_posts_on_editors_pick"
