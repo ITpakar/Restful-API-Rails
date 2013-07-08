@@ -30,6 +30,7 @@ module Api
               post.author_attr instance_post.author_attr
               post.quotebox_attr instance_post.quotebox_attr
               post.origin_id instance_post.origin_id
+              post.tagged_users instance_post.tagged_users
               post.set! :user do
                 post.set! :user_id, instance_post.user_id
                 post.set! :full_name, instance_post.user.full_name
@@ -75,6 +76,7 @@ module Api
                   posts.posted_at post.created_at.to_i
                   posts.user_liked post.liked_by?(current_user.id)
                   posts.web_url post_url(post)
+                  posts.tagged_users post.tagged_users
                   posts.set! :user do
                     posts.set! :user_id, post.user_id 
                     posts.set! :full_name, post.user.full_name

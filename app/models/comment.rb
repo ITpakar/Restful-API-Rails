@@ -9,13 +9,16 @@
 #  body             :text
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  tagged_users     :text
 #
 
 class Comment < ActiveRecord::Base
-  attr_accessible :body, :commentable_id, :commentable_type, :user_id
+  attr_accessible :body, :commentable_id, :commentable_type, :user_id, :tagged_users
 
   belongs_to :commentable, polymorphic: true
   belongs_to :user
+
+  serialize :tagged_users, Hash
 
   validates_presence_of :body
 
@@ -27,6 +30,7 @@ class Comment < ActiveRecord::Base
           comment.body self.body
           comment.post_id self.commentable_id
           comment.commented_at self.created_at.to_i
+          comment.tagged_users self.tagged_users
           comment.set! :user do
             comment.set! :user_id, self.user_id
             comment.set! :full_name, self.user.full_name

@@ -39,6 +39,7 @@ module Api
                     posts.quote_image_url post.quote_image_url
                     posts.post_id post.id
                     posts.posted_at post.created_at.to_i
+                    posts.tagged_users post.tagged_users
                     posts.set! :user do
                       posts.set! :user_id, post.user_id 
                       posts.set! :full_name, post.user.full_name

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130708064257) do
+ActiveRecord::Schema.define(:version => 20130708070011) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",              :default => "", :null => false
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(:version => 20130708064257) do
     t.text     "body"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.text     "tagged_users"
   end
 
   add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
@@ -128,6 +129,7 @@ ActiveRecord::Schema.define(:version => 20130708064257) do
     t.text     "quote_attr"
     t.text     "author_attr"
     t.text     "quotebox_attr"
+    t.text     "tagged_users"
   end
 
   add_index "posts", ["editors_pick"], :name => "index_posts_on_editors_pick"

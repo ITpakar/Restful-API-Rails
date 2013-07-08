@@ -21,6 +21,7 @@
 #  quote_attr            :text
 #  author_attr           :text
 #  quotebox_attr         :text
+#  tagged_users          :text
 #
 
 class Post < ActiveRecord::Base
@@ -29,7 +30,8 @@ class Post < ActiveRecord::Base
   attr_accessible :author_name, :caption, :editors_pick,
                   :likes_count, :quote, :quote_image,
                   :background_image, :flagged, :flagged_count,
-                  :origin_id, :quote_attr, :author_attr, :quotebox_attr
+                  :origin_id, :quote_attr, :author_attr, :quotebox_attr,
+                  :tagged_users
 
   belongs_to :user
   belongs_to :origin, class_name: 'Post'
@@ -49,6 +51,7 @@ class Post < ActiveRecord::Base
   serialize :quote_attr, Hash
   serialize :author_attr, Hash
   serialize :quotebox_attr, Hash
+  serialize :tagged_users, Hash
 
   scope :flagged, where(flagged: true)
   scope :editors_picked, where(editors_pick: true).order('posts.created_at DESC, posts.likes_count DESC')
@@ -116,6 +119,7 @@ class Post < ActiveRecord::Base
           post.author_attr self.author_attr
           post.quotebox_attr self.quotebox_attr
           post.origin_id self.origin_id
+          post.tagged_users self.tagged_users
         end
         
         if bool_errors
