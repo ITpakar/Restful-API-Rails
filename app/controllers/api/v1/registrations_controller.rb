@@ -18,7 +18,8 @@ module Api
         user = User.new(user_params)
 
         if user_params[:facebook_id].present? and !User.exists?(facebook_id: params[:facebook_id]) and params[:fb_friend_ids].present?
-          fb_friend_ids = params[:fb_friend_ids].dup.to_a
+          fb_friend_ids = params[:fb_friend_ids].dup
+          fb_friend_ids = fb_friend_ids.is_a?(String) ? fb_friend_ids.split(',') : fb_friend_ids.to_a
 
           friends = User.find_by_facebook_id(fb_friend_ids)
           raw_device_tokens = []
