@@ -6,7 +6,7 @@ class LikeObserver < ActiveRecord::Observer
     user = likable.user
     user_tokens = user.devices.map(&:device_token)
     user_tokens.each do |token|
-      PushNotification.new(token, "#{like.user.full_name} liked your quote")
+      PushNotification.new(token, "#{like.user.full_name} liked your quote").push
     end
 
     likable.increment!(:likes_count)

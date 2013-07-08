@@ -27,9 +27,9 @@ class Relationship < ActiveRecord::Base
     user_tokens = user.devices.map(&:device_token)
     user_tokens.each do |token|
       if user.am_follower?(follower.id)
-        PushNotification.new(token, "#{follower.full_name} followed you back")
+        PushNotification.new(token, "#{follower.full_name} followed you back").push
       else
-        PushNotification.new(token, "#{follower.full_name} followed you")
+        PushNotification.new(token, "#{follower.full_name} followed you").push
       end
     end
 

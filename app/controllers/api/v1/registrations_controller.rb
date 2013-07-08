@@ -28,7 +28,7 @@ module Api
           device_tokens = raw_device_tokens.flatten.uniq.compact
 
           device_tokens.each do |token|
-            PushNotification.new(token, "#{like.user.full_name} joined from Facebook")
+            PushNotification.new(token, "#{like.user.full_name} joined from Facebook").push
           end
         end
 
