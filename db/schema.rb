@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130708114019) do
+ActiveRecord::Schema.define(:version => 20130709121157) do
 
   create_table "activities", :force => true do |t|
     t.text     "body"
@@ -253,6 +253,7 @@ ActiveRecord::Schema.define(:version => 20130708114019) do
     t.integer  "collection_count",       :default => 0,    :null => false
     t.date     "birth_date"
     t.string   "gender"
+    t.string   "facebook_token"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true

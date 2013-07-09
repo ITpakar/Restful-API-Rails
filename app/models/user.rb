@@ -33,6 +33,7 @@
 #  collection_count       :integer          default(0), not null
 #  birth_date             :date
 #  gender                 :string(255)
+#  facebook_token         :string(255)
 #
 
 class User < ActiveRecord::Base
@@ -46,7 +47,7 @@ class User < ActiveRecord::Base
                   :full_name, :auto_accept, :facebook_id, :bio,
                   :website, :follows_count, :followed_by_count, :posts_count,
                   :profile_picture, :favorite_quote, :author_name, :notifications,
-                  :profile_picture_url, :birth_date, :gender
+                  :profile_picture_url, :birth_date, :gender, :facebook_token
 
   before_save :ensure_authentication_token
 
