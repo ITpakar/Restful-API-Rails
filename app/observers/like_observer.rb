@@ -4,11 +4,10 @@ class LikeObserver < ActiveRecord::Observer
     likable = like.likable
     
     user = likable.user
-    user_tokens = user.devices.map(&:device_token)
-    user_tokens.each do |token|
-      PushNotification.new(token, "#{like.user.full_name} liked your quote").push
-    end
+    liker = like.user
 
+    Activity.for_likes_your_post_to(user.id, liker.id)
+    
     likable.increment!(:likes_count)
   end
 

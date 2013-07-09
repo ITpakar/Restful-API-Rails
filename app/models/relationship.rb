@@ -24,14 +24,7 @@ class Relationship < ActiveRecord::Base
   def approve!
     update_attribute(:status, 'approved')
 
-    user_tokens = user.devices.map(&:device_token)
-    user_tokens.each do |token|
-      if user.am_follower?(follower.id)
-        PushNotification.new(token, "#{follower.full_name} followed you back").push
-      else
-        PushNotification.new(token, "#{follower.full_name} followed you").push
-      end
-    end
+    Activity.for_new_follower_to(user.id, follower.id)
 
     self.user.increment!(:followed_by_count)
     self.follower.increment!(:follows_count)

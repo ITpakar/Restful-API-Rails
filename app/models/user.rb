@@ -57,11 +57,12 @@ class User < ActiveRecord::Base
   has_many :liked_posts, through: :likes, source: :likable, source_type: 'Post'
   has_many :comments, dependent: :destroy
   has_many :commented_posts, through: :comments, source: :commentable, source_type: 'Post'
-  has_many :devices
-  has_many :collections
+  has_many :activities, dependent: :destroy
+  has_many :devices, dependent: :destroy
+  has_many :collections, dependent: :destroy
   has_many :collected_posts, through: :collections, source: :post
   
-  has_many :relationships
+  has_many :relationships, dependent: :destroy
   # REFACTOR: naming problem, list of users that the current user follows
   has_many :follows, class_name: 'Relationship', conditions: { relationships: { status: 'approved' } }, foreign_key: :follower_id
   has_many :followed_by_self, through: :follows, source: :user

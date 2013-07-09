@@ -1,9 +1,11 @@
 class PushNotification
-  attr_accessor :device_token, :alert, :certificate, :passphrase, :gateway
+  attr_accessor :device_token, :alert, :certificate, :passphrase, :gateway, :identifier, :badge
 
-  def initialize(device_token, alert)
+  def initialize(device_token, alert, options = { identifier: 0, badge: 0 })
     @device_token = device_token
     @alert = alert
+    @identifier = options[:identifier]
+    @badge = options[:badge]
   end
 
   def self.certificate
@@ -33,7 +35,8 @@ class PushNotification
       device_token:      device_token,
       alert:             alert,
       sound:             "siren.aiff",
-      badge:             1
+      badge:             1,
+      identifier:        identifier
     )
   end
 

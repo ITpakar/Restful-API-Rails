@@ -22,14 +22,8 @@ module Api
           fb_friend_ids = fb_friend_ids.is_a?(String) ? fb_friend_ids.split(',') : fb_friend_ids.to_a
 
           friends = User.find_by_facebook_id(fb_friend_ids)
-          raw_device_tokens = []
           friends.each do |friend|
-            raw_device_tokens << friend.devices.map(&:device_token)
-          end
-          device_tokens = raw_device_tokens.flatten.uniq.compact
-
-          device_tokens.each do |token|
-            PushNotification.new(token, "#{like.user.full_name} joined from Facebook").push
+            Activity.for_fb_friend_joins_to(user.id, friend.id)
           end
         end
 
