@@ -28,6 +28,7 @@ module Api
                   info.am_follower current_user.am_follower?(user.id)
                 end
               end
+              data.page @page
             end
             json.success true
           end

@@ -15,6 +15,7 @@ module Api
           json = Jbuilder.encode do |json|
             json.data do |data|
               data.tags @tags, :name, :posts_count
+              data.page @page
             end
             json.success true
           end

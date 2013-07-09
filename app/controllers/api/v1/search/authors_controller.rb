@@ -15,6 +15,7 @@ module Api
           json = Jbuilder.encode do |json|
             json.data do |data|
               data.authors @authors, :id, :name
+              data.page @page
             end
             json.success true
           end

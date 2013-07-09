@@ -23,6 +23,7 @@ module Api
           json = Jbuilder.encode do |json|
             json.data do |data|
               data.quotes @quotes, :id, :author_name, :body
+              data.page @page
             end
             json.success true
           end
