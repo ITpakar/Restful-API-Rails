@@ -29,13 +29,14 @@ class Comment < ActiveRecord::Base
       hash = {}
       users.each do |user|
         hash.update(user.id => {user_id: user.id, full_name: user.full_name})
+        Activity.for_tagged_in_comment_to(user.id, self.user_id)
       end
       hash
     else
       raw
     end
 
-    self.tagged_users = value
+    write_attribute(:tagged_users, value)
   end
 
   def to_builder

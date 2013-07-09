@@ -43,9 +43,9 @@ class Activity < ActiveRecord::Base
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
         if user.am_follower?(actor.id)
-          PushNotification.new(token, "#{actor.full_name} followed you back", 100).push
+          PushNotification.new(token, "#{actor.full_name} followed you back", { identifier: 100, badge: user.activities.unread.size }).push
         else
-          PushNotification.new(token, "#{actor.full_name} followed you", 100).push
+          PushNotification.new(token, "#{actor.full_name} followed you", { identifier: 100, badge: user.activities.unread.size }).push
         end
       end
   	end
@@ -59,7 +59,7 @@ class Activity < ActiveRecord::Base
     if user.notifications.fb_friend_joins
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} joined from Facebook", 101).push
+        PushNotification.new(token, "#{actor.full_name} joined from Facebook", { identifier: 101, badge: user.activities.unread.size }).push
       end
     end
   end
@@ -72,7 +72,7 @@ class Activity < ActiveRecord::Base
     if user.notifications.fb_friend_joins
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} joined from Facebook", 102).push
+        PushNotification.new(token, "#{actor.full_name} joined from Facebook", { identifier: 102, badge: user.activities.unread.size }).push
       end
     end
   end
@@ -85,7 +85,7 @@ class Activity < ActiveRecord::Base
     if user.notifications.comments_on_your_post
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} commented on your quotiful", 103).push
+        PushNotification.new(token, "#{actor.full_name} commented on your quotiful", { identifier: 103, badge: user.activities.unread.size }).push
       end
     end
   end
@@ -98,7 +98,7 @@ class Activity < ActiveRecord::Base
     if user.notifications.comments_after_you
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} commented after you", 104).push
+        PushNotification.new(token, "#{actor.full_name} commented after you", { identifier: 104, badge: user.activities.unread.size }).push
       end
     end
   end
@@ -111,7 +111,7 @@ class Activity < ActiveRecord::Base
     if user.notifications.requotes_your_post
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} requoted your post", 105).push
+        PushNotification.new(token, "#{actor.full_name} requoted your post", { identifier: 105, badge: user.activities.unread.size }).push
       end
     end
   end
@@ -124,7 +124,20 @@ class Activity < ActiveRecord::Base
     if user.notifications.tagged_in_post
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} tagged you in a comment", 106).push
+        PushNotification.new(token, "#{actor.full_name} tagged you in a post", { identifier: 106, badge: user.activities.unread.size }).push
+      end
+    end
+  end
+
+  def self.for_tagged_in_comment_to(user_id, actor_id)
+    user = User.find(user_id)
+    actor = User.find(actor_id)
+
+    user.activities.for('tagged_in_comment').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } })
+    if user.notifications.tagged_in_post
+      user_tokens = user.devices.map(&:device_token)
+      user_tokens.each do |token|
+        PushNotification.new(token, "#{actor.full_name} tagged you in a comment", { identifier: 106, badge: user.activities.unread.size }).push
       end
     end
   end
@@ -136,7 +149,7 @@ class Activity < ActiveRecord::Base
     if user.notifications.post_gets_featured
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "Your quotiful has been featured!", 107).push
+        PushNotification.new(token, "Your quotiful has been featured!", { identifier: 107, badge: user.activities.unread.size }).push
       end
     end
   end

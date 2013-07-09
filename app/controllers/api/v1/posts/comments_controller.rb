@@ -32,6 +32,17 @@ module Api
         def create
           comment = instance_post.comments.create(user_id: current_user.id, body: params[:comment][:body])
           
+          poster_id = instance_post.user_id
+          commenter_id = comment.user_id
+
+          unless poster == commenter
+            Activity.for_comments_on_your_post_to(poster_id, commenter_id)
+            other_ids = instance_post.comments.map(&:user_id).uniq.compact.reject { |cid| cid.in?([commenter_id, poster_id]) }
+            other_ids.each do |other_id|
+              Activity.for_comments_after_you_to(other_id, commenter_id)
+            end
+          end 
+
           render json: comment.to_builder.target!, status: 200
         end
 

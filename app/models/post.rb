@@ -70,6 +70,13 @@ class Post < ActiveRecord::Base
     # end
   end
 
+  def origin_id=(value)
+    write_attribute(:origin_id, value)
+    origin = Post.find(value)
+
+    Activity.for_requotes_your_post_to(poster.user_id, self.user_id)
+  end
+
   def tagged_users=(raw)
     value = if raw.is_a?(String)
       ids = raw.split(',')
@@ -77,13 +84,14 @@ class Post < ActiveRecord::Base
       hash = {}
       users.each do |user|
         hash.update(user.id => {user_id: user.id, full_name: user.full_name})
+        Activity.for_tagged_in_post_to(user.id, self.user_id)
       end
       hash
     else
       raw
     end
 
-    self.tagged_users = value
+    write_attribute(:tagged_users, value)
   end
 
   def quote_image_url(size = '')
