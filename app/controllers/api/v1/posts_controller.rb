@@ -91,7 +91,7 @@ module Api
         end
 
         def instance_post
-          @instance_post ||= Post.where(id: params[:id]).includes?(:user, :likes).first
+          @instance_post ||= Post.where(id: params[:id]).includes(:user, :likes).first
         end
 
         def ensure_params_id_exist
