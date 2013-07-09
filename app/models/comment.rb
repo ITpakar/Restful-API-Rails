@@ -22,6 +22,22 @@ class Comment < ActiveRecord::Base
 
   validates_presence_of :body
 
+  def tagged_users=(raw)
+    value = if raw.is_a?(String)
+      ids = raw.split(',')
+      users = User.where(id: ids)
+      hash = {}
+      users.each do |user|
+        hash.update(user.id => {user_id: user.id, full_name: user.full_name})
+      end
+      hash
+    else
+      raw
+    end
+
+    self.tagged_users = value
+  end
+
   def to_builder
     bool_errors = self.errors.present?
     Jbuilder.new do |json|
