@@ -84,7 +84,6 @@ class Post < ActiveRecord::Base
       hash = {}
       users.each do |user|
         hash.update(user.id => {user_id: user.id, full_name: user.full_name})
-        Activity.for_tagged_in_post_to(user.id, self.user_id)
       end
       hash
     else
