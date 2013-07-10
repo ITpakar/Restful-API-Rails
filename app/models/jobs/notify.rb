@@ -14,7 +14,7 @@ module Jobs
     # user_ids - accepts an integer or a comma-separated string of IDs
     # actor_id - accepts integer or string of ID
     def self.perform(alert_type, user_ids, actor_id = nil)
-      user_ids = user_ids.is_a?(Array) ? user_ids : user_ids.split(',')
+      user_ids = user_ids.is_a?(Array) ? user_ids : user_ids.to_s.split(',')
       users_ids.each do |user_id|
         case alert_type
         when :new_follower
