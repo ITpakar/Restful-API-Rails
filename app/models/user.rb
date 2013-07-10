@@ -162,7 +162,9 @@ class User < ActiveRecord::Base
 
   def facebook_id=(value)
     write_attribute(:facebook_id, value)
-    write_attribute(:profile_picture_url, "http://graph.facebook.com/#{value}/picture?width=150&height=150")
+    unless profile_picture.present?
+      write_attribute(:profile_picture_url, "http://graph.facebook.com/#{value}/picture?width=150&height=150")
+    end
   end
 
   def profile_picture_url(size = '')
