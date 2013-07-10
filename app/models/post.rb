@@ -110,6 +110,7 @@ class Post < ActiveRecord::Base
 
   def pick!
     self.update_attribute(:editors_pick, true)
+    Resque.enqueue(Jobs::Notify, :post_gets_featured, self.user_id)
   end
 
   def unpick!
