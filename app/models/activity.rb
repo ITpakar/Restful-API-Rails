@@ -68,11 +68,11 @@ class Activity < ActiveRecord::Base
     user = User.find(user_id)
     actor = User.find(actor_id)
 
-    user.activities.for('fb_friend_joins').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } })
-    if user.notifications.fb_friend_joins
+    user.activities.for('likes_your_post').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } })
+    if user.notifications.likes_your_post
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} joined from Facebook", { identifier: 102, badge: user.activities.unread.size }).push
+        PushNotification.new(token, "#{actor.full_name} liked your quote", { identifier: 102, badge: user.activities.unread.size }).push
       end
     end
   end

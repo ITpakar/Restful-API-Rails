@@ -35,7 +35,7 @@ module Api
           poster_id = instance_post.user_id
           commenter_id = comment.user_id
 
-          unless poster == commenter
+          unless poster_id == commenter_id
             Activity.for_comments_on_your_post_to(poster_id, commenter_id)
             other_ids = instance_post.comments.map(&:user_id).uniq.compact.reject { |cid| cid.in?([commenter_id, poster_id]) }
             other_ids.each do |other_id|
