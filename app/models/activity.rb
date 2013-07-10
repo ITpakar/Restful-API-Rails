@@ -38,15 +38,14 @@ class Activity < ActiveRecord::Base
   	user = User.find(user_id)
   	actor = User.find(actor_id)
 
-  	user.activities.for('new_follower').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } })
+  	message = user.am_follower?(actor.id) ? "followed you back" : "followed you"
+
+    user.activities.for('new_follower').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "@[user:#{actor.id}] #{message}")
+
   	if user.notifications.new_follower
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        if user.am_follower?(actor.id)
-          PushNotification.new(token, "#{actor.full_name} followed you back", { identifier: 100, badge: user.activities.unread.size }).push
-        else
-          PushNotification.new(token, "#{actor.full_name} followed you", { identifier: 100, badge: user.activities.unread.size }).push
-        end
+        PushNotification.new(token, "#{actor.full_name} #{message}", { identifier: 100, badge: user.activities.unread.size }).push
       end
   	end
   end
@@ -55,7 +54,7 @@ class Activity < ActiveRecord::Base
     user = User.find(user_id)
     actor = User.find(actor_id)
 
-    user.activities.for('fb_friend_joins').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } })
+    user.activities.for('fb_friend_joins').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "@[user:#{actor.id}] joined from Facebook")
     if user.notifications.fb_friend_joins
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
@@ -68,7 +67,7 @@ class Activity < ActiveRecord::Base
     user = User.find(user_id)
     actor = User.find(actor_id)
 
-    user.activities.for('likes_your_post').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } })
+    user.activities.for('likes_your_post').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "@[user:#{actor.id}] liked your quote")
     if user.notifications.likes_your_post
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
@@ -81,7 +80,7 @@ class Activity < ActiveRecord::Base
     user = User.find(user_id)
     actor = User.find(actor_id)
 
-    user.activities.for('comments_on_your_post').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } })
+    user.activities.for('comments_on_your_post').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "@[user:#{actor.id}] commented on your quotiful")
     if user.notifications.comments_on_your_post
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
@@ -94,7 +93,7 @@ class Activity < ActiveRecord::Base
     user = User.find(user_id)
     actor = User.find(actor_id)
 
-    user.activities.for('comments_after_you').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } })
+    user.activities.for('comments_after_you').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "@[user:#{actor.id}] commented after you")
     if user.notifications.comments_after_you
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
@@ -107,7 +106,7 @@ class Activity < ActiveRecord::Base
     user = User.find(user_id)
     actor = User.find(actor_id)
 
-    user.activities.for('requotes_your_post').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } })
+    user.activities.for('requotes_your_post').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "@[user:#{actor.id}] requoted your post")
     if user.notifications.requotes_your_post
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
@@ -120,7 +119,7 @@ class Activity < ActiveRecord::Base
     user = User.find(user_id)
     actor = User.find(actor_id)
 
-    user.activities.for('tagged_in_post').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } })
+    user.activities.for('tagged_in_post').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "@[user:#{actor.id}] tagged you in a post")
     if user.notifications.tagged_in_post
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
@@ -133,7 +132,7 @@ class Activity < ActiveRecord::Base
     user = User.find(user_id)
     actor = User.find(actor_id)
 
-    user.activities.for('tagged_in_comment').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } })
+    user.activities.for('tagged_in_comment').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "@[user:#{actor.id}] tagged you in a comment")
     if user.notifications.tagged_in_post
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
@@ -145,7 +144,7 @@ class Activity < ActiveRecord::Base
   def self.for_post_gets_featured_to(user_id)
     user = User.find(user_id)
 
-    user.activities.for('post_gets_featured').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } })
+    user.activities.for('post_gets_featured').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "Your quotiful has been featured!")
     if user.notifications.post_gets_featured
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
