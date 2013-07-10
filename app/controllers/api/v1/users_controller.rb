@@ -40,6 +40,7 @@ module Api
                 info.quote_image_url post.quote_image_url
                 info.posted_at post.created_at.to_i
                 info.user_liked post.liked_by?(current_user.id)
+                info.tagged_users post.tagged_users
                 info.set! :user do
                   info.set! :user_id, post.user_id
                   info.set! :full_name, post.user.full_name
@@ -133,6 +134,7 @@ module Api
                 info.quote_image_url post.quote_image_url
                 info.posted_at post.created_at.to_i
                 info.user_liked post.liked_by?(current_user.id)
+                info.tagged_users post.tagged_users
                 info.set! :user do
                   info.set! :user_id, post.user_id
                   info.set! :full_name, post.user.full_name
