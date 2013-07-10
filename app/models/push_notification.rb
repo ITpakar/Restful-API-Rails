@@ -41,7 +41,14 @@ class PushNotification
     )
   end
 
+  def print_log
+    file = File.open(File.join(Rails.root.to_s, "log/apn.log"), "a")
+    file.puts(self.inspect)
+    file.close
+  end
+
   def push
+    print_log
     PushNotification.pusher.push(notification)
   end
 end
