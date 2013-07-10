@@ -27,6 +27,10 @@ module Jobs
         users.each do |user|
           Activity.for_tagged_in_post_to(user.id, actor_id)
         end
+      when :tagged_in_comment
+        users.each do |user|
+          Activity.for_tagged_in_comment_to(user.id, actor_id)
+        end
       when :post_gets_featured
       end
     end

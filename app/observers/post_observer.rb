@@ -11,8 +11,10 @@ class PostObserver < ActiveRecord::Observer
     post.index!
 
     # RESQUE: Send APN alert
-    user_ids = post.tagged_users.keys.join(',')
-    Resque.enqueue(Jobs::Notify, :tagged_in_post, user_ids, user.id)
+    unless post.tagged_users.blank?
+      user_ids = post.tagged_users.keys.join(',')
+      Resque.enqueue(Jobs::Notify, :tagged_in_post, user_ids, user.id)
+    end
   end
 
   def after_destroy(post)
