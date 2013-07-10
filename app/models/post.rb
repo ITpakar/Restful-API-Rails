@@ -70,13 +70,6 @@ class Post < ActiveRecord::Base
     # end
   end
 
-  def origin_id=(value)
-    write_attribute(:origin_id, value)
-    origin = Post.find(value)
-
-    Activity.for_requotes_your_post_to(poster.user_id, self.user_id)
-  end
-
   def tagged_users=(raw)
     value = if raw.is_a?(String)
       ids = raw.split(',')

@@ -16,23 +16,25 @@ module Jobs
     def self.perform(alert_type, user_ids, actor_id)
       users = User.where(id: user_ids.split(','))
 
-      case alert_type
-      when :new_follower
-      when :fb_friend_joins
-      when :likes_your_post
-      when :comments_on_your_post
-      when :comments_after_you
-      when :requotes_your_post
-      when :tagged_in_post
-        users.each do |user|
+      users.each do |user|
+        
+        case alert_type
+        when :new_follower
+        when :fb_friend_joins
+        when :likes_your_post
+        when :comments_on_your_post
+        when :comments_after_you
+        when :requotes_your_post
+          Activity.for_requotes_your_post_to(user.id, actor_id)
+        when :tagged_in_post
           Activity.for_tagged_in_post_to(user.id, actor_id)
-        end
-      when :tagged_in_comment
-        users.each do |user|
+        when :tagged_in_comment
           Activity.for_tagged_in_comment_to(user.id, actor_id)
+        when :post_gets_featured
         end
-      when :post_gets_featured
+
       end
+
     end
   end
 end
