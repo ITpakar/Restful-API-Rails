@@ -51,7 +51,7 @@ class Post < ActiveRecord::Base
   serialize :quote_attr, Hash
   serialize :author_attr, Hash
   serialize :quotebox_attr, Hash
-  serialize :tagged_users, Hash
+  serialize :tagged_users
 
   scope :flagged, where(flagged: true)
   scope :editors_picked, where(editors_pick: true).order('posts.created_at DESC, posts.likes_count DESC')

@@ -18,7 +18,7 @@ class Comment < ActiveRecord::Base
   belongs_to :commentable, polymorphic: true
   belongs_to :user
 
-  serialize :tagged_users, Hash
+  serialize :tagged_users
 
   validates_presence_of :body
 
