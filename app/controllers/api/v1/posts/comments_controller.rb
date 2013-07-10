@@ -30,7 +30,9 @@ module Api
         end
 
         def create
-          comment = instance_post.comments.create(user_id: current_user.id, body: params[:comment][:body])
+          comment = instance_post.comments.build(params[:comment])
+          comment.user_id = current_user.id
+          comment.save
           
           poster_id = instance_post.user_id
           commenter_id = comment.user_id
