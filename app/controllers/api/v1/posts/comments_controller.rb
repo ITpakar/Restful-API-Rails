@@ -33,16 +33,14 @@ module Api
           comment = instance_post.comments.build(params[:comment])
           comment.user_id = current_user.id
           comment.save
-          
+
           poster_id = instance_post.user_id
           commenter_id = comment.user_id
 
           unless poster_id == commenter_id
-            Activity.for_comments_on_your_post_to(poster_id, commenter_id)
+            Resque.enqueue(Jobs::Notify, :comments_on_your_post, poster_id, commenter_id)
             other_ids = instance_post.comments.map(&:user_id).uniq.compact.reject { |cid| cid.in?([commenter_id, poster_id]) }
-            other_ids.each do |other_id|
-              Activity.for_comments_after_you_to(other_id, commenter_id)
-            end
+            Resque.enqueue(Jobs::Notify, :comments_after_you, other_ids, commenter_id)
           end 
 
           render json: comment.to_builder.target!, status: 200

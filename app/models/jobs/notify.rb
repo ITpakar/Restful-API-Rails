@@ -14,25 +14,24 @@ module Jobs
     # user_ids - accepts an integer or a comma-separated string of IDs
     # actor_id - accepts integer or string of ID
     def self.perform(alert_type, user_ids, actor_id)
-      users = User.where(id: user_ids.split(','))
-
-      users.each do |user|
-        
+      user_ids = user_ids.is_a?(Array) ? user_ids : user_ids.split(',')
+      users_ids.each do |user_id|
         case alert_type
         when :new_follower
         when :fb_friend_joins
         when :likes_your_post
         when :comments_on_your_post
+          Activity.for_comments_on_your_post_to(user_id, actor_id)
         when :comments_after_you
+          Activity.for_comments_after_you_to(user_id, actor_id)
         when :requotes_your_post
-          Activity.for_requotes_your_post_to(user.id, actor_id)
+          Activity.for_requotes_your_post_to(user_id, actor_id)
         when :tagged_in_post
-          Activity.for_tagged_in_post_to(user.id, actor_id)
+          Activity.for_tagged_in_post_to(user_id, actor_id)
         when :tagged_in_comment
-          Activity.for_tagged_in_comment_to(user.id, actor_id)
+          Activity.for_tagged_in_comment_to(user_id, actor_id)
         when :post_gets_featured
         end
-
       end
 
     end
