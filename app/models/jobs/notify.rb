@@ -37,7 +37,7 @@ module Jobs
           Activity.for_post_gets_featured_to(user_id)
         end
       end
-
     end
+    
   end
 end
