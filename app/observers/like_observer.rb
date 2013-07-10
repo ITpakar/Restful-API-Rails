@@ -6,8 +6,8 @@ class LikeObserver < ActiveRecord::Observer
     user = likable.user
     liker = like.user
 
-    Activity.for_likes_your_post_to(user.id, liker.id)
-    
+    Resque.enqueue(Jobs::Notify, :likes_your_post, user.id, liker.id)
+
     likable.increment!(:likes_count)
   end
 

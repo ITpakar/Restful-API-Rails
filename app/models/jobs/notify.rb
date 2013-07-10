@@ -20,6 +20,7 @@ module Jobs
         when :new_follower
         when :fb_friend_joins
         when :likes_your_post
+          Activity.for_likes_your_post_to(user_id, actor_id)
         when :comments_on_your_post
           Activity.for_comments_on_your_post_to(user_id, actor_id)
         when :comments_after_you
