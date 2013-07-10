@@ -22,9 +22,7 @@ module Api
           fb_friend_ids = fb_friend_ids.is_a?(String) ? fb_friend_ids.split(',') : fb_friend_ids.to_a
 
           friends = User.where(facebook_id: fb_friend_ids)
-          friends.each do |friend|
-            Activity.for_fb_friend_joins_to(user.id, friend.id)
-          end
+          Resque.enqueue(Jobs::Notify, :fb_friend_joins, friends.map(&:id), user.id)
         end
 
         if user.save

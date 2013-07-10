@@ -24,7 +24,7 @@ class Relationship < ActiveRecord::Base
   def approve!
     update_attribute(:status, 'approved')
 
-    Activity.for_new_follower_to(user.id, follower.id)
+    Resque.enqueue(Jobs::Notify, :new_follower, user.id, follower.id)
 
     self.user.increment!(:followed_by_count)
     self.follower.increment!(:follows_count)
