@@ -38,6 +38,14 @@ class Comment < ActiveRecord::Base
     write_attribute(:tagged_users, value)
   end
 
+  def tagged_users
+    if super.present?
+      super
+    else
+      {}
+    end
+  end
+
   def to_builder
     bool_errors = self.errors.present?
     Jbuilder.new do |json|

@@ -86,9 +86,27 @@ class Post < ActiveRecord::Base
     write_attribute(:tagged_users, value)
   end
 
+  def tagged_users
+    if super.present?
+      super
+    else
+      {}
+    end
+  end
+
   def quote_image_url(size = '')
     if quote_image.present?
       size.present? ? quote_image.thumb(size).url : quote_image.jpg.url
+    else
+      path = File.join(Rails.root, 'public', 'default.png')
+      default = Dragonfly[:images].fetch_file(path)
+      size.present? ? default.thumb(size).url : default.jpg.url
+    end
+  end
+
+  def background_image_url(size = '')
+    if background_image.present?
+      size.present? ? background_image.thumb(size).url : background_image.jpg.url
     else
       path = File.join(Rails.root, 'public', 'default.png')
       default = Dragonfly[:images].fetch_file(path)
