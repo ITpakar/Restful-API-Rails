@@ -21,6 +21,7 @@ module Api
               post.post_id instance_post.id
               post.likes_count instance_post.likes_count
               post.quote instance_post.quote
+              post.author_name instance_post.author_name
               post.quote_image_url instance_post.quote_image_url
               post.posted_at instance_post.created_at.to_i
               post.user_liked instance_post.liked_by?(current_user.id)
