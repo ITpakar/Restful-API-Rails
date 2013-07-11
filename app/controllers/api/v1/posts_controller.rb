@@ -45,6 +45,12 @@ module Api
         render json: json, status: 200
       end
 
+      def flag
+        instance_post.flag!
+        
+        render json: instance_post.to_builder(flagged_details: true).target!, status: 200
+      end
+
       def editors_picks
         @posts = Post.editors_picked.page(params[:page]).per(params[:count] || 10)
 

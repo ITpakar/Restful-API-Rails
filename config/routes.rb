@@ -69,6 +69,10 @@ Quotiful::Application.routes.draw do
             get 'popular', path: 'popular'
           end
 
+          member do
+            put 'flag'
+          end
+
           resources :likes, controller: 'posts/likes', only: [:index, :create] do
             collection do
               delete 'destroy', path: ''

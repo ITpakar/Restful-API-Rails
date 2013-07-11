@@ -139,7 +139,7 @@ class Post < ActiveRecord::Base
     self.update_attributes(flagged: true, flagged_count: self.flagged_count.next)
   end
 
-  def to_builder
+  def to_builder(options = { flagged_details: false })
     bool_errors = self.errors.present?
     Jbuilder.new do |json|
       json.data do |data|
@@ -155,6 +155,11 @@ class Post < ActiveRecord::Base
           post.quotebox_attr self.quotebox_attr
           post.origin_id self.origin_id
           post.tagged_users self.tagged_users
+
+          if options[:flagged_details]
+            post.flagged self.flagged
+            post.flagged_count self.flagged_count
+          end
         end
         
         if bool_errors
