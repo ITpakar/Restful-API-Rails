@@ -4,7 +4,7 @@ class CommentObserver < ActiveRecord::Observer
       user = comment.user
 
       user_ids = comment.tagged_users.keys
-      Resque.enqueue(Jobs::Notify, :tagged_in_comment, user_ids, user.id)
+      Resque.enqueue(Jobs::Notify, :tagged_in_comment, user_ids, user.id, {comment_id: comment.id, post_id: comment.commentable_id})
     end
   end
 end

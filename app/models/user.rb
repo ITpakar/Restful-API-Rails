@@ -98,14 +98,15 @@ class User < ActiveRecord::Base
 
   has_settings do |setting|
     setting.key :notifications, defaults: {
-      new_follower: true,
+      new_follower: false,
       fb_friend_joins: false,
-      likes_your_post: true,
+      likes_your_post: false,
       comments_on_your_post: true,
       comments_after_you: false,
-      requotes_your_post: false,
+      requotes_your_post: true,
       tagged_in_post: true,
-      post_gets_featured: false
+      post_gets_featured: true,
+      saves_your_quotiful: true
     }
   end
 

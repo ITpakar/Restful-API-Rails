@@ -13,13 +13,13 @@ class PostObserver < ActiveRecord::Observer
     # RESQUE: Send APN alert for tagged users in post
     unless post.tagged_users.blank?
       user_ids = post.tagged_users.keys.join(',')
-      Resque.enqueue(Jobs::Notify, :tagged_in_post, user_ids, user.id)
+      Resque.enqueue(Jobs::Notify, :tagged_in_post, user_ids, user.id, {post_id: post.id})
     end
 
     # RESQUE: Send APN alert for original author of the post
     unless post.origin_id.blank?
       author_id = post.origin.user_id
-      Resque.enqueue(Jobs::Notify, :requotes_your_post, author_id, user.id)
+      Resque.enqueue(Jobs::Notify, :requotes_your_post, author_id, user.id, {post_id: post.id})
     end
   end
 

@@ -23,6 +23,7 @@ class Activity < ActiveRecord::Base
   scope :unread, where(viewed: false)
 
   serialize :tagged_users
+  serialize :custom_payloads
 
   # User#notifications
   # 100 - new_follower
@@ -32,7 +33,9 @@ class Activity < ActiveRecord::Base
   # 104 - comments_after_you
   # 105 - requotes_your_post
   # 106 - tagged_in_post
-  # 107 - post_gets_featured
+  # 107 - tagged_in_comment
+  # 108 - post_gets_featured
+  # 109 - saves_your_quotiful
 
   def self.for_new_follower_to(user_id, actor_id)
   	user = User.find(user_id)
@@ -40,12 +43,34 @@ class Activity < ActiveRecord::Base
 
   	message = user.am_follower?(actor.id) ? "followed you back" : "followed you"
 
-    user.activities.for('new_follower').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "@[user:#{actor.id}] #{message}")
+    activity = user.activities.for('new_follower').create(
+      tagged_users: {
+        actor.id => {
+         full_name: actor.full_name, 
+         user_id: actor.id 
+        } 
+      },
+      custom_payloads: {
+        "user:#{actor.id}" => {
+          full_name: actor.full_name, 
+          user_id: actor.id 
+        },
+        identifier: {
+          code: 100,
+          description: 'new_follower'
+        }
+      },
+      body: "@[user:#{actor.id}] #{message}"
+    )
 
   	if user.notifications.new_follower
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} #{message}", { identifier: 100, badge: user.activities.unread.size }).push
+        PushNotification.new(token, "#{actor.full_name} #{message}", { 
+          identifier: 100, 
+          badge: user.activities.unread.size,
+          custom: activity.custom_payloads
+        }).push
       end
   	end
   end
@@ -54,101 +79,324 @@ class Activity < ActiveRecord::Base
     user = User.find(user_id)
     actor = User.find(actor_id)
 
-    user.activities.for('fb_friend_joins').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "@[user:#{actor.id}] joined from Facebook")
+    activity = user.activities.for('fb_friend_joins').create(
+      tagged_users: {
+        actor.id => { 
+          full_name: actor.full_name, 
+          user_id: actor.id 
+        } 
+      }, 
+      custom_payloads: {
+        "user:#{actor.id}" => {
+          full_name: actor.full_name, 
+          user_id: actor.id 
+        },
+        identifier: {
+          code: 101,
+          description: 'fb_friend_joins'
+        }
+      },
+      body: "@[user:#{actor.id}] joined from Facebook"
+    )
+
     if user.notifications.fb_friend_joins
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} joined from Facebook", { identifier: 101, badge: user.activities.unread.size }).push
+        PushNotification.new(token, "#{actor.full_name} joined from Facebook", { 
+          identifier: 101, 
+          badge: user.activities.unread.size,
+          custom: activity.custom_payloads 
+        }).push
       end
     end
   end
 
-  def self.for_likes_your_post_to(user_id, actor_id)
+  def self.for_likes_your_post_to(user_id, actor_id, options = {})
     user = User.find(user_id)
     actor = User.find(actor_id)
 
-    user.activities.for('likes_your_post').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "@[user:#{actor.id}] liked your quote")
+    activity = user.activities.for('likes_your_post').create(
+      tagged_users: { 
+        actor.id => { 
+          full_name: actor.full_name, 
+          user_id: actor.id 
+        } 
+      }, 
+      custom_payloads: {
+        "user:#{actor.id}" => {
+          full_name: actor.full_name, 
+          user_id: actor.id 
+        },
+        identifier: {
+          code: 102,
+          description: 'likes_your_post'
+        },
+        post_id: options[:post_id]
+      },
+      body: "@[user:#{actor.id}] liked your quote"
+    )
+
     if user.notifications.likes_your_post
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} liked your quote", { identifier: 102, badge: user.activities.unread.size }).push
+        PushNotification.new(token, "#{actor.full_name} liked your quote", { 
+          identifier: 102, 
+          badge: user.activities.unread.size,
+          custom: activity.custom_payloads 
+        }).push
       end
     end
   end
 
-  def self.for_comments_on_your_post_to(user_id, actor_id)
+  def self.for_comments_on_your_post_to(user_id, actor_id, options = {})
     user = User.find(user_id)
     actor = User.find(actor_id)
 
-    user.activities.for('comments_on_your_post').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "@[user:#{actor.id}] commented on your quotiful")
+    activity = user.activities.for('comments_on_your_post').create(
+      tagged_users: { 
+        actor.id => { 
+          full_name: actor.full_name, 
+          user_id: actor.id 
+        } 
+      }, 
+      custom_payloads: {
+        "user:#{actor.id}" => {
+          full_name: actor.full_name, 
+          user_id: actor.id 
+        },
+        identifier: {
+          code: 103,
+          description: 'comments_on_your_post'
+        },
+        comment_id: options[:comment_id],
+        post_id: options[:post_id]
+      },
+      body: "@[user:#{actor.id}] commented on your quotiful"
+    )
+
     if user.notifications.comments_on_your_post
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} commented on your quotiful", { identifier: 103, badge: user.activities.unread.size }).push
+        PushNotification.new(token, "#{actor.full_name} commented on your quotiful", { 
+          identifier: 103, 
+          badge: user.activities.unread.size,
+          custom: activity.custom_payloads 
+        }).push
       end
     end
   end
 
-  def self.for_comments_after_you_to(user_id, actor_id)
+  def self.for_comments_after_you_to(user_id, actor_id, options = {})
     user = User.find(user_id)
     actor = User.find(actor_id)
 
-    user.activities.for('comments_after_you').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "@[user:#{actor.id}] commented after you")
+    activity = user.activities.for('comments_after_you').create(
+      tagged_users: { 
+        actor.id => { 
+          full_name: actor.full_name, 
+          user_id: actor.id 
+        } 
+      },
+      custom_payloads: {
+        "user:#{actor.id}" => {
+          full_name: actor.full_name, 
+          user_id: actor.id 
+        },
+        identifier: {
+          code: 104,
+          description: 'comments_after_you'
+        },
+        comment_id: options[:comment_id],
+        post_id: options[:post_id]
+      }, 
+      body: "@[user:#{actor.id}] commented after you"
+    )
+
     if user.notifications.comments_after_you
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} commented after you", { identifier: 104, badge: user.activities.unread.size }).push
+        PushNotification.new(token, "#{actor.full_name} commented after you", { 
+          identifier: 104, 
+          badge: user.activities.unread.size,
+          custom: activity.custom_payloads 
+        }).push
       end
     end
   end
 
-  def self.for_requotes_your_post_to(user_id, actor_id)
+  def self.for_requotes_your_post_to(user_id, actor_id, options = {})
     user = User.find(user_id)
     actor = User.find(actor_id)
 
-    user.activities.for('requotes_your_post').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "@[user:#{actor.id}] requoted your post")
+    activity = user.activities.for('requotes_your_post').create(
+      tagged_users: { 
+        actor.id => { 
+          full_name: actor.full_name, 
+          user_id: actor.id 
+        } 
+      }, 
+      custom_payloads: {
+        "user:#{actor.id}" => {
+          full_name: actor.full_name, 
+          user_id: actor.id 
+        },
+        identifier: {
+          code: 105,
+          description: 'requotes_your_post'
+        },
+        post_id: options[:post_id]
+      },
+      body: "@[user:#{actor.id}] requoted your post"
+    )
+
     if user.notifications.requotes_your_post
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} requoted your post", { identifier: 105, badge: user.activities.unread.size }).push
+        PushNotification.new(token, "#{actor.full_name} requoted your post", { 
+          identifier: 105, 
+          badge: user.activities.unread.size,
+          custom: activity.custom_payloads 
+        }).push
       end
     end
   end
 
-  def self.for_tagged_in_post_to(user_id, actor_id)
+  def self.for_tagged_in_post_to(user_id, actor_id, options = {})
     user = User.find(user_id)
     actor = User.find(actor_id)
 
-    user.activities.for('tagged_in_post').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "@[user:#{actor.id}] tagged you in a post")
+    activity = user.activities.for('tagged_in_post').create(
+      tagged_users: { 
+        actor.id => { 
+          full_name: actor.full_name, 
+          user_id: actor.id 
+        } 
+      }, 
+      custom_payloads: {
+        "user:#{actor.id}" => {
+          full_name: actor.full_name, 
+          user_id: actor.id 
+        },
+        identifier: {
+          code: 106,
+          description: 'tagged_in_post'
+        },
+        comment_id: options[:comment_id],
+        post_id: options[:post_id]
+      },
+      body: "@[user:#{actor.id}] tagged you in a post"
+    )
+
     if user.notifications.tagged_in_post
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} tagged you in a post", { identifier: 106, badge: user.activities.unread.size }).push
+        PushNotification.new(token, "#{actor.full_name} tagged you in a post", { 
+          identifier: 106, 
+          badge: user.activities.unread.size,
+          custom: activity.custom_payloads 
+        }).push
       end
     end
   end
 
-  def self.for_tagged_in_comment_to(user_id, actor_id)
+  def self.for_tagged_in_comment_to(user_id, actor_id, options = {})
     user = User.find(user_id)
     actor = User.find(actor_id)
 
-    user.activities.for('tagged_in_comment').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "@[user:#{actor.id}] tagged you in a comment")
+    activity = user.activities.for('tagged_in_comment').create(
+      tagged_users: { 
+        actor.id => { 
+          full_name: actor.full_name, 
+          user_id: actor.id 
+        } 
+      }, 
+      custom_payloads: {
+        "user:#{actor.id}" => {
+          full_name: actor.full_name, 
+          user_id: actor.id 
+        },
+        identifier: {
+          code: 107,
+          description: 'tagged_in_comment'
+        },
+        comment_id: options[:comment_id],
+        post_id: options[:post_id]
+      },
+      body: "@[user:#{actor.id}] tagged you in a comment"
+    )
+
     if user.notifications.tagged_in_post
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} tagged you in a comment", { identifier: 106, badge: user.activities.unread.size }).push
+        PushNotification.new(token, "#{actor.full_name} tagged you in a comment", { 
+          identifier: 107, 
+          badge: user.activities.unread.size,
+          custom: activity.custom_payloads 
+        }).push
       end
     end
   end
 
-  def self.for_post_gets_featured_to(user_id)
+  def self.for_post_gets_featured_to(user_id, options = {})
     user = User.find(user_id)
 
-    user.activities.for('post_gets_featured').create(tagged_users: { actor.id => { full_name: actor.full_name, user_id: actor.id } }, body: "Your quotiful has been featured!")
+    activity = user.activities.for('post_gets_featured').create(
+      tagged_users: {}, 
+      custom_payloads: {
+        post_id: options[:post_id],
+        identifier: {
+          code: 108,
+          description: 'post_gets_featured'
+        }
+      },
+      body: "Your quotiful has been featured!"
+    )
+
     if user.notifications.post_gets_featured
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "Your quotiful has been featured!", { identifier: 107, badge: user.activities.unread.size }).push
+        PushNotification.new(token, "Your quotiful has been featured!", { 
+          identifier: 108, 
+          badge: user.activities.unread.size,
+          custom: activity.custom_payloads 
+        }).push
+      end
+    end
+  end
+
+  def self.for_saves_your_quotiful_to(user_id, actor_id, options = {})
+    user = User.find(user_id)
+    actor = User.find(actor_id)
+
+    activity = user.activities.for('saves_your_quotiful').create(
+      tagged_users: { 
+        actor.id => { 
+          full_name: actor.full_name, 
+          user_id: actor.id 
+        } 
+      }, 
+      custom_payloads: {
+        "user:#{actor.id}" => {
+          full_name: actor.full_name, 
+          user_id: actor.id 
+        },
+        identifier: {
+          code: 109,
+          description: 'saves_your_quotiful'
+        },
+        post_id: options[:post_id]
+      },
+      body: "@[user:#{actor.id}] saves your quotiful to their collection"
+    )
+
+    if user.notifications.saves_your_quotiful
+      user_tokens = user.devices.map(&:device_token)
+      user_tokens.each do |token|
+        PushNotification.new(token, "#{actor.full_name} saves your quotiful to their collection", { 
+          identifier: 109, 
+          badge: user.activities.unread.size,
+          custom: activity.custom_payloads 
+        }).push
       end
     end
   end
