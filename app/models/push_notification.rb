@@ -2,8 +2,8 @@ class PushNotification
   attr_accessor :device_token, :alert, :certificate, :passphrase, :gateway, :identifier, :badge, :custom
 
   def initialize(device_token, alert, raw_options = {})
-    options = { identifier: 0, badge: 0, custom: {} }.update(raw_options)
-    options.symbolize_keys!
+    raw_options.symbolize_keys!
+    options = { identifier: 0, badge: 0, custom: {} }.deep_merge(raw_options)
     
     @device_token = device_token
     @alert = alert
