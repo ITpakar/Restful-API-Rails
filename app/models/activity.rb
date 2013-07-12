@@ -14,7 +14,7 @@
 
 class Activity < ActiveRecord::Base
   
-  attr_accessible :body, :identifier, :tagged_users, :viewed, :user_id
+  attr_accessible :body, :identifier, :tagged_users, :viewed, :user_id, :custom_payloads
 
   belongs_to :user
 
