@@ -114,6 +114,7 @@ class Activity < ActiveRecord::Base
   def self.for_likes_your_post_to(user_id, actor_id, options = {})
     user = User.find(user_id)
     actor = User.find(actor_id)
+    options.symbolize_keys!
 
     activity = user.activities.for('likes_your_post').create(
       tagged_users: { 
@@ -151,6 +152,7 @@ class Activity < ActiveRecord::Base
   def self.for_comments_on_your_post_to(user_id, actor_id, options = {})
     user = User.find(user_id)
     actor = User.find(actor_id)
+    options.symbolize_keys!
 
     activity = user.activities.for('comments_on_your_post').create(
       tagged_users: { 
@@ -189,6 +191,7 @@ class Activity < ActiveRecord::Base
   def self.for_comments_after_you_to(user_id, actor_id, options = {})
     user = User.find(user_id)
     actor = User.find(actor_id)
+    options.symbolize_keys!
 
     activity = user.activities.for('comments_after_you').create(
       tagged_users: { 
@@ -227,6 +230,7 @@ class Activity < ActiveRecord::Base
   def self.for_requotes_your_post_to(user_id, actor_id, options = {})
     user = User.find(user_id)
     actor = User.find(actor_id)
+    options.symbolize_keys!
 
     activity = user.activities.for('requotes_your_post').create(
       tagged_users: { 
@@ -264,6 +268,7 @@ class Activity < ActiveRecord::Base
   def self.for_tagged_in_post_to(user_id, actor_id, options = {})
     user = User.find(user_id)
     actor = User.find(actor_id)
+    options.symbolize_keys!
 
     activity = user.activities.for('tagged_in_post').create(
       tagged_users: { 
@@ -302,6 +307,7 @@ class Activity < ActiveRecord::Base
   def self.for_tagged_in_comment_to(user_id, actor_id, options = {})
     user = User.find(user_id)
     actor = User.find(actor_id)
+    options.symbolize_keys!
 
     activity = user.activities.for('tagged_in_comment').create(
       tagged_users: { 
@@ -339,6 +345,7 @@ class Activity < ActiveRecord::Base
 
   def self.for_post_gets_featured_to(user_id, options = {})
     user = User.find(user_id)
+    options.symbolize_keys!
 
     activity = user.activities.for('post_gets_featured').create(
       tagged_users: {}, 
@@ -367,6 +374,7 @@ class Activity < ActiveRecord::Base
   def self.for_saves_your_quotiful_to(user_id, actor_id, options = {})
     user = User.find(user_id)
     actor = User.find(actor_id)
+    options.symbolize_keys!
 
     activity = user.activities.for('saves_your_quotiful').create(
       tagged_users: { 
