@@ -159,7 +159,7 @@ class Post < ActiveRecord::Base
           post.post_id self.id
           post.quote_image_url self.quote_image_url
           post.posted_at self.created_at.to_i
-          post.web_url post_url(self, host: DEFAULT_HOST)
+          post.web_url post_url(self.created_at.to_i, host: DEFAULT_HOST)
           post.background_image_url self.background_image_url
           post.quote_attr self.quote_attr
           post.author_attr self.author_attr
