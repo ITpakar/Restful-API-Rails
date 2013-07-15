@@ -24,7 +24,7 @@
           td = image_tag(post.quote_image_url('35x35#'), :class => 'img-polaroid')
           td = post.quote
           td = post.author_name
-          td = post.caption
+          td = post.description
           td = post.user_name
           td.text-center = post.likes_count
           td = link_to "Delete", admin_post_path(post), confirm: "Are you sure?", method: :delete, :class => "btn btn-danger"

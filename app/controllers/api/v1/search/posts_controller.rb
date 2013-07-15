@@ -33,6 +33,7 @@ module Api
                 data.posts do |posts|
                   posts.array! @posts do |post|
                     posts.caption post.caption
+                    posts.description post.description
                     posts.editors_pick post.editors_pick
                     posts.likes_count post.likes_count
                     posts.quote post.quote

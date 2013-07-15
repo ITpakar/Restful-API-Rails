@@ -12,6 +12,7 @@ module Api
               data.comments do |comments|
                 comments.array! @comments do |comment|
                   comments.body comment.body
+                  comments.description comment.description
                   comments.post_id comment.commentable_id
                   comments.commented_at comment.created_at.to_i
                   comments.tagged_users comment.tagged_users

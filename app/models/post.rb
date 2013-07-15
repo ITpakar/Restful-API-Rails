@@ -86,6 +86,17 @@ class Post < ActiveRecord::Base
     write_attribute(:tagged_users, value)
   end
 
+  def description
+    str = self.caption.dup 
+    if self.tagged_users.present? and self.tagged_users.is_a?(Hash)
+      self.tagged_users.keys.each do |user_id|
+        full_name = User.where(id: user_id).first.try(:full_name)
+        str = str.gsub("@[user:#{user_id}]", "@#{full_name}")
+      end
+    end
+    return str
+  end
+
   def tagged_users
     if super.present?
       super
@@ -144,7 +155,7 @@ class Post < ActiveRecord::Base
     Jbuilder.new do |json|
       json.data do |data|
         data.post do |post|
-          post.(self, :caption, :editors_pick, :likes_count, :quote)
+          post.(self, :caption, :description, :editors_pick, :likes_count, :quote)
           post.post_id self.id
           post.quote_image_url self.quote_image_url
           post.posted_at self.created_at.to_i

@@ -33,6 +33,7 @@ module Api
             data.posts do |info|
               info.array! current_user.authenticated_feed(hash_conditions) do |post|
                 info.caption post.caption
+                info.description post.description
                 info.editors_pick post.editors_pick
                 info.post_id post.id
                 info.likes_count post.likes_count
@@ -127,6 +128,7 @@ module Api
             data.posts do |info|
               info.array! instance_user.posts.order('posts.created_at DESC').page(params[:page]).per(params[:count] || 10) do |post|
                 info.caption post.caption
+                info.description post.description
                 info.editors_pick post.editors_pick
                 info.post_id post.id
                 info.likes_count post.likes_count

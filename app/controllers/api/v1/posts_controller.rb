@@ -17,6 +17,7 @@ module Api
           json.data do |data|
             data.post do |post|
               post.caption instance_post.caption
+              post.description instance_post.description
               post.editors_pick instance_post.editors_pick
               post.post_id instance_post.id
               post.likes_count instance_post.likes_count
@@ -75,6 +76,7 @@ module Api
               data.posts do |posts|
                 posts.array! @posts do |post|
                   posts.caption post.caption
+                  posts.description post.description
                   posts.editors_pick post.editors_pick
                   posts.likes_count post.likes_count
                   posts.quote post.quote

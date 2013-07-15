@@ -35,7 +35,7 @@
           td = link_to image_tag(post.quote_image_url('35x35#'), :class => 'img-polaroid'), "#thumbnailView", "data-toggle" => "modal", "data-src" => post.quote_image_url
           td = post.quote
           td = post.author_name
-          td = post.caption
+          td = post.description
           td = post.user_name
           td.text-center = post.likes_count
           td
