@@ -394,13 +394,13 @@ class Activity < ActiveRecord::Base
         },
         post_id: options[:post_id]
       },
-      body: "@[user:#{actor.id}] saves your quotiful to their collection"
+      body: "@[user:#{actor.id}] saved your quotiful to their collection"
     )
 
     if user.notifications.saves_your_quotiful
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} saves your quotiful to their collection", { 
+        PushNotification.new(token, "#{actor.full_name} saved your quotiful to their collection", { 
           identifier: 109, 
           badge: user.activities.unread.size,
           custom: activity.custom_payloads 
