@@ -38,12 +38,10 @@ module Api
           poster_id = instance_post.user_id
           commenter_id = comment.user_id
 
-          unless poster_id == commenter_id
-            Resque.enqueue(Jobs::Notify, :comments_on_your_post, poster_id, commenter_id, {comment_id: comment.id, post_id: instance_post.id})
-            other_ids = instance_post.comments.map(&:user_id).uniq.compact - [commenter_id, poster_id]
-            Resque.enqueue(Jobs::Notify, :comments_after_you, other_ids, commenter_id, {comment_id: comment.id, post_id: instance_post.id})
-          end 
-
+          Resque.enqueue(Jobs::Notify, :comments_on_your_post, poster_id, commenter_id, {comment_id: comment.id, post_id: instance_post.id}) unless poster_id == commenter_id
+          other_ids = instance_post.comments.map(&:user_id).uniq.compact - [commenter_id, poster_id]
+          Resque.enqueue(Jobs::Notify, :comments_after_you, other_ids, commenter_id, {comment_id: comment.id, post_id: instance_post.id})
+          
           render json: comment.to_builder.target!, status: 200
         end
 
