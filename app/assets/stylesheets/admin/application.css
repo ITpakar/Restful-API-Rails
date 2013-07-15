@@ -25,6 +25,8 @@ table .text-center {
 
 .table td {
   vertical-align: middle;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
 .brand img {
