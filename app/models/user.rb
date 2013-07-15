@@ -132,7 +132,7 @@ class User < ActiveRecord::Base
     %w(new_follower fb_friend_joins likes_your_post
       comments_on_your_post comments_after_you
       requotes_your_post tagged_in_post
-      post_gets_featured).each do |noty|
+      post_gets_featured saves_your_quotiful).each do |noty|
       eval %Q{ hash.#{noty} = setting.#{noty} }
     end
 
