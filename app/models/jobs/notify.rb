@@ -39,6 +39,15 @@ module Jobs
           Activity.for_saves_your_quotiful_to(user_id, actor_id, custom)
         end
       end
+
+      file = File.open(File.join(Rails.root.to_s, "log/apn.log"), "a")
+      file.puts("---")
+      file.puts("alert_type: #{alert_type.inspect}")
+      file.puts("user_ids: #{user_ids.inspect}")
+      file.puts("actor_id: #{actor_id.inspect}")
+      file.puts("custom: #{custom.inspect}")
+      file.puts("---")
+      file.close
     end
 
   end
