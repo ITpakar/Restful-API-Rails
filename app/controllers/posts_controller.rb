@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   def show
     @post = Post.find_by_created_at(Time.at(params[:id].to_i))
-    @page_title = "Photo by #{@post.user.full_name} • "
+    @page_title = "Photo by #{@post.user.full_name} | "
     @ogtags = {
       title: "Photo by #{@post.user.full_name} | Quotiful",
       description: "#{@post.user.full_name}'s photo on Quotiful",
