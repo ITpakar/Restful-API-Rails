@@ -3,6 +3,7 @@ module Api
     class ActivitiesController < Api::BaseController
       
       def index
+        current_user.activities.unread.update_all(viewed: true)
         activities = current_user.activities.order("created_at DESC").page(params[:page]).per(10)
 
         json = Jbuilder.encode do |json|

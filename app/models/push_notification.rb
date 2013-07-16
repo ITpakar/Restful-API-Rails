@@ -47,9 +47,9 @@ class PushNotification
       retries:     3
     )
 
-    feedback.each do |attempt|
-      Device.where(device_token: attempt.device_token).destroy_all
-    end
+    # feedback.each do |attempt|
+    #   Device.where(device_token: attempt.device_token).destroy_all
+    # end
   end
 
   def notification
