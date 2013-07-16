@@ -35,8 +35,8 @@ module Api
           quote = Quote.order('rand()').first
 
           json = Jbuilder.encode do |data|
-            data.post do |post|
-              post.(self, :id, :author_name, :body)
+            data.quote do |quote|
+              quote.(self, :id, :author_name, :body)
             end
           end
 
