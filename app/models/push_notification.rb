@@ -1,5 +1,5 @@
 class PushNotification
-  attr_accessor :device_token, :alert, :certificate, :passphrase, :gateway, :identifier, :badge, :custom
+  attr_accessor :device_token, :alert, :certificate, :passphrase, :gateway, :identifier, :badge, :custom, :feedback
 
   def initialize(device_token, alert, raw_options = {})
     raw_options.symbolize_keys!
@@ -24,6 +24,10 @@ class PushNotification
     'gateway.sandbox.push.apple.com'
   end
 
+  def self.feedback
+    'feedback.sandbox.push.apple.com'
+  end
+
   def self.pusher
     Grocer.pusher(
       certificate: certificate,
@@ -32,6 +36,20 @@ class PushNotification
       port:        2195,
       retries:     3
     )
+  end
+
+  def self.feedbacker
+    feedback = Grocer.feedback(
+      certificate: certificate,
+      passphrase:  passphrase,
+      gateway:     feedback,
+      port:        2196,
+      retries:     3
+    )
+
+    feedback.each do |attempt|
+      Device.where(device_token: attempt.device_token).destroy_all
+    end
   end
 
   def notification
@@ -54,5 +72,6 @@ class PushNotification
   def push
     print_log
     PushNotification.pusher.push(notification)
+    PushNotification.feedbacker
   end
 end
