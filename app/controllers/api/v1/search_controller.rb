@@ -7,12 +7,13 @@ module Api
       protected
 
         def ensure_search_query_exists
-          return unless params[:q].blank?
-          render json: { success: false, message: "Missing search query" }, status: 200
+          # NOTE: disabled for blank queries
+          # return unless params[:q].nil?
+          # render json: { success: false, message: "Missing search query" }, status: 200
         end
 
         def initialize_search_parameters
-          @query = params[:q].dup.downcase
+          @query = params[:q].to_s.dup.downcase
           @page = params[:page]
           @page = 1 if @page.blank?
         end
