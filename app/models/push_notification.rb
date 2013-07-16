@@ -48,6 +48,7 @@ class PushNotification
     )
 
     service.each do |attempt|
+      print_failed(attempt)
       Device.where(device_token: attempt.device_token).destroy_all
     end
   end
@@ -66,6 +67,12 @@ class PushNotification
   def print_log
     file = File.open(File.join(Rails.root.to_s, "log/apn.log"), "a")
     file.puts(self.inspect)
+    file.close
+  end
+
+  def print_failed(attempt)
+    file = File.open(File.join(Rails.root.to_s, "log/apn.log"), "a")
+    file.puts("Device #{attempt.device_token} failed at #{attempt.timestamp}")
     file.close
   end
 
