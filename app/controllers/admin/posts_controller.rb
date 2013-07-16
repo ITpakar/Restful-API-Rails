@@ -19,7 +19,7 @@ class Admin::PostsController < AdminController
       end
     end
     
-    posts = Post.order("#{sort} DESC, created_at DESC").page(params[:page]).per(20)
+    posts = Post.order(sort + " DESC, created_at DESC").page(params[:page]).per(20)
     
     if end_date.present? 
       posts = posts.where("created_at <= ?", end_date)
@@ -55,6 +55,6 @@ class Admin::PostsController < AdminController
   def flagged
     condition = params[:sort].present? and params[:sort].in?(%(editors_pick likes_count))
     sort = condition ? params[:sort].dup : 'created_at'
-    @posts = Post.flagged.order("#{sort} DESC, created_at DESC").page(params[:page]).per(20)
+    @posts = Post.flagged.order(sort + " DESC, created_at DESC").page(params[:page]).per(20)
   end
 end
