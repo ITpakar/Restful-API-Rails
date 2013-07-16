@@ -39,7 +39,7 @@ class PushNotification
   end
 
   def self.feedbacker
-    feedback = Grocer.feedback(
+    service = Grocer.feedback(
       certificate: certificate,
       passphrase:  passphrase,
       gateway:     feedback,
@@ -47,9 +47,9 @@ class PushNotification
       retries:     3
     )
 
-    # feedback.each do |attempt|
-    #   Device.where(device_token: attempt.device_token).destroy_all
-    # end
+    service.each do |attempt|
+      Device.where(device_token: attempt.device_token).destroy_all
+    end
   end
 
   def notification
