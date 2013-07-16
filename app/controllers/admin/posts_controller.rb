@@ -1,9 +1,8 @@
 class Admin::PostsController < AdminController
   def index
-    condition = params[:sort].present? and params[:sort].in?(%(editors_pick likes_count))
-    sort = condition ? params[:sort].dup : 'created_at'
+    condition = params[:sort].present? and params[:sort].in?(%w(editors_pick likes_count))
     
-    if sort.eql?('likes_count')
+    if sort_by.eql?('likes_count')
       case params[:by]
       when 'today' then start_date = Time.zone.now.midnight
       when 'yesterday'
@@ -19,7 +18,7 @@ class Admin::PostsController < AdminController
       end
     end
     
-    posts = Post.order(sort + " DESC, created_at DESC").page(params[:page]).per(20)
+    posts = Post.order(sort_by + " DESC, created_at DESC").page(params[:page]).per(20)
     
     if end_date.present? 
       posts = posts.where("created_at <= ?", end_date)
@@ -53,8 +52,14 @@ class Admin::PostsController < AdminController
   end
 
   def flagged
-    condition = params[:sort].present? and params[:sort].in?(%(editors_pick likes_count))
-    sort = condition ? params[:sort].dup : 'created_at'
-    @posts = Post.flagged.order(sort + " DESC, created_at DESC").page(params[:page]).per(20)
+    condition = params[:sort].present? and params[:sort].in?(%w(editors_pick likes_count))
+    
+    @posts = Post.flagged.order(sort_by + " DESC, created_at DESC").page(params[:page]).per(20)
   end
+
+  private
+
+    def sort_by
+      %w(editors_pick likes_count).include?(params[:sort]) ? params[:sort] : 'created_at'
+    end
 end
