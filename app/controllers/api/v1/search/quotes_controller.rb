@@ -31,7 +31,19 @@ module Api
           render json: json, status: 200
         end
 
+        def random
+          quote = Quote.order('rand()').first
+
+          json = Jbuilder.encode do |data|
+            data.post do |post|
+              post.(self, :id, :author_name, :body)
+            end
+          end
+
+          render json: json, status: 200
+        end
       end
+
     end
   end
 end
