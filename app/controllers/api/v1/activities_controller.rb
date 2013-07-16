@@ -12,6 +12,9 @@ module Api
               info.array! activities do |activity|
                 info.body activity.body 
                 info.tagged_users activity.tagged_users
+                info.custom_payloads activity.custom_payloads
+                info.timestamp activity.created_at.to_i
+                info.details activity.tagged_details
               end
             end
             data.page (params[:page] || 1)

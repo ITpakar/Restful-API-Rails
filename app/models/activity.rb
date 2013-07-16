@@ -2,14 +2,15 @@
 #
 # Table name: activities
 #
-#  id           :integer          not null, primary key
-#  body         :text
-#  tagged_users :text
-#  identifier   :string(255)
-#  viewed       :boolean          default(FALSE), not null
-#  user_id      :integer
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id              :integer          not null, primary key
+#  body            :text
+#  tagged_users    :text
+#  identifier      :string(255)
+#  viewed          :boolean          default(FALSE), not null
+#  user_id         :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  custom_payloads :text
 #
 
 class Activity < ActiveRecord::Base
@@ -36,6 +37,35 @@ class Activity < ActiveRecord::Base
   # 107 - tagged_in_comment
   # 108 - post_gets_featured
   # 109 - saves_your_quotiful
+
+  def tagged_details
+    hash = {}
+    
+    user_ids = self.tagged_users.keys
+    users = User.where(id: user_ids)
+    users.each do |user|
+      hash.update(
+        "@[user:#{user.id}]" => {
+          full_name: user.full_name,
+          user_id: user.id,
+          profile_picture_url: user.profile_picture_url
+        }
+      )
+    end
+
+    if self.custom_payloads.present? and self.custom_payloads.symbolize_keys[:post_id].present?
+      post_id = self.custom_payloads.symbolize_keys[:post_id]
+      post = Post.where(id: post_id).first
+      hash.update(
+        post: {
+          post_id: post_id,
+          quote_image_url: post.quote_image_url
+        }
+      )
+    end
+
+    return hash
+  end
 
   def self.for_new_follower_to(user_id, actor_id)
   	user = User.find(user_id)
