@@ -8,10 +8,10 @@ module Api
 
         json = Jbuilder.encode do |json|
           json.data do |data|
-            data.posts do |posts|
-              activities.array! activities do |activity|
-                activities.body activity.body 
-                activities.tagged_users activity.tagged_users
+            data.info do |info|
+              info.array! activities do |activity|
+                info.body activity.body 
+                info.tagged_users activity.tagged_users
               end
             end
             data.page (params[:page] || 1)
