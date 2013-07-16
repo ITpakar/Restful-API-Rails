@@ -11,8 +11,7 @@ module Api
             data.info do |info|
               info.array! activities do |activity|
                 info.body activity.body 
-                info.tagged_users activity.tagged_users
-                info.custom_payloads activity.custom_payloads
+                info.identifier activity.custom_payloads.symbolize_keys[:identifier]
                 info.timestamp activity.created_at.to_i
                 info.details activity.tagged_details
               end
