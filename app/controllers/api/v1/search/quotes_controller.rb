@@ -36,7 +36,7 @@ module Api
 
           json = Jbuilder.encode do |data|
             data.quote do |quote|
-              quote.(self, :id, :author_name, :body)
+              quote.(@quote, :id, :author_name, :body)
             end
           end
 

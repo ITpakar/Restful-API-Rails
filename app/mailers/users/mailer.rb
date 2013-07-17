@@ -4,6 +4,6 @@ class Users::Mailer < ActionMailer::Base
   def reset_password_instructions(user_id)
     @user = User.find(user_id)
 
-    mail(to: @user.email, subject: "Reset password instructions")
+    mail(to: @user.email, subject: "Password reset on Quotiful")
   end
 end

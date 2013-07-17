@@ -91,7 +91,11 @@ Quotiful::Application.routes.draw do
 
         # ROUTES: api/v1/search
         namespace :search do
-          resources :authors, only: [:index]
+          resources :authors, only: [:index] do
+            collection do
+              get 'random'
+            end
+          end
           resources :posts, only: [:index]
           resources :quotes, only: [:index] do
             collection do
