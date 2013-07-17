@@ -42,6 +42,7 @@ module Api
                 info.posted_at post.created_at.to_i
                 info.user_liked post.liked_by?(current_user.id)
                 info.tagged_users post.tagged_users
+                info.web_url post_url(post.created_at.to_i)
                 info.set! :user do
                   info.set! :user_id, post.user_id
                   info.set! :full_name, post.user.full_name

@@ -18,6 +18,7 @@ module Api
                   info.quote post.quote
                   info.quote_image_url post.quote_image_url
                   info.posted_at post.created_at.to_i
+                  info.web_url post_url(post.created_at.to_i)
                   info.user_liked post.liked_by?(current_user.id)
                   info.set! :user do
                     info.set! :user_id, post.user_id
