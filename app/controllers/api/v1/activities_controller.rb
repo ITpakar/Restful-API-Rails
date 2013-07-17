@@ -4,7 +4,8 @@ module Api
       
       def index
         current_user.activities.unread.update_all(viewed: true)
-        activities = current_user.activities.order("created_at DESC").page(params[:page]).per(10)
+        count = params[:count].present? ? params[:count] : 20
+        activities = current_user.activities.order("created_at DESC").page(params[:page]).per(count)
 
         json = Jbuilder.encode do |json|
           json.data do |data|
