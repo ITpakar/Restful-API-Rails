@@ -215,6 +215,7 @@ class User < ActiveRecord::Base
         data.user do |user|
           user.(self, :full_name, :favorite_quote, :author_name, :website, :birth_date, :gender, :follows_count, :followed_by_count, :posts_count, :collection_count)
           user.user_id self.id
+          user.badge_count user.activities.unread.count
 
           if options[:with_notifications]
             user.notifications self.notifications
