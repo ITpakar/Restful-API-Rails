@@ -29,10 +29,6 @@ table .text-center {
   word-break: break-all;
 }
 
-.brand img {
-  height: 20px;
-}
-
 .spacer {
   margin-top: 30px;
 }
@@ -43,4 +39,36 @@ table .text-center {
 
 .modal-body img{
   height: 500px;
+}
+
+.header {
+  border-right: 1px solid #CCC;
+  width: 940px;
+  margin: 0 auto;
+}
+
+.home {
+  float: left;
+  border-left: 1px solid #CCC;
+  border-right: 1px solid #CCC;
+}
+
+.home a img {
+  padding: 10px 5px;
+}
+
+.logo {
+  width: 122px;
+  margin: 0 auto;
+}
+
+.logo a img {
+  height: 20px;
+}
+
+.sidebar {
+  min-height:140px;
+  background-color: #EEE;
+  border-left: 1px solid #AAA;
+  border-right: 1px solid #AAA;
 }

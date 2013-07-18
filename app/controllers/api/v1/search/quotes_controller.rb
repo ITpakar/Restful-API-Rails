@@ -32,7 +32,7 @@ module Api
         end
 
         def random
-          quote = Quote.order('rand()').first
+          @quote = Quote.order('rand()').first
 
           json = Jbuilder.encode do |data|
             data.quote do |quote|

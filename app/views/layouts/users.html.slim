@@ -10,8 +10,15 @@ html
     = csrf_meta_tags
     meta content="width=(device-width,)initial-scale=1.0" name="viewport"
   body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container.header
+          .home= link_to image_tag(asset_path('home.png')), 'javascript:void(0)'
+          .logo= link_to image_tag(asset_path('logo-text.png')), 'javascript:void(0)', :class => 'brand'
     .container
       .row
-        .span12
+        .span3.sidebar
+          = yield(:sidebar)
+        .span9
           = render 'shared/alert_messages' if notice.present? or alert.present?
           = yield
