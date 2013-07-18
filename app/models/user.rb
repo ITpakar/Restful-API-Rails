@@ -75,6 +75,7 @@ class User < ActiveRecord::Base
   has_many :requested_by_users, through: :requests, source: :follower
 
   validates_presence_of :full_name
+  validates_uniqueness_of :facebook_id
 
   searchable do
     text :full_name do
