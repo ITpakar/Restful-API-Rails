@@ -68,6 +68,12 @@ module Api
         render json: json, status: 200
       end
 
+      def destroy
+        instance_post.destroy
+
+        render json: { success: true }, status: 200
+      end
+
       protected
 
         def posts_collection

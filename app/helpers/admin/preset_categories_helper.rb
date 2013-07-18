@@ -1,2 +1,0 @@
-module Admin::PresetCategoriesHelper
-end

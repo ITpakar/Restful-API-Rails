@@ -9,7 +9,7 @@ module Api
         if User.exists?(email: params[:user][:email])
           @user = User.where(email: params[:user][:email]).first
           ::Users::Mailer.reset_password_instructions(@user.id).deliver
-          render json: { success: true, message: "Reset password instruction sent to email" }, status: 200
+          render json: { success: true, message: "You will receive an email with instructions about how to confirm your account in a few minutes." }, status: 200
         else
           render json: { success: false, message: "User does not exist" }, status: 200
         end

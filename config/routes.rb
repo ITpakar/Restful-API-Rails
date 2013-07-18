@@ -8,6 +8,10 @@ Quotiful::Application.routes.draw do
 
   resources :posts, only: [:show], path: 'q'
 
+  namespace :users do
+    resource :passwords, path: :password, only: [:edit, :update]
+  end
+
   namespace :admin do
     resources :preset_images, except: [:new], path: "background-images" do
       member do
@@ -63,7 +67,7 @@ Quotiful::Application.routes.draw do
         end
 
         # ROUTES: api/v1/posts
-        resources :posts, only: [:create, :show] do
+        resources :posts, only: [:create, :show, :destroy] do
           collection do
             get 'editors_picks', path: 'editors-picks'
             get 'popular', path: 'popular'
