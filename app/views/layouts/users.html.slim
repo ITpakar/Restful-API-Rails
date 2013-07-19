@@ -13,8 +13,8 @@ html
     .navbar.navbar-fixed-top
       .navbar-inner
         .container.header
-          .home= link_to image_tag(asset_path('home.png')), 'javascript:void(0)'
-          .logo= link_to image_tag(asset_path('logo-text.png')), 'javascript:void(0)', :class => 'brand'
+          .home = link_to image_tag(asset_path('home.png')), 'javascript:void(0)'
+          .logo = link_to image_tag(asset_path('logo-text.png')), 'javascript:void(0)', :class => 'brand'
     .container
       .row
         .span3.sidebar
@@ -22,3 +22,14 @@ html
         .span9
           = render 'shared/alert_messages' if notice.present? or alert.present?
           = yield
+    .footer-box
+      .footer
+        ul.inline
+          li = link_to "ABOUT US", 'javascript:void(0)'
+          li = link_to "SUPPORT", 'javascript:void(0)'
+          li = link_to "BLOG", 'javascript:void(0)'
+          li = link_to "PRESS", 'javascript:void(0)'
+          li = link_to "API", 'javascript:void(0)'
+          li = link_to "JOBS", 'javascript:void(0)'
+          li = link_to "PRIVACY", 'javascript:void(0)'
+          li = link_to "TERMS", 'javascript:void(0)'

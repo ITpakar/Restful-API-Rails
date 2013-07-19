@@ -14,6 +14,10 @@
  *
  */
 
+.span9 {
+  width: 698px;
+}
+
 input[type=text] {
   font-size: 16px;
   height: 30px;
@@ -47,6 +51,15 @@ table .text-center {
   margin: 0 auto;
 }
 
+.footer-box {
+  border-top: 1px solid #CCC;
+}
+
+.footer {
+  width: 940px;
+  margin: 10px auto 0;
+}
+
 .home {
   float: left;
   border-left: 1px solid #CCC;
@@ -67,8 +80,18 @@ table .text-center {
 }
 
 .sidebar {
-  min-height:140px;
+  min-height:600px;
   background-color: #EEE;
   border-left: 1px solid #AAA;
   border-right: 1px solid #AAA;
+  margin-top: -17px;
+}
+
+.footer ul {
+  text-align: center;
+  font-weight: bold;
+}
+
+.footer ul li a:hover {
+  text-decoration: none;
 }

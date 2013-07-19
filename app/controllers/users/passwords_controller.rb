@@ -11,9 +11,9 @@ module Users
       @user = User.reset_password_by_token(params[:user])
 
       if @user.errors.empty?
-        render template: 'success'
+        render action: 'success', full_name: @user.full_name
       else
-        render template: 'failed'
+        redirect_to :back
       end
     end
 

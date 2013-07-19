@@ -9,7 +9,11 @@ Quotiful::Application.routes.draw do
   resources :posts, only: [:show], path: 'q'
 
   namespace :users do
-    resource :passwords, path: :password, only: [:edit, :update]
+    resource :passwords, path: :password, only: [:edit, :update] do
+      member do
+        get :complete
+      end
+    end
   end
 
   namespace :admin do

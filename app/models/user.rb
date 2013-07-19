@@ -75,7 +75,7 @@ class User < ActiveRecord::Base
   has_many :requested_by_users, through: :requests, source: :follower
 
   validates_presence_of :full_name
-  validates_uniqueness_of :facebook_id
+  # validates_uniqueness_of :facebook_id
 
   searchable do
     text :full_name do
@@ -150,6 +150,12 @@ class User < ActiveRecord::Base
     !!active
   end
 
+  def set_reset_password_token!
+    self.reset_password_token = User.reset_password_token
+    self.reset_password_sent_at = Time.now.utc
+    self.save(validate: false)
+  end
+
   def inactive_message
     "Sorry, this account has been deactivated."
   end
@@ -164,8 +170,14 @@ class User < ActiveRecord::Base
 
   def facebook_id=(value)
     write_attribute(:facebook_id, value)
-    unless self.profile_picture.present?
-      write_attribute(:profile_picture_url, "http://graph.facebook.com/#{value}/picture?width=150&height=150")
+    self.capture_facebook_avatar    
+  end
+
+  def capture_facebook_avatar(update_now = false)
+    if !self.profile_picture.present? and self.facebook_id.present?
+      response = Net::HTTP.get_response("graph.facebook.com", "/#{self.facebook_id}/picture?width=150&height=150").to_hash rescue {}
+      self.profile_picture_url = response['location'].to_a.first
+      self.save if update_now
     end
   end
 

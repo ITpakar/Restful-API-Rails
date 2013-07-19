@@ -1,0 +1,10 @@
+= form_for(@user, :as => :user, :url => users_passwords_url(@user), :html => { :method => :put }) do |f|
+  = f.hidden_field :reset_password_token
+  fieldset
+    legend Quotiful
+    = f.label :password, "New password:"
+    = f.password_field :password, :autofocus => true
+    = f.label :password_confirmation, "New password confirmation:"
+    = f.password_field :password_confirmation
+    br
+    = f.submit "Reset Password", :class => 'btn'
