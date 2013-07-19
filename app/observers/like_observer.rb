@@ -6,7 +6,8 @@ class LikeObserver < ActiveRecord::Observer
     user = likable.user
     liker = like.user
 
-    Resque.enqueue(Jobs::Notify, :likes_your_post, user.id, liker.id, {post_id: likable.id})
+    
+    Resque.enqueue(Jobs::Notify, :likes_your_post, user.id, liker.id, {post_id: likable.id}) unless liker.id == user.id
 
     likable.increment!(:likes_count)
   end
