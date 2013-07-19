@@ -18,6 +18,8 @@ class Activity < ActiveRecord::Base
   attr_accessible :body, :identifier, :tagged_users, :viewed, :user_id, :custom_payloads
 
   belongs_to :user
+  belongs_to :post
+  belongs_to :comment
 
   scope :for, lambda { |value| where(identifier: value) }
   scope :to, lambda { |value| where(user_id: value) }
@@ -164,7 +166,8 @@ class Activity < ActiveRecord::Base
         },
         post_id: options[:post_id]
       },
-      body: "@[user:#{actor.id}] liked your quote"
+      body: "@[user:#{actor.id}] liked your quote",
+      post_id: options[:post_id]
     )
 
     if user.notifications.likes_your_post
@@ -203,7 +206,9 @@ class Activity < ActiveRecord::Base
         comment_id: options[:comment_id],
         post_id: options[:post_id]
       },
-      body: "@[user:#{actor.id}] commented on your quotiful"
+      body: "@[user:#{actor.id}] commented on your quotiful",
+      comment_id: options[:comment_id],
+      post_id: options[:post_id]
     )
 
     if user.notifications.comments_on_your_post
@@ -242,7 +247,9 @@ class Activity < ActiveRecord::Base
         comment_id: options[:comment_id],
         post_id: options[:post_id]
       }, 
-      body: "@[user:#{actor.id}] commented after you"
+      body: "@[user:#{actor.id}] commented after you",
+      comment_id: options[:comment_id],
+      post_id: options[:post_id]
     )
 
     if user.notifications.comments_after_you
@@ -280,7 +287,8 @@ class Activity < ActiveRecord::Base
         },
         post_id: options[:post_id]
       },
-      body: "@[user:#{actor.id}] requoted your post"
+      body: "@[user:#{actor.id}] requoted your post",
+      post_id: options[:post_id]
     )
 
     if user.notifications.requotes_your_post
@@ -319,7 +327,9 @@ class Activity < ActiveRecord::Base
         comment_id: options[:comment_id],
         post_id: options[:post_id]
       },
-      body: "@[user:#{actor.id}] tagged you in a post"
+      body: "@[user:#{actor.id}] tagged you in a post",
+      comment_id: options[:comment_id],
+      post_id: options[:post_id]
     )
 
     if user.notifications.tagged_in_post
@@ -358,7 +368,9 @@ class Activity < ActiveRecord::Base
         comment_id: options[:comment_id],
         post_id: options[:post_id]
       },
-      body: "@[user:#{actor.id}] tagged you in a comment"
+      body: "@[user:#{actor.id}] tagged you in a comment",
+      comment_id: options[:comment_id],
+      post_id: options[:post_id]
     )
 
     if user.notifications.tagged_in_post
@@ -386,7 +398,8 @@ class Activity < ActiveRecord::Base
           description: 'post_gets_featured'
         }
       },
-      body: "Your quotiful has been featured!"
+      body: "Your quotiful has been featured!",
+      post_id: options[:post_id]
     )
 
     if user.notifications.post_gets_featured
@@ -424,7 +437,8 @@ class Activity < ActiveRecord::Base
         },
         post_id: options[:post_id]
       },
-      body: "@[user:#{actor.id}] saved your quotiful to their collection"
+      body: "@[user:#{actor.id}] saved your quotiful to their collection",
+      post_id: options[:post_id]
     )
 
     if user.notifications.saves_your_quotiful

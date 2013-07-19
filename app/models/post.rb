@@ -36,6 +36,7 @@ class Post < ActiveRecord::Base
   belongs_to :user
   belongs_to :origin, class_name: 'Post'
 
+  has_many :activities, dependent: :destroy
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings
   has_many :likes, as: :likable, dependent: :destroy

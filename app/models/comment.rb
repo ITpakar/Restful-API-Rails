@@ -18,6 +18,8 @@ class Comment < ActiveRecord::Base
   belongs_to :commentable, polymorphic: true
   belongs_to :user
 
+  has_many :activities, dependent: :destroy
+
   serialize :tagged_users
 
   validates_presence_of :body
