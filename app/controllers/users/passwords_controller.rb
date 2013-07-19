@@ -11,7 +11,7 @@ module Users
       @user = User.reset_password_by_token(params[:user])
 
       if @user.errors.empty?
-        render action: 'success', full_name: @user.full_name
+        redirect_to complete_users_passwords_url(full_name: @user.full_name)
       else
         redirect_to :back
       end
