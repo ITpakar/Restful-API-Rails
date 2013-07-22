@@ -15,17 +15,22 @@ module Api
           user_params.update(password: generated_password, password_confirmation: generated_password)
         end
 
-        user = User.new(user_params)
-
-        if user_params[:facebook_id].present? and !User.exists?(facebook_id: params[:facebook_id]) and params[:fb_friend_ids].present?
-          fb_friend_ids = params[:fb_friend_ids].dup
-          fb_friend_ids = fb_friend_ids.is_a?(String) ? fb_friend_ids.split(',') : fb_friend_ids.to_a
-
-          friends = User.where(facebook_id: fb_friend_ids)
-          Resque.enqueue(Jobs::Notify, :fb_friend_joins, friends.map(&:id), user.id)
+        if user_params[:facebook_id].present? and User.exists?(email: user_params[:email])
+          user = User.find_by_email(user_params[:email])
+          user.facebook_id = user_params[:facebook_id]
+        else          
+          user = User.new(user_params)
         end
 
         if user.save
+          if user_params[:facebook_id].present? and params[:fb_friend_ids].present?
+            fb_friend_ids = params[:fb_friend_ids].dup
+            fb_friend_ids = fb_friend_ids.is_a?(String) ? fb_friend_ids.split(',') : fb_friend_ids.to_a
+
+            friends = User.where(facebook_id: fb_friend_ids)
+            Resque.enqueue(Jobs::Notify, :fb_friend_joins, friends.map(&:id), user.id)
+          end
+
           user.using_this_device(params[:device_token])
           render json: user.to_builder(is_current_user: true).target!, status: 200
           return
