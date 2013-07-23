@@ -16,6 +16,8 @@ module Api
           @query = params[:q].to_s.dup.downcase
           @page = params[:page]
           @page = 1 if @page.blank?
+          @count = params[:count]
+          @count = 10 if @count.blank?
         end
     end
   end

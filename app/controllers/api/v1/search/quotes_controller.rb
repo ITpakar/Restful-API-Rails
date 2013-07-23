@@ -17,7 +17,7 @@ module Api
               with :author_id, author_id 
             end
 
-            paginate(page: @page, per_page: 10)
+            paginate(page: @page, per_page: @count)
           end.results
 
           json = Jbuilder.encode do |json|

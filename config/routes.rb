@@ -110,6 +110,7 @@ Quotiful::Application.routes.draw do
               get 'random'
             end
           end
+          resources :topics, only: [:index]
           resources :tags, only: [:index]
           resources :users, only: [:index] do
             collection do
@@ -117,6 +118,9 @@ Quotiful::Application.routes.draw do
             end
           end
         end
+
+        resources :authors, only: [:index, :show]
+        resources :topics, only: [:index, :show]
 
         resources :activities, only: [:index]
 

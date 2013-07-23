@@ -20,7 +20,7 @@
 #  profile_picture_uid    :string(255)
 #  profile_picture_name   :string(255)
 #  auto_accept            :boolean          default(TRUE)
-#  facebook_id            :integer
+#  facebook_id            :string(255)
 #  bio                    :text             default(""), not null
 #  website                :string(255)      default(""), not null
 #  follows_count          :integer          default(0)

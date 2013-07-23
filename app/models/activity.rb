@@ -11,6 +11,8 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  custom_payloads :text
+#  post_id         :integer
+#  comment_id      :integer
 #
 
 class Activity < ActiveRecord::Base
