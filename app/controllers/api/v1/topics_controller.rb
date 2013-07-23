@@ -10,7 +10,7 @@ module Api
 
         json = Jbuilder.encode do |json|
           json.data do |data|
-            data.authors @topics, :id, :name
+            data.topics @topics, :id, :name
             data.page @page
           end
           json.success true
