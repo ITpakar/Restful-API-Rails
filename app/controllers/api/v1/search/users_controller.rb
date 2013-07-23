@@ -14,7 +14,7 @@ module Api
               boost(3.0) { with(:followers_id, current_user.id) }
             end
             without :full_name, nil
-            paginate(page: @page, per_page: 10)
+            paginate(page: @page, per_page: @count)
           end.results
 
           json = Jbuilder.encode do |json|

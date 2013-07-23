@@ -17,7 +17,7 @@ module Api
               with :user_id, user_id 
             end
 
-            paginate(page: @page, per_page: 10)
+            paginate(page: @page, per_page: @count)
           end.results
 
           json = posts_collection

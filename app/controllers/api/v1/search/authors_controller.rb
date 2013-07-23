@@ -9,7 +9,7 @@ module Api
 
           @authors = Author.search do
             fulltext query
-            paginate(page: @page, per_page: 10)
+            paginate(page: @page, per_page: @count)
           end.results
 
           json = Jbuilder.encode do |json|
