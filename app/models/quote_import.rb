@@ -23,13 +23,13 @@ class QuoteImport
       if EM::Synchrony::FiberIterator.new(imported_quotes, 250).map(&:valid?).all?
       # if imported_quotes.map(&:valid?).all?
         Quote.destroy_all
-        DatabaseCleaner.clean_with(:truncation, :only => %w[quotes])
+        QuoteTopic.destroy_all
+        DatabaseCleaner.clean_with(:truncation, :only => %w(quotes quotes_topics))
         Quote.import imported_quotes
         Quote.index
         Sunspot.commit
         # EM::Synchrony::FiberIterator.new(imported_quotes, 100).each(&:save!)
         # imported_quotes.each(&:save!)
-        @success = true
       else
         EM::Synchrony::FiberIterator.new(imported_quotes, 250).each_with_index do |quote, index|
         # imported_quotes.each_with_index do |quote, index|
@@ -37,8 +37,22 @@ class QuoteImport
             errors.add :base, "Row #{index+2}: #{message}"
           end
         end
-        @success = false
-      end  
+      end
+
+      EM::Synchrony::FiberIterator.new(Quote.all, 250).each do |quote|
+        if quote.author_full_name.present?
+          author = Author.find_or_create_by_name(quote.author_full_name)
+          quote.author_id = author.id
+          quote.save
+        end
+
+        quote.tags.each do |topic_name|
+          topic = Topic.find_or_create_by_name(topic_name.titleize)
+          quote.topics << topic unless quote.topics.include?(topic)
+        end
+      end
+
+      @success = true
       EM.stop
     end
 

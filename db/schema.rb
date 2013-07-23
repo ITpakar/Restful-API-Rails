@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130719133919) do
+ActiveRecord::Schema.define(:version => 20130723081255) do
 
   create_table "activities", :force => true do |t|
     t.text     "body"
@@ -184,6 +184,13 @@ ActiveRecord::Schema.define(:version => 20130719133919) do
 
   add_index "quotes", ["author_id"], :name => "index_quotes_on_author_id"
 
+  create_table "quotes_topics", :force => true do |t|
+    t.integer "quote_id", :null => false
+    t.integer "topic_id", :null => false
+  end
+
+  add_index "quotes_topics", ["quote_id", "topic_id"], :name => "index_quotes_topics_on_quote_id_and_topic_id", :unique => true
+
   create_table "relationships", :force => true do |t|
     t.integer  "follower_id",                         :null => false
     t.integer  "user_id",                             :null => false
@@ -225,6 +232,12 @@ ActiveRecord::Schema.define(:version => 20130719133919) do
     t.integer  "posts_count", :default => 0,  :null => false
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
+  end
+
+  create_table "topics", :force => true do |t|
+    t.string   "name",       :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|

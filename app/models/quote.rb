@@ -20,6 +20,8 @@ class Quote < ActiveRecord::Base
 
   belongs_to :author
 
+  has_and_belongs_to_many :topics, uniq: true
+
   serialize :tags
 
   validates_presence_of :body
@@ -45,7 +47,15 @@ class Quote < ActiveRecord::Base
   end
 
   def author_full_name
-    [self.author_first_name, self.author_last_name].join(' ').downcase.titleize
+    [self.author_first_name, self.author_last_name].join(' ').downcase.titleize.strip
+  end
+
+  def author_first_name=(value)
+    write_attribute(:author_first_name, value.strip) if value.present?
+  end
+
+  def author_last_name=(value)
+    write_attribute(:author_last_name, value.strip) if value.present?
   end
 
   def tags=(value)
