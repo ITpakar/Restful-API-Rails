@@ -37,8 +37,8 @@ module Api
       private
 
         def set_page_and_count
-          @page = params[:page].present? ? params[:page] || 1
-          @count = params[:count].present? ? params[:count] || 10
+          @page = params[:page].present? ? params[:page] : 1
+          @count = params[:count].present? ? params[:count] : 10
         end
 
         def ensure_params_id_exist
