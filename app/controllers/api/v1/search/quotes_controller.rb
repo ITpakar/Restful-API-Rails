@@ -7,6 +7,8 @@ module Api
           # SOLR: Can't find query using instance variable?
           author_id = params[:author_id]
           query = @query
+          page = @page
+          count = @count
 
           @quotes = Quote.search do
             keywords(query) do
@@ -17,7 +19,7 @@ module Api
               with :author_id, author_id 
             end
 
-            paginate(page: @page, per_page: @count)
+            paginate(page: page, per_page: count)
           end.results
 
           json = Jbuilder.encode do |json|

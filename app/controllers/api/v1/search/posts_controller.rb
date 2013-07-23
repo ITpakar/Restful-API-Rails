@@ -7,6 +7,8 @@ module Api
           # SOLR: Can't find query using instance variable?
           user_id = params[:user_id]
           query = @query
+          page = @page
+          count = @count
 
           @posts = Post.search do
             keywords(query) do
@@ -17,7 +19,7 @@ module Api
               with :user_id, user_id 
             end
 
-            paginate(page: @page, per_page: @count)
+            paginate(page: page, per_page: count)
           end.results
 
           json = posts_collection

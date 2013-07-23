@@ -5,13 +5,15 @@ module Api
         
         def index
           query = @query
+          page = @page
+          count = @count
 
           @topics = Quote.search do
             keywords(query) do
               fields :name
             end
 
-            paginate(page: @page, per_page: @count)
+            paginate(page: page, per_page: count)
           end.results
 
           json = Jbuilder.encode do |json|

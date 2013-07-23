@@ -6,10 +6,12 @@ module Api
         def index
           # SOLR: Can't find query using instance variable?
           query = @query
+          page = @page
+          count = @count
 
           @authors = Author.search do
             fulltext query
-            paginate(page: @page, per_page: @count)
+            paginate(page: page, per_page: count)
           end.results
 
           json = Jbuilder.encode do |json|

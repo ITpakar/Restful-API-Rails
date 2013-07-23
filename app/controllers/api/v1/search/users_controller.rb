@@ -6,6 +6,8 @@ module Api
         def index
           # SOLR: Can't find query using instance variable?
           query = @query
+          page = @page
+          count = @count
 
           @users = User.search do
             keywords(query) do
@@ -14,7 +16,7 @@ module Api
               boost(3.0) { with(:followers_id, current_user.id) }
             end
             without :full_name, nil
-            paginate(page: @page, per_page: @count)
+            paginate(page: page, per_page: count)
           end.results
 
           json = Jbuilder.encode do |json|
