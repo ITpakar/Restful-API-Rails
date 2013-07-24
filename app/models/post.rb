@@ -106,6 +106,16 @@ class Post < ActiveRecord::Base
     end
   end
 
+  def caption=(raw)
+    value = raw.gsub("\u00e2\u0080\u0099", "'").gsub(/[\u201c\u201d]/, '"')
+    write_attribute(:body, value)
+  end
+
+  def quote=(raw)
+    value = raw.gsub("\u00e2\u0080\u0099", "'").gsub(/[\u201c\u201d]/, '"')
+    write_attribute(:quote, value)
+  end
+
   def quote_image_url(size = '')
     if quote_image.present?
       size.present? ? quote_image.thumb(size).url : quote_image.jpg.url

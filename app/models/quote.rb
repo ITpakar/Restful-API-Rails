@@ -58,6 +58,11 @@ class Quote < ActiveRecord::Base
     write_attribute(:author_last_name, value.strip) if value.present?
   end
 
+  def body=(raw)
+    value = raw.gsub("\u00e2\u0080\u0099", "'").gsub(/[\u201c\u201d]/, '"')
+    write_attribute(:body, value)
+  end
+
   def tags=(value)
     array = if value.is_a?(Array)
       value
