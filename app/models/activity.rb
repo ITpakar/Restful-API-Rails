@@ -17,7 +17,7 @@
 
 class Activity < ActiveRecord::Base
   
-  attr_accessible :body, :identifier, :tagged_users, :viewed, :user_id, :custom_payloads
+  attr_accessible :body, :identifier, :tagged_users, :viewed, :user_id, :custom_payloads, :post_id, :comment_id
 
   belongs_to :user
   belongs_to :post
@@ -326,11 +326,9 @@ class Activity < ActiveRecord::Base
           code: 106,
           description: 'tagged_in_post'
         },
-        comment_id: options[:comment_id],
         post_id: options[:post_id]
       },
       body: "@[user:#{actor.id}] tagged you in a post",
-      comment_id: options[:comment_id],
       post_id: options[:post_id]
     )
 
