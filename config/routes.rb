@@ -32,6 +32,9 @@ Quotiful::Application.routes.draw do
       end
     end
     resources :users, except: [:new, :create, :show] do
+      collection do
+        get :spammers
+      end
       member do
         post :reactivate
         get :followers

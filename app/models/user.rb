@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
                   :full_name, :auto_accept, :facebook_id, :bio,
                   :website, :follows_count, :followed_by_count, :posts_count,
                   :profile_picture, :favorite_quote, :author_name, :notifications,
-                  :profile_picture_url, :birth_date, :gender, :facebook_token
+                  :profile_picture_url, :birth_date, :gender, :facebook_token, :spam_count
 
   before_save :ensure_authentication_token
 
@@ -76,6 +76,8 @@ class User < ActiveRecord::Base
 
   validates_presence_of :full_name
   # validates_uniqueness_of :facebook_id
+
+  scope :spammers, where("users.spam_count > 0").order('users.active ASC, users.spam_count DESC')
 
   searchable do
     text :full_name do
@@ -158,6 +160,10 @@ class User < ActiveRecord::Base
 
   def inactive_message
     "Sorry, this account has been deactivated."
+  end
+
+  def is_spammer!
+    self.update_attribute(:spam_count, self.spam_count.next)
   end
 
   def reactivate!

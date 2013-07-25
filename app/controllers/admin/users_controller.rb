@@ -29,6 +29,10 @@ class Admin::UsersController < AdminController
     end
   end
 
+  def spammers
+    @users = User.spammers.page(params[:page]).per(15)
+  end
+
   def followers
     @user = User.find(params[:id])
     @users = @user.followed_by_users.order('full_name ASC, created_at DESC').page(params[:page]).per(20)
@@ -50,6 +54,6 @@ class Admin::UsersController < AdminController
     user = User.find(params[:id])
     user.deactivate!
 
-    redirect_to admin_users_url(page: params[:page]), notice: "Successfully deactivated the user."
+    redirect_to :back, notice: "Successfully deactivated the user."
   end
 end
