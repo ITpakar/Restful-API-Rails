@@ -108,7 +108,7 @@ class Post < ActiveRecord::Base
 
   def caption=(raw)
     value = raw.gsub("\u00e2\u0080\u0099", "'").gsub(/[\u201c\u201d]/, '"')
-    write_attribute(:body, value)
+    write_attribute(:caption, value)
   end
 
   def quote=(raw)
