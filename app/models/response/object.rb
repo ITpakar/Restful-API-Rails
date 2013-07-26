@@ -89,7 +89,13 @@ module Response
       hash = {
         user_id: object.id,
         full_name: object.full_name,
-        profile_picture_url: object.profile_picture_url
+        profile_picture_url: object.profile_picture_url,
+        favorite_quote: object.favorite_quote,
+        author_name: object.author_name,
+        website: object.website,
+        follows_count: object.follows.count,
+        followed_by_count: object.followers.count,
+        posts_count: object.posts.count
       }
     end
 

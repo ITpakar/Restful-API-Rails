@@ -101,42 +101,9 @@ module Api
       end
 
       def recent
-        json = Jbuilder.encode do |json|
-          json.data do |data|
-            data.posts do |info|
-              info.array! instance_user.posts.order('posts.created_at DESC').page(params[:page]).per(params[:count] || 10) do |post|
-                info.caption post.caption
-                info.description post.description
-                info.editors_pick post.editors_pick
-                info.post_id post.id
-                info.likes_count post.likes_count
-                info.quote post.quote
-                info.quote_image_url post.quote_image_url
-                info.posted_at post.created_at.to_i
-                info.user_liked post.liked_by?(current_user.id)
-                info.tagged_users post.tagged_users
-                info.set! :user do
-                  info.set! :user_id, post.user_id
-                  info.set! :full_name, post.user.full_name
-                  info.set! :profile_picture, post.user.profile_picture.try(:url)
-                end
-              end
-            end
-            data.user do |user|
-              user.full_name instance_user.full_name
-              user.favorite_quote instance_user.favorite_quote
-              user.author_name instance_user.author_name
-              user.website instance_user.website
-              user.follows_count instance_user.follows_count
-              user.followed_by_count instance_user.followed_by_count
-              user.user_id instance_user.id
-              user.posts_count instance_user.posts_count
-              user.profile_picture_url instance_user.profile_picture_url
-            end
-            data.page params[:page] || 1
-          end
-          json.success true
-        end
+        @posts = instance_user.posts.order('posts.created_at DESC').page(params[:page]).per(params[:count] || 10)
+
+        json = Response::Collection.new('post', @posts, {current_user_id: current_user.id, page: params[:page], instance_user_id: instance_user.id}).to_json
 
         render json: json, status: 200
       end
