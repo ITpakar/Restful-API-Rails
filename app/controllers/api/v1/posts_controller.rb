@@ -13,7 +13,7 @@ module Api
       end
 
       def show
-        json = Response::Object.new('post', instance_post).to_hash
+        json = Response::Object.new('post', instance_post, {current_user_id: current_user.id}).to_hash
 
         render json: json, status: 200
       end
