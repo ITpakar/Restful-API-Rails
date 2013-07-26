@@ -27,7 +27,7 @@ module Api
       def editors_picks
         @posts = Post.editors_picked.page(params[:page]).per(params[:count] || 10)
 
-        json = Response::Collection.new('post', @posts, {current_user_id: current_user.id}).to_json
+        json = Response::Collection.new('post', @posts, {current_user_id: current_user.id, page: params[:page]}).to_json
 
         render json: json, status: 200
       end
@@ -35,7 +35,7 @@ module Api
       def popular
         @posts = Post.popular.page(params[:page]).per(params[:count] || 10)
 
-        json = Response::Collection.new('post', @posts, {current_user_id: current_user.id}).to_json
+        json = Response::Collection.new('post', @posts, {current_user_id: current_user.id, page: params[:page]}).to_json
 
         render json: json, status: 200
       end
@@ -47,35 +47,6 @@ module Api
       end
 
       protected
-
-        def posts_collection
-          Jbuilder.encode do |json|
-            json.data do |data|
-              data.posts do |posts|
-                posts.array! @posts do |post|
-                  posts.caption post.caption
-                  posts.description post.description
-                  posts.editors_pick post.editors_pick
-                  posts.likes_count post.likes_count
-                  posts.quote post.quote
-                  posts.quote_image_url post.quote_image_url
-                  posts.post_id post.id
-                  posts.posted_at post.created_at.to_i
-                  posts.user_liked post.liked_by?(current_user.id)
-                  posts.web_url post_url(post.created_at.to_i)
-                  posts.tagged_users post.tagged_users
-                  posts.set! :user do
-                    posts.set! :user_id, post.user_id 
-                    posts.set! :full_name, post.user.full_name
-                    posts.set! :profile_picture_url, post.user.profile_picture_url
-                  end
-                end
-              end
-              data.page (params[:page] || 1)
-            end
-            json.success true
-          end
-        end
 
         def instance_post
           @instance_post ||= Post.where(id: params[:id]).includes(:user, :likes).first

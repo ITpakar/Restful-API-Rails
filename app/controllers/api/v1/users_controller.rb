@@ -28,32 +28,9 @@ module Api
         hash_conditions = {page: params[:page], count: params[:count]}
         hash_conditions.reject!{ |k,v| v.blank? }
 
-        json = Jbuilder.encode do |json|
-          json.data do |data|
-            data.posts do |info|
-              info.array! current_user.authenticated_feed(hash_conditions) do |post|
-                info.caption post.caption
-                info.description post.description
-                info.editors_pick post.editors_pick
-                info.post_id post.id
-                info.likes_count post.likes_count
-                info.quote post.quote
-                info.quote_image_url post.quote_image_url
-                info.posted_at post.created_at.to_i
-                info.user_liked post.liked_by?(current_user.id)
-                info.tagged_users post.tagged_users
-                info.web_url post_url(post.created_at.to_i)
-                info.set! :user do
-                  info.set! :user_id, post.user_id
-                  info.set! :full_name, post.user.full_name
-                  info.set! :profile_picture, post.user.profile_picture.try(:url)
-                end
-              end  
-            end
-            data.page (params[:page] || 1)
-          end
-          json.success true
-        end
+        @posts = current_user.authenticated_feed(hash_conditions)
+
+        json = Response::Collection.new('post', @posts, {current_user_id: current_user.id, page: params[:page]}).to_json
 
         render json: json, status: 200
       end

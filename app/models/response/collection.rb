@@ -27,6 +27,7 @@ module Response
         @hash = {}
         @hash[:data] = {}
         @hash[:data][class_name.pluralize.to_sym] = send("#{class_name.pluralize}_hash") if class_name.present?
+        @hash[:data][:page] = options[:page] || 1
         @hash[:success] = success
 
         EM.stop
@@ -50,5 +51,12 @@ module Response
 
       return array
     end
+
+    def users_hash
+      array = []
+
+      return array
+    end
+
   end
 end
