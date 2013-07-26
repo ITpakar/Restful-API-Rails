@@ -12,7 +12,8 @@ module Api
         if user.valid_password?(params[:user][:password])
           # sign_in(:user, user) unless signed_in?
           user.using_this_device(params[:device_token])
-          render json: user.to_builder(is_current_user: true).target!, status: 200
+          json = Response::Object.new('user', user, {current_user_id: user.id}).to_json
+          render json: json, status: 200
           return
         end
         

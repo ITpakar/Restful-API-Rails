@@ -23,7 +23,7 @@ module Response
     end
 
     def errors
-      full_messages = object.present? ? object.errors.full_messages : []
+      full_messages = (object.present? and !object.is_a?(Hash)) ? object.errors.full_messages : []
       @errors ||= options[:errors] || full_messages
     end
 
@@ -31,10 +31,14 @@ module Response
       EM.synchrony do
         @hash = {}
         @hash[:data] = {}
-        @hash[:data][class_name.to_sym] = send("#{class_name}_hash") if class_name.present?
+        if class_name.present?
+          @hash[:data][class_name.to_sym] = send("#{class_name}_hash")
+          @hash[:errors] = errors if errors.present?
+        else
+          @hash[:data] = object if object.present?
+        end
         @hash[:success] = success
-        @hash[:errors] = errors if errors.present?
-
+        
         EM.stop
       end
 
@@ -45,6 +49,14 @@ module Response
       @json = to_hash.to_json
 
       return @json
+    end
+
+    def relative_user
+      @relative_user ||= User.find(options[:relative_user_id]) if options[:relative_user_id].present?
+    end
+
+    def current_user
+      @current_user ||= User.find(options[:current_user_id]) if options[:current_user_id].present?
     end
 
     def post_hash(object = object)
@@ -90,13 +102,37 @@ module Response
         user_id: object.id,
         full_name: object.full_name,
         profile_picture_url: object.profile_picture_url,
+        s_thumbnail_url: object.profile_picture_url('20x20#'),
+        m_thumbnail_url: object.profile_picture_url('70x70#'),
         favorite_quote: object.favorite_quote,
         author_name: object.author_name,
         website: object.website,
         follows_count: object.follows.count,
         followed_by_count: object.followers.count,
-        posts_count: object.posts.count
+        posts_count: object.posts.count,
+        collection_count: object.collections.count,
+        birth_date: object.birth_date,
+        gender: object.gender,
+        active: object.active
       }
+
+      if current_user.present? and object.id == current_user.id
+        hash.update({
+          notifications: object.notifications,
+          email: object.email,
+          authentication_token: object.authentication_token,
+          badge_count: object.activities.unread.count
+        })
+      elsif current_user.present? and object.id != current_user.id
+        hash.update({
+          following_me: current_user.following_me?(object.id),
+          following_date: current_user.following_date(object.id),
+          am_follower: current_user.am_follower?(object.id),
+          follower_date: current_user.follower_date(object.id)
+        })
+      end
+
+      return hash
     end
 
   end

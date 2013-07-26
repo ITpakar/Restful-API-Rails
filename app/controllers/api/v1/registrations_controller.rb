@@ -32,11 +32,13 @@ module Api
           end
 
           user.using_this_device(params[:device_token])
-          render json: user.to_builder(is_current_user: true).target!, status: 200
+          json = Response::Object.new('user', user, {current_user_id: user.id}).to_json
+          render json: json, status: 200
           return
         else
           warden.custom_failure!
-          render json: user.to_builder.target!, status: 200
+          json = Response::Object.new('user', user).to_json
+          render json: json, status: 200
         end
       end
 
@@ -51,7 +53,8 @@ module Api
 
         if (cond1 and cond2 and cond3) or !cond4
           current_user.update_attributes(user_params)
-          render json: current_user.to_builder(with_notifications: true, is_current_user: true).target!, status: 200
+          json = Response::Object.new('user', current_user, {current_user_id: current_user.id}).to_json
+          render json: json, status: 200
         else
           render json: { success: false, message: "Error with your password" }, status: 200
         end
@@ -62,9 +65,11 @@ module Api
         def login_facebook_user(facebook_id)
           user = User.find_by_facebook_id(facebook_id)
           if user.present?
-            # sign_in(:user, user)
             user.using_this_device(params[:device_token])
-            render json: user.to_builder(is_current_user: true).target!, status: 200
+
+            json = Response::Object.new('user', user, {current_user_id: user.id}).to_json
+            
+            render json: json, status: 200
           end
         end
 

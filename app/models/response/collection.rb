@@ -60,6 +60,10 @@ module Response
     def users_hash
       array = []
 
+      collection.each do |user|
+        array << Response::Object.new('user', user, options.update(relative_user_id: user.id)).user_hash
+      end
+
       return array
     end
 
