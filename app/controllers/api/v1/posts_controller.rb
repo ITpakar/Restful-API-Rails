@@ -9,11 +9,11 @@ module Api
         post = current_user.posts.build(params[:post])
         post.save
         
-        render json: post.to_builder.target!, status: 200
+        render json: Response::Object.new('post', post, {current_user_id: current_user.id}).to_json, status: 200
       end
 
       def show
-        json = Response::Object.new('post', instance_post, {current_user_id: current_user.id}).to_hash
+        json = Response::Object.new('post', instance_post, {current_user_id: current_user.id}).to_json
 
         render json: json, status: 200
       end
@@ -21,7 +21,7 @@ module Api
       def flag
         instance_post.flag!
         
-        render json: instance_post.to_builder(flagged_details: true).target!, status: 200
+        render json: Response::Object.new('post', instance_post, {current_user_id: current_user.id}).to_json, status: 200
       end
 
       def editors_picks
@@ -43,7 +43,7 @@ module Api
       def destroy
         instance_post.destroy
 
-        render json: { success: true }, status: 200
+        render json: Response::Object.new.to_json, status: 200
       end
 
       protected

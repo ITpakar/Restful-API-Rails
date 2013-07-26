@@ -37,6 +37,7 @@ class Post < ActiveRecord::Base
   belongs_to :origin, class_name: 'Post'
 
   has_many :activities, dependent: :destroy
+  has_many :collections, dependent: :destroy
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings
   has_many :likes, as: :likable, dependent: :destroy
@@ -140,6 +141,10 @@ class Post < ActiveRecord::Base
     self.likes.exists?(user_id: user_id)
   end
 
+  def in_collection_of?(user_id)
+    self.collections.exists?(user_id: user_id)
+  end
+
   def user_name
     if user.present?
       user.full_name
@@ -159,36 +164,5 @@ class Post < ActiveRecord::Base
 
   def flag!
     self.update_attributes(flagged: true, flagged_count: self.flagged_count.next)
-  end
-
-  def to_builder(options = { flagged_details: false })
-    bool_errors = self.errors.present?
-    Jbuilder.new do |json|
-      json.data do |data|
-        data.post do |post|
-          post.(self, :caption, :description, :editors_pick, :likes_count, :quote)
-          post.post_id self.id
-          post.quote_image_url self.quote_image_url
-          post.posted_at self.created_at.to_i
-          post.web_url post_url(self.created_at.to_i, host: DEFAULT_HOST)
-          post.background_image_url self.background_image_url
-          post.quote_attr self.quote_attr
-          post.author_attr self.author_attr
-          post.quotebox_attr self.quotebox_attr
-          post.origin_id self.origin_id
-          post.tagged_users self.tagged_users
-
-          if options[:flagged_details]
-            post.flagged self.flagged
-            post.flagged_count self.flagged_count
-          end
-        end
-        
-        if bool_errors
-          data.errors self.errors.full_messages
-        end
-      end
-      json.success !bool_errors
-    end
   end
 end

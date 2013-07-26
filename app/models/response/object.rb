@@ -19,7 +19,12 @@ module Response
     end
 
     def success
-      @success ||= options[:success] || true
+      @success ||= options[:success] || !errors.present?
+    end
+
+    def errors
+      full_messages = object.present? ? object.errors.full_messages : []
+      @errors ||= options[:errors] || full_messages
     end
 
     def to_hash
@@ -28,6 +33,7 @@ module Response
         @hash[:data] = {}
         @hash[:data][class_name.to_sym] = send("#{class_name}_hash") if class_name.present?
         @hash[:success] = success
+        @hash[:errors] = errors if errors.present?
 
         EM.stop
       end
@@ -63,13 +69,14 @@ module Response
         tagged_users: object.tagged_users,
         s_thumbnail_url: object.quote_image_url('28x28#'),
         m_thumbnail_url: object.quote_image_url('70x70#'),
+        flagged_count: object.flagged_count,
         user: user_hash(object.user)
       }
 
       if options[:current_user_id].present?
         hash.update({
           user_liked: object.liked_by?(options[:current_user_id]),
-          in_collection: false
+          in_collection: object.in_collection_of?(options[:current_user_id])
         })
       end
 
@@ -85,7 +92,6 @@ module Response
         profile_picture_url: object.profile_picture_url
       }
     end
-
 
   end
 end
