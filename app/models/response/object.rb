@@ -86,7 +86,7 @@ module Response
     def user_hash(object = object)
       return {} unless object.is_a?(User)
 
-      {
+      hash = {
         user_id: object.id,
         full_name: object.full_name,
         profile_picture_url: object.profile_picture_url

@@ -27,7 +27,7 @@ module Api
       def editors_picks
         @posts = Post.editors_picked.page(params[:page]).per(params[:count] || 10)
 
-        json = posts_collection
+        json = Response::Collection.new('post', @posts, {current_user_id: current_user.id}).to_json
 
         render json: json, status: 200
       end
@@ -35,7 +35,7 @@ module Api
       def popular
         @posts = Post.popular.page(params[:page]).per(params[:count] || 10)
 
-        json = posts_collection
+        json = Response::Collection.new('post', @posts, {current_user_id: current_user.id}).to_json
 
         render json: json, status: 200
       end
