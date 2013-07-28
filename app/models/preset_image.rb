@@ -56,16 +56,4 @@ class PresetImage < ActiveRecord::Base
     end
   end
 
-  def to_builder
-    Jbuilder.new do |json|
-      json.data do |data|
-        data.preset_image do |img|
-          img.image_url self.preset_image_url
-          img.category_name self.preset_category_name
-          img.name self.name
-        end
-      end
-      json.success true
-    end
-  end
 end

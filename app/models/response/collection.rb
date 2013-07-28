@@ -8,6 +8,11 @@ module Response
 
     attr_accessor :class_name, :collection, :options
 
+    # options:
+    # alt_key - alternative hash key for json
+    # instance_user_id - user ID to show details of a user
+    # page - current page number
+    # success - actual response status
     def initialize(class_name = '', collection = [], options = {})
       @class_name = class_name
       @collection = collection
@@ -26,7 +31,8 @@ module Response
       EM.synchrony do
         @hash = {}
         @hash[:data] = {}
-        @hash[:data][class_name.pluralize.to_sym] = collective_hash if class_name.present?
+        key = options[:alt_key].present? ? options[:alt_key].to_sym : class_name.pluralize.to_sym
+        @hash[:data][key] = collective_hash if class_name.present?
         @hash[:data][:user] = Response::Object.new('user', instance_user, options).user_hash if instance_user.present?
         @hash[:data][:page] = options[:page] || 1
         @hash[:success] = success

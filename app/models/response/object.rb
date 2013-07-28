@@ -8,6 +8,11 @@ module Response
 
     attr_accessor :class_name, :object, :options
 
+    # options:
+    # alt_key - alternative hash key for json
+    # current_user_id - user ID of authenticated user
+    # errors - array of actual errors
+    # success - actual response status
     def initialize(class_name = '', object = nil, options = {})
       @class_name = class_name
       @object = object
@@ -32,6 +37,7 @@ module Response
         @hash = {}
         @hash[:data] = {}
         if class_name.present?
+          key = options[:alt_key].present? ? options[:alt_key].to_sym : class_name.to_sym
           @hash[:data][class_name.to_sym] = send("#{class_name}_hash")
           @hash[:errors] = errors if errors.present?
         else
@@ -49,10 +55,6 @@ module Response
       @json = to_hash.to_json
 
       return @json
-    end
-
-    def relative_user
-      @relative_user ||= User.find(options[:relative_user_id]) if options[:relative_user_id].present?
     end
 
     def current_user
@@ -118,6 +120,37 @@ module Response
       end
 
       return hash
+    end
+
+    def preset_category_hash(preset_category = object)
+      return {} unless preset_category.is_a?(PresetCategory)
+
+      hash = {
+        id: preset_category.id,
+        category_id: preset_category.id,
+        name: preset_category.name,
+        preset_images_count: preset_category.preset_images_count,
+        preset_image_sample: preset_category.preset_image_sample,
+        images: Response::Collection.new('preset_image', preset_category.preset_images).collective_hash
+      }
+
+      return hash
+    end
+
+    def preset_image_hash
+      return {} unless preset_category.is_a?(PresetCategory)
+
+      hash = {
+        id: preset_image.id,
+        image_id: preset_image.id,
+        name: preset_image.name,
+        image_name: preset_image.name,
+        image_thumbnail_url: preset_image.preset_image_url('70x70#'),
+        image_url: preset_image.preset_image_url,
+        category_name: preset_image.preset_category_name
+      }
+
+      return hash      
     end
 
     def user_hash(user = object)

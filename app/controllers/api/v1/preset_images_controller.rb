@@ -8,7 +8,9 @@ module Api
       def show
         image = PresetImage.find(params[:id])
 
-        render json: image.to_builder.target!, status: 200
+        json = Response::Object.new('preset_image', image).to_json
+
+        render json: json, status: 200
       end
 
       protected
