@@ -7,7 +7,7 @@ module Api
         count = params[:count].present? ? params[:count] : 20
         activities = current_user.activities.order("created_at DESC").page(params[:page]).per(count)
 
-        json = Response::Collection.new('activity', activities).to_json
+        json = Response::Collection.new('activity', activities, { page: params[:page] }).to_json
 
         render json: json, status: 200
       end

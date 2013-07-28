@@ -72,6 +72,18 @@ module Response
       return hash
     end
 
+    def author_hash(author = object)
+      return {} unless author.is_a?(Activity)
+
+      hash = {
+        id: author.id,
+        author_id: author.id,
+        name: author.name
+      }
+
+      return hash
+    end
+
     def post_hash(post = object)
       return {} unless post.is_a?(Post)
 

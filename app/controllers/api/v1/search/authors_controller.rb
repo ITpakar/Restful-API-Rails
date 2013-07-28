@@ -14,13 +14,7 @@ module Api
             paginate(page: page, per_page: count)
           end.results
 
-          json = Jbuilder.encode do |json|
-            json.data do |data|
-              data.authors @authors, :id, :name
-              data.page @page
-            end
-            json.success true
-          end
+          json = Response::Collection.new('author', @authors, { page: @page }).to_json
 
           render json: json, status: 200
         end
@@ -28,11 +22,7 @@ module Api
         def random
           @author = Author.order('rand()').first
 
-          json = Jbuilder.encode do |data|
-            data.author do |author|
-              author.(@author, :id, :name)
-            end
-          end
+          json = Response::Object.new('author', @author).to_json
 
           render json: json, status: 200
         end

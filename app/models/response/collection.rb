@@ -26,7 +26,7 @@ module Response
       EM.synchrony do
         @hash = {}
         @hash[:data] = {}
-        @hash[:data][class_name.pluralize.to_sym] = send("#{class_name.pluralize}_hash") if class_name.present?
+        @hash[:data][class_name.pluralize.to_sym] = collective_hash if class_name.present?
         @hash[:data][:user] = Response::Object.new('user', instance_user, options).user_hash if instance_user.present?
         @hash[:data][:page] = options[:page] || 1
         @hash[:success] = success
@@ -47,31 +47,11 @@ module Response
       @instance_user ||= User.find(options[:instance_user_id]) if options[:instance_user_id].present?
     end
 
-    def activities_hash
+    def collective_hash
       array = []
 
-      collection.each do |activity|
-        array << Response::Object.new('activity', activity, options).activity_hash
-      end
-
-      return array
-    end
-
-    def posts_hash
-      array = []
-
-      collection.each do |post|
-        array << Response::Object.new('post', post, options).post_hash
-      end
-
-      return array
-    end
-
-    def users_hash
-      array = []
-
-      collection.each do |user|
-        array << Response::Object.new('user', user, options.update(relative_user_id: user.id)).user_hash
+      collection.each do |object|
+        array << Response::Object.new(class_name, object, options).send("#{class_name}_hash")
       end
 
       return array
