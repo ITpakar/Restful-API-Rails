@@ -59,76 +59,89 @@ module Response
       @current_user ||= User.find(options[:current_user_id]) if options[:current_user_id].present?
     end
 
-    def post_hash(object = object)
-      return {} unless object.is_a?(Post)
+    def activity_hash(activity = object)
+      return {} unless activity.is_a?(Activity)
 
       hash = {
-        post_id: object.id,
-        quote: object.quote,
-        quote_image_url: object.quote_image_url,
-        author_name: object.author_name,
-        caption: object.caption,
-        description: object.description,
-        editors_pick: object.editors_pick,
-        likes_count: object.likes.count,
-        posted_at: object.created_at.to_i,
-        web_url: post_url(object.created_at.to_i, host: DEFAULT_HOST),
-        background_image_url: object.background_image_url,
-        quote_attr: object.quote_attr,
-        author_attr: object.author_attr,
-        quotebox_attr: object.quotebox_attr,
-        origin_id: object.origin_id,
-        tagged_users: object.tagged_users,
-        s_thumbnail_url: object.quote_image_url('28x28#'),
-        m_thumbnail_url: object.quote_image_url('70x70#'),
-        flagged_count: object.flagged_count,
-        user: user_hash(object.user)
+        body: activity.body,
+        identifier: activity.custom_payloads.symbolize_keys[:identifier],
+        timestamp: activity.created_at.to_i,
+        details: activity.tagged_details
+      }
+
+      return hash
+    end
+
+    def post_hash(post = object)
+      return {} unless post.is_a?(Post)
+
+      hash = {
+        post_id: post.id,
+        quote: post.quote,
+        quote_image_url: post.quote_image_url,
+        author_name: post.author_name,
+        caption: post.caption,
+        description: post.description,
+        editors_pick: post.editors_pick,
+        likes_count: post.likes.count,
+        posted_at: post.created_at.to_i,
+        web_url: post_url(post.created_at.to_i, host: DEFAULT_HOST),
+        background_image_url: post.background_image_url,
+        quote_attr: post.quote_attr,
+        author_attr: post.author_attr,
+        quotebox_attr: post.quotebox_attr,
+        origin_id: post.origin_id,
+        tagged_users: post.tagged_users,
+        s_thumbnail_url: post.quote_image_url('28x28#'),
+        m_thumbnail_url: post.quote_image_url('70x70#'),
+        flagged_count: post.flagged_count,
+        user: user_hash(post.user)
       }
 
       if options[:current_user_id].present?
         hash.update({
-          user_liked: object.liked_by?(options[:current_user_id]),
-          in_collection: object.in_collection_of?(options[:current_user_id])
+          user_liked: post.liked_by?(options[:current_user_id]),
+          in_collection: post.in_collection_of?(options[:current_user_id])
         })
       end
 
       return hash
     end
 
-    def user_hash(object = object)
-      return {} unless object.is_a?(User)
+    def user_hash(user = object)
+      return {} unless user.is_a?(User)
 
       hash = {
-        user_id: object.id,
-        full_name: object.full_name,
-        profile_picture_url: object.profile_picture_url,
-        s_thumbnail_url: object.profile_picture_url('20x20#'),
-        m_thumbnail_url: object.profile_picture_url('70x70#'),
-        favorite_quote: object.favorite_quote,
-        author_name: object.author_name,
-        website: object.website,
-        follows_count: object.follows.count,
-        followed_by_count: object.followers.count,
-        posts_count: object.posts.count,
-        collection_count: object.collections.count,
-        birth_date: object.birth_date,
-        gender: object.gender,
-        active: object.active
+        user_id: user.id,
+        full_name: user.full_name,
+        profile_picture_url: user.profile_picture_url,
+        s_thumbnail_url: user.profile_picture_url('20x20#'),
+        m_thumbnail_url: user.profile_picture_url('70x70#'),
+        favorite_quote: user.favorite_quote,
+        author_name: user.author_name,
+        website: user.website,
+        follows_count: user.follows.count,
+        followed_by_count: user.followers.count,
+        posts_count: user.posts.count,
+        collection_count: user.collections.count,
+        birth_date: user.birth_date,
+        gender: user.gender,
+        active: user.active
       }
 
-      if current_user.present? and object.id == current_user.id
+      if current_user.present? and user.id == current_user.id
         hash.update({
-          notifications: object.notifications,
-          email: object.email,
-          authentication_token: object.authentication_token,
-          badge_count: object.activities.unread.count
+          notifications: user.notifications,
+          email: user.email,
+          authentication_token: user.authentication_token,
+          badge_count: user.activities.unread.count
         })
-      elsif current_user.present? and object.id != current_user.id
+      elsif current_user.present? and user.id != current_user.id
         hash.update({
-          following_me: current_user.following_me?(object.id),
-          following_date: current_user.following_date(object.id),
-          am_follower: current_user.am_follower?(object.id),
-          follower_date: current_user.follower_date(object.id)
+          following_me: current_user.following_me?(user.id),
+          following_date: current_user.following_date(user.id),
+          am_follower: current_user.am_follower?(user.id),
+          follower_date: current_user.follower_date(user.id)
         })
       end
 

@@ -27,7 +27,7 @@ module Response
         @hash = {}
         @hash[:data] = {}
         @hash[:data][class_name.pluralize.to_sym] = send("#{class_name.pluralize}_hash") if class_name.present?
-        @hash[:data][:user] = Response::Object.new('user', instance_user).user_hash if instance_user.present?
+        @hash[:data][:user] = Response::Object.new('user', instance_user, options).user_hash if instance_user.present?
         @hash[:data][:page] = options[:page] || 1
         @hash[:success] = success
 
@@ -45,6 +45,16 @@ module Response
 
     def instance_user
       @instance_user ||= User.find(options[:instance_user_id]) if options[:instance_user_id].present?
+    end
+
+    def activities_hash
+      array = []
+
+      collection.each do |activity|
+        array << Response::Object.new('activity', activity, options).activity_hash
+      end
+
+      return array
     end
 
     def posts_hash

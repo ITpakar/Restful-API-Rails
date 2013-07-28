@@ -7,20 +7,7 @@ module Api
         count = params[:count].present? ? params[:count] : 20
         activities = current_user.activities.order("created_at DESC").page(params[:page]).per(count)
 
-        json = Jbuilder.encode do |json|
-          json.data do |data|
-            data.info do |info|
-              info.array! activities do |activity|
-                info.body activity.body 
-                info.identifier activity.custom_payloads.symbolize_keys[:identifier]
-                info.timestamp activity.created_at.to_i
-                info.details activity.tagged_details
-              end
-            end
-            data.page (params[:page] || 1)
-          end
-          json.success true
-        end
+        json = Response::Collection.new('activity', activities).to_json
 
         render json: json, status: 200
       end
