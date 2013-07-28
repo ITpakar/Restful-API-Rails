@@ -38,7 +38,7 @@ module Response
         @hash[:data] = {}
         if class_name.present?
           key = options[:alt_key].present? ? options[:alt_key].to_sym : class_name.to_sym
-          @hash[:data][class_name.to_sym] = send("#{class_name}_hash")
+          @hash[:data][key] = send("#{class_name}_hash")
           @hash[:errors] = errors if errors.present?
         else
           @hash[:data] = object if object.present?
