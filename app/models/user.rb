@@ -225,38 +225,5 @@ class User < ActiveRecord::Base
     relationship = self.follows.find_thru_follows(user_id).first
     relationship.try(:created_at).to_i
   end
-
-  def to_builder(options = {with_notifications: false, is_current_user: false, current_user_id: ''})
-    bool_errors = self.errors.present?
-    current_user = options[:current_user_id].present? ? User.find_or_initialize_by_id(options[:current_user_id]) : User.new
-    Jbuilder.new do |json|
-      json.data do |data|
-        data.user do |user|
-          user.(self, :full_name, :favorite_quote, :author_name, :website, :birth_date, :gender, :follows_count, :followed_by_count, :posts_count, :collection_count)
-          user.user_id self.id
-          user.badge_count self.activities.unread.count
-
-          if options[:with_notifications]
-            user.notifications self.notifications
-          end
-
-          if options[:is_current_user]
-            user.(self, :email, :authentication_token)
-          elsif options[:current_user_id].present?
-            user.following_me current_user.following_me?(self.id)
-            user.am_follower current_user.am_follower?(self.id)
-            user.following_date current_user.following_date(self.id)
-            user.follower_date current_user.follower_date(self.id)
-          end
-
-          user.profile_picture self.profile_picture_url
-        end
-        
-        if bool_errors
-          data.errors self.errors.full_messages
-        end
-      end
-      json.success !bool_errors
-    end
-  end
+  
 end

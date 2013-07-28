@@ -8,25 +8,14 @@ module Api
         def index
           @users = instance_post.users_liked.order('likes.created_at DESC')
 
-          json = Jbuilder.encode do |json|
-            json.data do |data|
-              data.users do |info|
-                info.array! @users do |user|
-                  info.user_id user.id
-                  info.full_name user.full_name
-                  info.profile_picture_url user.profile_picture_url
-                end
-              end
-            end
-            json.success true
-          end
+          json = Response::Collection.new('user', @users, { current_user_id: current_user.id }).to_json
 
           render json: json, status: 200
         end
 
         def create
           instance_post.likes.find_or_create_by_user_id(current_user.id)
-          json = {success: true, data: nil}.to_json
+          json = {success: true, data: {}}.to_json
 
           render json: json, status: 200
         end
@@ -34,7 +23,8 @@ module Api
         def destroy
           like = instance_post.likes.find_by_user_id(current_user.id)
           like.destroy if like.present?
-          json = {success: true, data: nil}.to_json
+
+          json = {success: true, data: {}}.to_json
 
           render json: json, status: 200
         end
