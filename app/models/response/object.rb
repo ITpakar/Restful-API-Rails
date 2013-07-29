@@ -97,8 +97,6 @@ module Response
     end
 
     def post_hash(post = object)
-      return {} unless post.is_a?(Post)
-
       hash = {
         post_id: post.id,
         quote: post.quote,
@@ -176,7 +174,10 @@ module Response
 
     def tag_hash(tag = object)
       {
-        id: tag.id, tag_id: tag.id, name: tag.name, posts_count: tag.posts.count
+        id: tag.id,
+        tag_id: tag.id,
+        name: tag.name,
+        posts_count: tag.posts.count
       }
     end
 
@@ -189,8 +190,6 @@ module Response
     end
 
     def user_hash(user = object)
-      return {} unless user.is_a?(User)
-
       hash = {
         user_id: user.id,
         full_name: user.full_name,
