@@ -195,6 +195,18 @@ module Response
       return hash
     end
 
+    def topic_hash(topic = object)
+      return {} unless topic.is_a?(Topic)
+
+      hash = {
+        id: topic.id,
+        topic_id: topic.id,
+        name: topic.name
+      }
+
+      return hash
+    end
+
     def user_hash(user = object)
       return {} unless user.is_a?(User)
 

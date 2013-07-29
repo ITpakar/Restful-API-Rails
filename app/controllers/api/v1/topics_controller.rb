@@ -8,13 +8,7 @@ module Api
       def index
         @topics = Topic.page(@page).per(@count).order('name ASC')
 
-        json = Jbuilder.encode do |json|
-          json.data do |data|
-            data.topics @topics, :id, :name
-            data.page @page
-          end
-          json.success true
-        end
+        json = Response::Collection.new('topic', @topics, { page: @page }).to_json
 
         render json: json, status: 200
       end
