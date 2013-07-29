@@ -188,6 +188,8 @@ module Response
       return {} unless tag.is_a?(Tag)
 
       hash = {
+        id: tag.id,
+        tag_id: tag.id,
         name: tag.name,
         posts_count: tag.posts.count
       }
