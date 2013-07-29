@@ -97,7 +97,7 @@ module Response
     end
 
     def post_hash(post = object)
-      hash = {
+      {
         post_id: post.id,
         quote: post.quote,
         quote_image_url: post.quote_image_url,
@@ -118,16 +118,16 @@ module Response
         m_thumbnail_url: post.quote_image_url('140x140#'),
         flagged_count: post.flagged_count,
         user: user_hash(post.user)
+      }.update(post_with_current_user_id(options[:current_user_id], post))
+    end
+
+    def post_with_current_user_id(current_user_id, post)
+      return {} unless current_user_id.present?
+       
+      {
+        user_liked: post.liked_by?(options[:current_user_id]),
+        in_collection: post.in_collection_of?(options[:current_user_id])
       }
-
-      if options[:current_user_id].present?
-        hash.update({
-          user_liked: post.liked_by?(options[:current_user_id]),
-          in_collection: post.in_collection_of?(options[:current_user_id])
-        })
-      end
-
-      return hash
     end
 
     def preset_category_hash(preset_category = object)
