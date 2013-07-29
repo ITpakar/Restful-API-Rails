@@ -65,6 +65,7 @@ module Response
       return {} unless activity.is_a?(Activity)
 
       hash = {
+        activity_id: activity.id,
         body: activity.body,
         identifier: activity.custom_payloads.symbolize_keys[:identifier],
         timestamp: activity.created_at.to_i,
@@ -90,13 +91,13 @@ module Response
       return {} unless comment.is_a?(Comment)
 
       hash = {
-        id: comment.id
+        id: comment.id,
         comment_id: comment.id,
         post_id: comment.commentable_id,
         body: comment.body,
         description: comment.description,
         commented_at: comment.created_at.to_i,
-        tagged_users: comment.tagged_users
+        tagged_users: comment.tagged_users,
         user: user_hash(comment.user)
       }
 
