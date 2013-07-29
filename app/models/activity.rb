@@ -190,7 +190,7 @@ class Activity < ActiveRecord::Base
         body: "@[user:#{actor.id}] #{details[:message]}",
       )
 
-      push_notification(user, activity, details[:code], "#{actor.full_name} #{details[:message]}") if user.notifications.send(details[:description])
+      apn_via_settings(user, actor, activity, details)
     end
 
     def activity_with_post(user_id, actor_id, options, details)
@@ -218,7 +218,7 @@ class Activity < ActiveRecord::Base
         post_id: options[:post_id]
       )
 
-      push_notification(user, activity, details[:code], "#{actor.full_name} #{details[:message]}") if user.notifications.send(details[:description])
+      apn_via_settings(user, actor, activity, details)
     end
 
     def activity_with_comment(user_id, actor_id, options, details)
@@ -248,6 +248,10 @@ class Activity < ActiveRecord::Base
         post_id: options[:post_id]
       )
 
+      apn_via_settings(user, actor, activity, details)
+    end
+
+    def apn_via_settings(user, actor, activity, details)
       push_notification(user, activity, details[:code], "#{actor.full_name} #{details[:message]}") if user.notifications.send(details[:description])
     end
 
