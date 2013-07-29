@@ -39,13 +39,7 @@ class PresetImage < ActiveRecord::Base
   end
 
   def preset_image_url(size = '')
-    if preset_image.present?
-      size.present? ? preset_image.thumb(size).url : preset_image.jpg.url
-    else
-      path = File.join(Rails.root, 'public', 'default.png')
-      default = Dragonfly[:images].fetch_file(path)
-      size.present? ? default.thumb(size).url : default.jpg.url
-    end
+    Common.image_url(preset_image, size)
   end
 
   def preset_category_name

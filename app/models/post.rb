@@ -118,23 +118,11 @@ class Post < ActiveRecord::Base
   end
 
   def quote_image_url(size = '')
-    if quote_image.present?
-      size.present? ? quote_image.thumb(size).url : quote_image.jpg.url
-    else
-      path = File.join(Rails.root, 'public', 'default.png')
-      default = Dragonfly[:images].fetch_file(path)
-      size.present? ? default.thumb(size).url : default.jpg.url
-    end
+    Common.image_url(quote_image, size)
   end
 
   def background_image_url(size = '')
-    if background_image.present?
-      size.present? ? background_image.thumb(size).url : background_image.jpg.url
-    else
-      path = File.join(Rails.root, 'public', 'default.png')
-      default = Dragonfly[:images].fetch_file(path)
-      size.present? ? default.thumb(size).url : default.jpg.url
-    end
+    Common.image_url(background_image, size)
   end
 
   def liked_by?(user_id)

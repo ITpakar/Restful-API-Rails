@@ -43,7 +43,7 @@ module Api
       def destroy
         instance_post.destroy
 
-        render json: Response::Object.new.to_json, status: 200
+        render json: {success: true, data: {}}, status: 200
       end
 
       protected
