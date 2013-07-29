@@ -176,10 +176,7 @@ module Response
 
     def tag_hash(tag = object)
       {
-        id: tag.id,
-        tag_id: tag.id,
-        name: tag.name,
-        posts_count: tag.posts.count
+        id: tag.id, tag_id: tag.id, name: tag.name, posts_count: tag.posts.count
       }
     end
 
