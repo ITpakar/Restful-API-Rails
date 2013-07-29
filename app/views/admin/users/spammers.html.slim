@@ -21,8 +21,8 @@
           td = link_to image_tag(user.profile_picture_url('35x35#'), :class => 'img-polaroid'), "#thumbnailView", "data-toggle" => "modal", "data-src" => user.profile_picture_url
           td = user.full_name
           td = user.email
-          td.text-center = link_to_unless user.followed_by_count.zero?, user.followed_by_count, followers_admin_user_path(user)
-          td.text-center = link_to_unless user.follows_count.zero?, user.follows_count, following_admin_user_path(user)
+          td.text-center = link_to_unless user.followers.count.zero?, user.followers.count, followers_admin_user_path(user)
+          td.text-center = link_to_unless user.follows.count.zero?, user.follows.count, following_admin_user_path(user)
           td.text-center = user.posts_count
           td.text-center = user.spam_count
           td
