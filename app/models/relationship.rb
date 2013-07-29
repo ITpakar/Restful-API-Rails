@@ -47,22 +47,6 @@ class Relationship < ActiveRecord::Base
     self.user.auto_accept? ? self.approve! : self.request!
   end
 
-  def to_builder
-    bool_errors = self.errors.present?
-    Jbuilder.new do |json|
-      json.data do |data|
-        data.relationship do |relationship|
-          relationship.(self, :status, :follower_id)
-        end
-        
-        if bool_errors
-          data.errors self.errors.full_messages
-        end
-      end
-      json.success !bool_errors
-    end
-  end
-
   alias :deny! :destroy
   alias :unfollow! :destroy
   alias :unblock! :destroy

@@ -184,6 +184,19 @@ module Response
       return hash
     end
 
+    def relationship_hash(relationship = object)
+      return {} unless relationship.is_a?(Relationship)
+
+      hash = {
+        status: relationship.status,
+        follower_id: relationship.follower_id,
+        following_id: relationship.user_id,
+        followed_at: relationship.created_at.to_i
+      }
+
+      return hash
+    end
+
     def tag_hash(tag = object)
       return {} unless tag.is_a?(Tag)
 
