@@ -69,71 +69,23 @@ class Activity < ActiveRecord::Base
 
     message = user.am_follower?(actor.id) ? "followed you back" : "followed you"
 
-    activity = user.activities.for('new_follower').create(
-      tagged_users: {
-        actor.id => {
-         full_name: actor.full_name, 
-         user_id: actor.id 
-        } 
-      },
-      custom_payloads: {
-        "user:#{actor.id}" => {
-          full_name: actor.full_name, 
-          user_id: actor.id 
-        },
-        identifier: {
-          code: 100,
-          description: 'new_follower'
-        }
-      },
-      body: "@[user:#{actor.id}] #{message}"
-    )
-
-  	if user.notifications.new_follower
-      user_tokens = user.devices.map(&:device_token)
-      user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} #{message}", { 
-          identifier: 100, 
-          badge: user.activities.unread.size,
-          custom: activity.custom_payloads
-        }).push
-      end
-  	end
+    activity_with_user_and_actor(user, actor, {
+      code: 100,
+      description: 'new_follower',
+      body: "@[user:#{actor.id}] #{message}",
+      alert: "#{actor.full_name} #{message}"
+    })
   end
 
   def self.for_fb_friend_joins_to(user_id, actor_id)
     user, actor, options = set_arguments_for_variables(user_id, actor_id, {})
 
-    activity = user.activities.for('fb_friend_joins').create(
-      tagged_users: {
-        actor.id => { 
-          full_name: actor.full_name, 
-          user_id: actor.id 
-        } 
-      }, 
-      custom_payloads: {
-        "user:#{actor.id}" => {
-          full_name: actor.full_name, 
-          user_id: actor.id 
-        },
-        identifier: {
-          code: 101,
-          description: 'fb_friend_joins'
-        }
-      },
-      body: "@[user:#{actor.id}] joined from Facebook"
-    )
-
-    if user.notifications.fb_friend_joins
-      user_tokens = user.devices.map(&:device_token)
-      user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} joined from Facebook", { 
-          identifier: 101, 
-          badge: user.activities.unread.size,
-          custom: activity.custom_payloads 
-        }).push
-      end
-    end
+    activity_with_user_and_actor(user, actor, {
+      code: 101,
+      description: 'fb_friend_joins',
+      body: "@[user:#{actor.id}] joined from Facebook",
+      alert: "#{actor.full_name} joined from Facebook"
+    })
   end
 
   def self.for_likes_your_post_to(user_id, actor_id, options = {})
@@ -435,6 +387,39 @@ class Activity < ActiveRecord::Base
       user = User.find(user_id)
       actor = User.find(actor_id) if actor_id.present?
       [user, actor, options.symbolize_keys!]
+    end
+
+    def activity_with_user_and_actor(user, actor, details)
+      activity = user.activities.for(details[:description]).create(
+        tagged_users: {
+          actor.id => { 
+            full_name: actor.full_name, 
+            user_id: actor.id 
+          } 
+        }, 
+        custom_payloads: {
+          "user:#{actor.id}" => {
+            full_name: actor.full_name, 
+            user_id: actor.id 
+          },
+          identifier: {
+            code: details[:code],
+            description: details[:description]
+          }
+        },
+        body: details[:body]
+      )
+
+      if user.notifications.send(details[:description])
+        user_tokens = user.devices.map(&:device_token)
+        user_tokens.each do |token|
+          PushNotification.new(token, details[:alert], { 
+            identifier: details[:code], 
+            badge: user.activities.unread.size,
+            custom: activity.custom_payloads 
+          }).push
+        end
+      end
     end
 
 end
