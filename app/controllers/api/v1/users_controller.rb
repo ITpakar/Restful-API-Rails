@@ -7,7 +7,13 @@ module Api
       before_filter :validate_user_object, except: [:email_check, :requested_by, :feed]
 
       def email_check
-        json = {email: params[:user][:email], user_exists: User.exists?(email: params[:user][:email])}.to_json
+        json = {
+          data: {
+            email: params[:user][:email],
+            user_exists?: User.exists?(email: params[:user][:email])
+          },
+          success: true
+        }.to_json
         
         render json: json, status: 200
       end
