@@ -184,6 +184,17 @@ module Response
       return hash
     end
 
+    def tag_hash(tag = object)
+      return {} unless tag.is_a?(Tag)
+
+      hash = {
+        name: tag.name,
+        posts_count: tag.posts.count
+      }
+
+      return hash
+    end
+
     def user_hash(user = object)
       return {} unless user.is_a?(User)
 

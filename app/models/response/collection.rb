@@ -34,6 +34,7 @@ module Response
         key = options[:alt_key].present? ? options[:alt_key].to_sym : class_name.pluralize.to_sym
         @hash[:data][key] = collective_hash if class_name.present?
         @hash[:data][:user] = Response::Object.new('user', instance_user, options).user_hash if instance_user.present?
+        @hash[:data][:tag] = Response::Object.new('tag', instance_tag, options).tag_hash if instance_tag.present?
         @hash[:data][:page] = options[:page] || 1
         @hash[:success] = success
 
@@ -47,6 +48,10 @@ module Response
       @json = to_hash.to_json
 
       return @json
+    end
+
+    def instance_tag
+      @instance_tag ||= Tag.find(options[:instance_tag_id]) if options[:instance_tag_id].present?
     end
 
     def instance_user

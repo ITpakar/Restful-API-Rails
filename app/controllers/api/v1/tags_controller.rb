@@ -15,10 +15,14 @@ module Api
         tag = Tag.find_by_name(name)
         return response_for_tag(tag) unless tag.present?
 
-        hash_conditions = {min_id: params[:min_id], max_id: params[:max_id]}
-        hash_conditions.reject!{ |k,v| v.blank? }
+        page = params[:page] || 1
+        count = params[:count] || 10
 
-        render json: tag.to_builder(hash_conditions, {posts: true}).target!, status: 200
+        @posts = tag.posts.page(page).per(count)
+
+        json = Response::Collection.new('post', @posts, { instance_tag_id: tag.id, page: page }).to_json
+
+        render json: json, status: 200
       end
 
       protected
@@ -30,7 +34,9 @@ module Api
 
         def response_for_tag(tag)
           if tag.present?
-            render json: tag.to_builder.target!, status: 200
+            json = Response::Object.new('tag', tag).to_json
+            
+            render json: json, status: 200
           else
             render json: { success: false, message: "Tagname not found" }, status: 200
           end
