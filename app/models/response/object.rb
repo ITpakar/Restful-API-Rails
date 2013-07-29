@@ -124,8 +124,8 @@ module Response
         quotebox_attr: post.quotebox_attr,
         origin_id: post.origin_id,
         tagged_users: post.tagged_users,
-        s_thumbnail_url: post.quote_image_url('28x28#'),
-        m_thumbnail_url: post.quote_image_url('70x70#'),
+        s_thumbnail_url: post.quote_image_url('56x56#'),
+        m_thumbnail_url: post.quote_image_url('140x140#'),
         flagged_count: post.flagged_count,
         user: user_hash(post.user)
       }
@@ -163,7 +163,7 @@ module Response
         image_id: preset_image.id,
         name: preset_image.name,
         image_name: preset_image.name,
-        image_thumbnail_url: preset_image.preset_image_url('70x70#'),
+        image_thumbnail_url: preset_image.preset_image_url('140x140#'),
         image_url: preset_image.preset_image_url,
         category_name: preset_image.preset_category_name
       }
@@ -230,8 +230,8 @@ module Response
         user_id: user.id,
         full_name: user.full_name,
         profile_picture_url: user.profile_picture_url,
-        s_thumbnail_url: user.profile_picture_url('20x20#'),
-        m_thumbnail_url: user.profile_picture_url('70x70#'),
+        s_thumbnail_url: user.profile_picture_url('56x56#'),
+        m_thumbnail_url: user.profile_picture_url('140x140#'),
         favorite_quote: user.favorite_quote,
         author_name: user.author_name,
         website: user.website,
