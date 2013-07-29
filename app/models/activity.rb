@@ -49,11 +49,7 @@ class Activity < ActiveRecord::Base
     users = User.where(id: user_ids)
     users.each do |user|
       hash.update(
-        "@[user:#{user.id}]" => {
-          full_name: user.full_name,
-          user_id: user.id,
-          profile_picture_url: user.profile_picture_url
-        }
+        "@[user:#{user.id}]" => Response::Object.new('user', user).user_hash
       )
     end
 
@@ -61,10 +57,7 @@ class Activity < ActiveRecord::Base
       post_id = self.custom_payloads.symbolize_keys[:post_id]
       post = Post.where(id: post_id).first
       hash.update(
-        post: {
-          post_id: post_id,
-          quote_image_url: post.quote_image_url
-        }
+        post: Response::Object.new('post', post).post_hash
       )
     end
 
