@@ -137,8 +137,8 @@ module Response
       return hash
     end
 
-    def preset_image_hash
-      return {} unless preset_category.is_a?(PresetCategory)
+    def preset_image_hash(preset_image = object)
+      return {} unless preset_image.is_a?(PresetImage)
 
       hash = {
         id: preset_image.id,
