@@ -22,13 +22,7 @@ module Api
             paginate(page: page, per_page: count)
           end.results
 
-          json = Jbuilder.encode do |json|
-            json.data do |data|
-              data.quotes @quotes, :id, :author_full_name, :body
-              data.page @page
-            end
-            json.success true
-          end
+          json = Response::Collection.new('quote', @quotes, {current_user_id: current_user.id, page: @page}).to_json
 
           render json: json, status: 200
         end
@@ -36,12 +30,8 @@ module Api
         def random
           @quote = Quote.order('rand()').first
 
-          json = Jbuilder.encode do |data|
-            data.quote do |quote|
-              quote.(@quote, :id, :author_full_name, :body)
-            end
-          end
-
+          json = Response::Object.new('quote', @quote, { current_user_id: current_user.id }).to_json
+ 
           render json: json, status: 200
         end
       end

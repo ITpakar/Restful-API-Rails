@@ -153,6 +153,20 @@ module Response
       return hash      
     end
 
+    def quote_hash(quote = object)
+      return {} unless quote.is_a?(Quote)
+
+      hash = {
+        id: quote.id,
+        quote_id: quote.id,
+        author_full_name: quote.author_full_name,
+        author_name: quote.author_name,
+        body: quote.body
+      }
+
+      return hash
+    end
+
     def user_hash(user = object)
       return {} unless user.is_a?(User)
 

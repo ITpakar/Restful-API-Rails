@@ -22,14 +22,8 @@ module Api
       def show
         topic = Topic.find(params[:id])
         @quotes = topic.quotes.page(@page).per(@count).order('body ASC')
-        
-        json = Jbuilder.encode do |json|
-          json.data do |data|
-            data.quotes @quotes, :id, :author_full_name, :body
-            data.page @page
-          end
-          json.success true
-        end
+          
+        json = Response::Collection.new('quote', @quotes, {current_user_id: current_user.id, page: @page}).to_json
 
         render json: json, status: 200
       end
