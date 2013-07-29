@@ -13,7 +13,7 @@ module Response
     # current_user_id - user ID of authenticated user
     # errors - array of actual errors
     # success - actual response status
-    def initialize(class_name = '', object = nil, options = {})
+    def initialize(class_name = '', object = {}, options = {})
       @class_name = class_name
       @object = object
       @options = options
@@ -28,21 +28,25 @@ module Response
     end
 
     def errors
-      full_messages = (object.present? and !object.is_a?(Hash)) ? object.errors.full_messages : []
+      full_messages = (object.present? and data.present?) ? object.errors.full_messages : []
       @errors ||= options[:errors] || full_messages
+    end
+
+    def data
+      return {} unless object.is_a?(class_name.classify.constantize)
+      
+      key = options[:alt_key].present? ? options[:alt_key].to_sym : class_name.to_sym
+      
+      {
+        key => send("#{class_name}_hash")
+      }
     end
 
     def to_hash
       EM.synchrony do
         @hash = {}
-        @hash[:data] = {}
-        if class_name.present?
-          key = options[:alt_key].present? ? options[:alt_key].to_sym : class_name.to_sym
-          @hash[:data][key] = send("#{class_name}_hash")
-          @hash[:errors] = errors if errors.present?
-        else
-          @hash[:data] = object if object.present?
-        end
+        @hash[:data] = data
+        @hash[:errors] = errors if errors.present?
         @hash[:success] = success
         
         EM.stop
@@ -62,22 +66,16 @@ module Response
     end
 
     def activity_hash(activity = object)
-      return {} unless activity.is_a?(Activity)
-
-      hash = {
+      {
         activity_id: activity.id,
         body: activity.body,
         identifier: activity.custom_payloads.symbolize_keys[:identifier],
         timestamp: activity.created_at.to_i,
         details: activity.tagged_details
       }
-
-      return hash
     end
 
     def author_hash(author = object)
-      return {} unless author.is_a?(Author)
-
       {
         id: author.id,
         author_id: author.id,
@@ -86,9 +84,7 @@ module Response
     end
 
     def comment_hash(comment = object)
-      return {} unless comment.is_a?(Comment)
-
-      hash = {
+      {
         id: comment.id,
         comment_id: comment.id,
         post_id: comment.commentable_id,
@@ -98,8 +94,6 @@ module Response
         tagged_users: comment.tagged_users,
         user: user_hash(comment.user)
       }
-
-      return hash
     end
 
     def post_hash(post = object)
@@ -139,9 +133,7 @@ module Response
     end
 
     def preset_category_hash(preset_category = object)
-      return {} unless preset_category.is_a?(PresetCategory)
-
-      hash = {
+      {
         id: preset_category.id,
         category_id: preset_category.id,
         name: preset_category.name,
@@ -149,14 +141,10 @@ module Response
         preset_image_sample: preset_category.preset_image_sample,
         images: Response::Collection.new('preset_image', preset_category.preset_images).collective_hash
       }
-
-      return hash
     end
 
     def preset_image_hash(preset_image = object)
-      return {} unless preset_image.is_a?(PresetImage)
-
-      hash = {
+      {
         id: preset_image.id,
         image_id: preset_image.id,
         name: preset_image.name,
@@ -165,27 +153,19 @@ module Response
         image_url: preset_image.preset_image_url,
         category_name: preset_image.preset_category_name
       }
-
-      return hash      
     end
 
     def quote_hash(quote = object)
-      return {} unless quote.is_a?(Quote)
-
-      hash = {
+      {
         id: quote.id,
         quote_id: quote.id,
         author_full_name: quote.author_full_name,
         author_name: quote.author_name,
         body: quote.body
       }
-
-      return hash
     end
 
     def relationship_hash(relationship = object)
-      return {} unless relationship.is_a?(Relationship)
-
       {
         status: relationship.status,
         follower_id: relationship.follower_id,
@@ -195,8 +175,6 @@ module Response
     end
 
     def tag_hash(tag = object)
-      return {} unless tag.is_a?(Tag)
-
       {
         id: tag.id,
         tag_id: tag.id,
@@ -206,8 +184,6 @@ module Response
     end
 
     def topic_hash(topic = object)
-      return {} unless topic.is_a?(Topic)
-
       {
         id: topic.id,
         topic_id: topic.id,
