@@ -197,25 +197,7 @@ class Activity < ActiveRecord::Base
       user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
 
       activity = user.activities.for(details[:description]).create(
-        tagged_users: { 
-          actor.id => { 
-            full_name: actor.full_name, 
-            user_id: actor.id 
-          } 
-        }, 
-        custom_payloads: {
-          "user:#{actor.id}" => {
-            full_name: actor.full_name, 
-            user_id: actor.id 
-          },
-          identifier: {
-            code: details[:code],
-            description: details[:description]
-          },
-          post_id: options[:post_id]
-        },
-        body: "@[user:#{actor.id}] #{details[:message]}",
-        post_id: options[:post_id]
+        activity_attributes_with_post(actor, details, options)
       )
 
       apn_via_settings(user, actor, activity, details)
@@ -225,6 +207,18 @@ class Activity < ActiveRecord::Base
       user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
 
       activity = user.activities.for(details[:description]).create(
+        activity_attributes_with_post(actor, details, options).deep_merge({
+          custom_payloads: {
+            comment_id: options[:comment_id]
+          }, comment_id: options[:comment_id]
+        })
+      )
+
+      apn_via_settings(user, actor, activity, details)
+    end
+
+    def activity_attributes_with_post(actor, details, options)
+      {
         tagged_users: { 
           actor.id => { 
             full_name: actor.full_name, 
@@ -240,15 +234,11 @@ class Activity < ActiveRecord::Base
             code: details[:code],
             description: details[:description]
           },
-          comment_id: options[:comment_id],
           post_id: options[:post_id]
         },
         body: "@[user:#{actor.id}] #{details[:message]}",
-        comment_id: options[:comment_id],
         post_id: options[:post_id]
-      )
-
-      apn_via_settings(user, actor, activity, details)
+      }
     end
 
     def apn_via_settings(user, actor, activity, details)
