@@ -201,7 +201,7 @@ module Response
         birth_date: user.birth_date,
         gender: user.gender,
         active: user.active
-      }.update(user_is_current_user(user)).update(user_is_not_current_user(user)).update(user_is_not_relative_user(user))
+      }.update(user_is_current_user(user)).update(user_is_not_current_user(user))
     end
 
     protected
@@ -232,7 +232,7 @@ module Response
           following_me_date: current_user.following_date(user.id),
           am_follower: current_user.am_follower?(user.id),
           am_follower_date: current_user.follower_date(user.id),
-        } if current_user.present? and user.id != current_user.id
+        }.update(user_is_not_relative_user(user)) if current_user.present? and user.id != current_user.id
         
         {}
       end
