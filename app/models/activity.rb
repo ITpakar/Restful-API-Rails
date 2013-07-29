@@ -91,38 +91,12 @@ class Activity < ActiveRecord::Base
   def self.for_likes_your_post_to(user_id, actor_id, options = {})
     user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
 
-    activity = user.activities.for('likes_your_post').create(
-      tagged_users: { 
-        actor.id => { 
-          full_name: actor.full_name, 
-          user_id: actor.id 
-        } 
-      }, 
-      custom_payloads: {
-        "user:#{actor.id}" => {
-          full_name: actor.full_name, 
-          user_id: actor.id 
-        },
-        identifier: {
-          code: 102,
-          description: 'likes_your_post'
-        },
-        post_id: options[:post_id]
-      },
+    activity_with_post(user, actor, options, {
+      code: 102,
+      description: 'likes_your_post',
       body: "@[user:#{actor.id}] liked your quote",
-      post_id: options[:post_id]
-    )
-
-    if user.notifications.likes_your_post
-      user_tokens = user.devices.map(&:device_token)
-      user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} liked your quote", { 
-          identifier: 102, 
-          badge: user.activities.unread.size,
-          custom: activity.custom_payloads 
-        }).push
-      end
-    end
+      alert: "#{actor.full_name} liked your quote"
+    })
   end
 
   def self.for_comments_on_your_post_to(user_id, actor_id, options = {})
@@ -206,75 +180,23 @@ class Activity < ActiveRecord::Base
   def self.for_requotes_your_post_to(user_id, actor_id, options = {})
     user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
 
-    activity = user.activities.for('requotes_your_post').create(
-      tagged_users: { 
-        actor.id => { 
-          full_name: actor.full_name, 
-          user_id: actor.id 
-        } 
-      }, 
-      custom_payloads: {
-        "user:#{actor.id}" => {
-          full_name: actor.full_name, 
-          user_id: actor.id 
-        },
-        identifier: {
-          code: 105,
-          description: 'requotes_your_post'
-        },
-        post_id: options[:post_id]
-      },
+    activity_with_post(user, actor, options, {
+      code: 105,
+      description: 'requotes_your_post',
       body: "@[user:#{actor.id}] requoted your post",
-      post_id: options[:post_id]
-    )
-
-    if user.notifications.requotes_your_post
-      user_tokens = user.devices.map(&:device_token)
-      user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} requoted your post", { 
-          identifier: 105, 
-          badge: user.activities.unread.size,
-          custom: activity.custom_payloads 
-        }).push
-      end
-    end
+      alert: "#{actor.full_name} requoted your post"
+    })
   end
 
   def self.for_tagged_in_post_to(user_id, actor_id, options = {})
     user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
 
-    activity = user.activities.for('tagged_in_post').create(
-      tagged_users: { 
-        actor.id => { 
-          full_name: actor.full_name, 
-          user_id: actor.id 
-        } 
-      }, 
-      custom_payloads: {
-        "user:#{actor.id}" => {
-          full_name: actor.full_name, 
-          user_id: actor.id 
-        },
-        identifier: {
-          code: 106,
-          description: 'tagged_in_post'
-        },
-        post_id: options[:post_id]
-      },
+    activity_with_post(user, actor, options, {
+      code: 106,
+      description: 'tagged_in_post',
       body: "@[user:#{actor.id}] tagged you in a post",
-      post_id: options[:post_id]
-    )
-
-    if user.notifications.tagged_in_post
-      user_tokens = user.devices.map(&:device_token)
-      user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} tagged you in a post", { 
-          identifier: 106, 
-          badge: user.activities.unread.size,
-          custom: activity.custom_payloads 
-        }).push
-      end
-    end
+      alert: "#{actor.full_name} tagged you in a post"
+    })
   end
 
   def self.for_tagged_in_comment_to(user_id, actor_id, options = {})
@@ -347,38 +269,12 @@ class Activity < ActiveRecord::Base
   def self.for_saves_your_quotiful_to(user_id, actor_id, options = {})
     user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
 
-    activity = user.activities.for('saves_your_quotiful').create(
-      tagged_users: { 
-        actor.id => { 
-          full_name: actor.full_name, 
-          user_id: actor.id 
-        } 
-      }, 
-      custom_payloads: {
-        "user:#{actor.id}" => {
-          full_name: actor.full_name, 
-          user_id: actor.id 
-        },
-        identifier: {
-          code: 109,
-          description: 'saves_your_quotiful'
-        },
-        post_id: options[:post_id]
-      },
+    activity_with_post(user, actor, options, {
+      code: 109,
+      description: 'saves_your_quotiful',
       body: "@[user:#{actor.id}] saved your quotiful to their collection",
-      post_id: options[:post_id]
-    )
-
-    if user.notifications.saves_your_quotiful
-      user_tokens = user.devices.map(&:device_token)
-      user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} saved your quotiful to their collection", { 
-          identifier: 109, 
-          badge: user.activities.unread.size,
-          custom: activity.custom_payloads 
-        }).push
-      end
-    end
+      alert: "#{actor.full_name} saved your quotiful to their collection"
+    })
   end
 
   private
@@ -408,6 +304,41 @@ class Activity < ActiveRecord::Base
           }
         },
         body: details[:body]
+      )
+
+      if user.notifications.send(details[:description])
+        user_tokens = user.devices.map(&:device_token)
+        user_tokens.each do |token|
+          PushNotification.new(token, details[:alert], { 
+            identifier: details[:code], 
+            badge: user.activities.unread.size,
+            custom: activity.custom_payloads 
+          }).push
+        end
+      end
+    end
+
+    def activity_with_post(user, actor, options, details)
+      activity = user.activities.for(details[:description]).create(
+        tagged_users: { 
+          actor.id => { 
+            full_name: actor.full_name, 
+            user_id: actor.id 
+          } 
+        }, 
+        custom_payloads: {
+          "user:#{actor.id}" => {
+            full_name: actor.full_name, 
+            user_id: actor.id 
+          },
+          identifier: {
+            code: details[:code],
+            description: details[:description]
+          },
+          post_id: options[:post_id]
+        },
+        body: details[:body],
+        post_id: options[:post_id]
       )
 
       if user.notifications.send(details[:description])
