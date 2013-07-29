@@ -16,7 +16,7 @@ module Api
       def show
         category = PresetCategory.find(params[:id])
 
-        json = Response::Object.new('preset_category', category, { alt_name: :category })
+        json = Response::Object.new('preset_category', category, { alt_name: :category }).to_json
         
         render json: json, status: 200
       end
