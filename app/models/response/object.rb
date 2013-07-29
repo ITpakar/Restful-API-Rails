@@ -65,6 +65,10 @@ module Response
       @current_user ||= User.find(options[:current_user_id]) if options[:current_user_id].present?
     end
 
+    def relative_user
+      @relative_user ||= User.find(options[:relative_user_id]) if options[:relative_user_id].present?
+    end
+
     def activity_hash(activity = object)
       {
         activity_id: activity.id,
@@ -197,7 +201,7 @@ module Response
         birth_date: user.birth_date,
         gender: user.gender,
         active: user.active
-      }.update(user_is_current_user(user)).update(user_is_not_current_user(user))
+      }.update(user_is_current_user(user)).update(user_is_not_current_user(user)).update(user_is_not_relative_user(user))
     end
 
     protected
@@ -225,10 +229,21 @@ module Response
       def user_is_not_current_user(user)
         return {
           following_me: current_user.following_me?(user.id),
-          following_date: current_user.following_date(user.id),
+          following_me_date: current_user.following_date(user.id),
           am_follower: current_user.am_follower?(user.id),
-          follower_date: current_user.follower_date(user.id)
+          am_follower_date: current_user.follower_date(user.id),
         } if current_user.present? and user.id != current_user.id
+        
+        {}
+      end
+
+      def user_is_not_relative_user(user)
+        return {
+          following_them: relative_user.following_me?(user.id),
+          following_them_date: relative_user.following_date(user.id),
+          they_follow: relative_user.am_follower?(user.id),
+          they_follow_date: relative_user.follower_date(user.id),
+        } if relative_user.present? and user.id != relative_user.id
         
         {}
       end

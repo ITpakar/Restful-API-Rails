@@ -47,8 +47,8 @@ module Api
                 incoming_status: as_followed_by.try(:status),
                 following_me: (as_followed_by.present? && as_followed_by.status.eql?('approved')),
                 am_follower: (as_follower.present? && as_follower.status.eql?('approved')),
-                following_date: as_followed_by.try(:created_at).to_i,
-                follower_date: as_follower.try(:created_at).to_i
+                following_me_date: as_followed_by.try(:created_at).to_i,
+                am_follower_date: as_follower.try(:created_at).to_i
               },
               success: true
             }.to_json
