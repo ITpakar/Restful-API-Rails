@@ -65,10 +65,9 @@ class Activity < ActiveRecord::Base
   end
 
   def self.for_new_follower_to(user_id, actor_id)
-  	user = User.find(user_id)
-  	actor = User.find(actor_id)
+    user, actor, options = set_arguments_for_variables(user_id, actor_id, {})
 
-  	message = user.am_follower?(actor.id) ? "followed you back" : "followed you"
+    message = user.am_follower?(actor.id) ? "followed you back" : "followed you"
 
     activity = user.activities.for('new_follower').create(
       tagged_users: {
