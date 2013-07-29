@@ -72,8 +72,7 @@ class Activity < ActiveRecord::Base
     activity_with_user_and_actor(user, actor, {
       code: 100,
       description: 'new_follower',
-      body: "@[user:#{actor.id}] #{message}",
-      alert: "#{actor.full_name} #{message}"
+      message: message
     })
   end
 
@@ -83,74 +82,55 @@ class Activity < ActiveRecord::Base
     activity_with_user_and_actor(user, actor, {
       code: 101,
       description: 'fb_friend_joins',
-      body: "@[user:#{actor.id}] joined from Facebook",
-      alert: "#{actor.full_name} joined from Facebook"
+      message: "joined from Facebook"
     })
   end
 
   def self.for_likes_your_post_to(user_id, actor_id, options = {})
-    user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
-
-    activity_with_post(user, actor, options, {
+    activity_with_post(user_id, actor_id, options, {
       code: 102,
       description: 'likes_your_post',
-      body: "@[user:#{actor.id}] liked your quote",
-      alert: "#{actor.full_name} liked your quote"
+      message: "liked your quote"
     })
   end
 
   def self.for_comments_on_your_post_to(user_id, actor_id, options = {})
-    user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
-
-    activity_with_comment(user, actor, options, {
+    activity_with_comment(user_id, actor_id, options, {
       code: 103,
       description: 'comments_on_your_post',
-      body: "@[user:#{actor.id}] commented on your quotiful",
-      alert: "#{actor.full_name} commented on your quotiful"
+      message: "commented on your quotiful"
     })
   end
 
   def self.for_comments_after_you_to(user_id, actor_id, options = {})
-    user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
-
-    activity_with_comment(user, actor, options, {
+    activity_with_comment(user_id, actor_id, options, {
       code: 104,
       description: 'comments_after_you',
-      body: "@[user:#{actor.id}] commented after you",
-      alert: "#{actor.full_name} commented after you"
+      message: "commented after you"
     })
   end
 
   def self.for_requotes_your_post_to(user_id, actor_id, options = {})
-    user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
-
-    activity_with_post(user, actor, options, {
+    activity_with_post(user_id, actor_id, options, {
       code: 105,
       description: 'requotes_your_post',
-      body: "@[user:#{actor.id}] requoted your post",
-      alert: "#{actor.full_name} requoted your post"
+      message: "requoted your post"
     })
   end
 
   def self.for_tagged_in_post_to(user_id, actor_id, options = {})
-    user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
-
-    activity_with_post(user, actor, options, {
+    activity_with_post(user_id, actor_id, options, {
       code: 106,
       description: 'tagged_in_post',
-      body: "@[user:#{actor.id}] tagged you in a post",
-      alert: "#{actor.full_name} tagged you in a post"
+      message: "tagged you in a post"
     })
   end
 
   def self.for_tagged_in_comment_to(user_id, actor_id, options = {})
-    user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
-
-    activity_with_comment(user, actor, options, {
+    activity_with_comment(user_id, actor_id, options, {
       code: 107,
       description: 'tagged_in_comment',
-      body: "@[user:#{actor.id}] tagged you in a comment",
-      alert: "#{actor.full_name} tagged you in a comment"
+      message: "tagged you in a comment"
     })
   end
 
@@ -170,26 +150,14 @@ class Activity < ActiveRecord::Base
       post_id: options[:post_id]
     )
 
-    if user.notifications.post_gets_featured
-      user_tokens = user.devices.map(&:device_token)
-      user_tokens.each do |token|
-        PushNotification.new(token, "Your quotiful has been featured!", { 
-          identifier: 108, 
-          badge: user.activities.unread.size,
-          custom: activity.custom_payloads 
-        }).push
-      end
-    end
+    push_notification(user, activity, 108, "Your quotiful has been featured!") if user.notifications.post_gets_featured
   end
 
   def self.for_saves_your_quotiful_to(user_id, actor_id, options = {})
-    user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
-
-    activity_with_post(user, actor, options, {
+    activity_with_post(user_id, actor_id, options, {
       code: 109,
       description: 'saves_your_quotiful',
-      body: "@[user:#{actor.id}] saved your quotiful to their collection",
-      alert: "#{actor.full_name} saved your quotiful to their collection"
+      message: "saved your quotiful to their collection"
     })
   end
 
@@ -201,7 +169,7 @@ class Activity < ActiveRecord::Base
       [user, actor, options.symbolize_keys!]
     end
 
-    def activity_with_user_and_actor(user, actor, details)
+    def activity_with_user_and_actor(user, actor, details) 
       activity = user.activities.for(details[:description]).create(
         tagged_users: {
           actor.id => { 
@@ -219,13 +187,15 @@ class Activity < ActiveRecord::Base
             description: details[:description]
           }
         },
-        body: details[:body]
+        body: "@[user:#{actor.id}] #{details[:message]}",
       )
 
-      push_notification(user, activity, details) if user.notifications.send(details[:description])
+      push_notification(user, activity, details[:code], "#{actor.full_name} #{details[:message]}") if user.notifications.send(details[:description])
     end
 
-    def activity_with_post(user, actor, options, details)
+    def activity_with_post(user_id, actor_id, options, details)
+      user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
+
       activity = user.activities.for(details[:description]).create(
         tagged_users: { 
           actor.id => { 
@@ -244,14 +214,16 @@ class Activity < ActiveRecord::Base
           },
           post_id: options[:post_id]
         },
-        body: details[:body],
+        body: "@[user:#{actor.id}] #{details[:message]}",
         post_id: options[:post_id]
       )
 
-      push_notification(user, activity, details) if user.notifications.send(details[:description])
+      push_notification(user, activity, details[:code], "#{actor.full_name} #{details[:message]}") if user.notifications.send(details[:description])
     end
 
-    def activity_with_comment(user, actor, options, details)
+    def activity_with_comment(user_id, actor_id, options, details)
+      user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
+
       activity = user.activities.for(details[:description]).create(
         tagged_users: { 
           actor.id => { 
@@ -271,19 +243,19 @@ class Activity < ActiveRecord::Base
           comment_id: options[:comment_id],
           post_id: options[:post_id]
         },
-        body: details[:body],
+        body: "@[user:#{actor.id}] #{details[:message]}",
         comment_id: options[:comment_id],
         post_id: options[:post_id]
       )
 
-      push_notification(user, activity, details) if user.notifications.send(details[:description])
+      push_notification(user, activity, details[:code], "#{actor.full_name} #{details[:message]}") if user.notifications.send(details[:description])
     end
 
-    def push_notification(user, activity, details)
+    def push_notification(user, activity, code, alert)
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
-        PushNotification.new(token, details[:alert], { 
-          identifier: details[:code], 
+        PushNotification.new(token, alert, { 
+          identifier: code, 
           badge: user.activities.unread.size,
           custom: activity.custom_payloads 
         }).push
