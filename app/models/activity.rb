@@ -102,79 +102,23 @@ class Activity < ActiveRecord::Base
   def self.for_comments_on_your_post_to(user_id, actor_id, options = {})
     user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
 
-    activity = user.activities.for('comments_on_your_post').create(
-      tagged_users: { 
-        actor.id => { 
-          full_name: actor.full_name, 
-          user_id: actor.id 
-        } 
-      }, 
-      custom_payloads: {
-        "user:#{actor.id}" => {
-          full_name: actor.full_name, 
-          user_id: actor.id 
-        },
-        identifier: {
-          code: 103,
-          description: 'comments_on_your_post'
-        },
-        comment_id: options[:comment_id],
-        post_id: options[:post_id]
-      },
+    activity_with_comment(user, actor, options, {
+      code: 103,
+      description: 'comments_on_your_post',
       body: "@[user:#{actor.id}] commented on your quotiful",
-      comment_id: options[:comment_id],
-      post_id: options[:post_id]
-    )
-
-    if user.notifications.comments_on_your_post
-      user_tokens = user.devices.map(&:device_token)
-      user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} commented on your quotiful", { 
-          identifier: 103, 
-          badge: user.activities.unread.size,
-          custom: activity.custom_payloads 
-        }).push
-      end
-    end
+      alert: "#{actor.full_name} commented on your quotiful"
+    })
   end
 
   def self.for_comments_after_you_to(user_id, actor_id, options = {})
     user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
 
-    activity = user.activities.for('comments_after_you').create(
-      tagged_users: { 
-        actor.id => { 
-          full_name: actor.full_name, 
-          user_id: actor.id 
-        } 
-      },
-      custom_payloads: {
-        "user:#{actor.id}" => {
-          full_name: actor.full_name, 
-          user_id: actor.id 
-        },
-        identifier: {
-          code: 104,
-          description: 'comments_after_you'
-        },
-        comment_id: options[:comment_id],
-        post_id: options[:post_id]
-      }, 
+    activity_with_comment(user, actor, options, {
+      code: 104,
+      description: 'comments_after_you',
       body: "@[user:#{actor.id}] commented after you",
-      comment_id: options[:comment_id],
-      post_id: options[:post_id]
-    )
-
-    if user.notifications.comments_after_you
-      user_tokens = user.devices.map(&:device_token)
-      user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} commented after you", { 
-          identifier: 104, 
-          badge: user.activities.unread.size,
-          custom: activity.custom_payloads 
-        }).push
-      end
-    end
+      alert: "#{actor.full_name} commented after you"
+    })
   end
 
   def self.for_requotes_your_post_to(user_id, actor_id, options = {})
@@ -202,40 +146,12 @@ class Activity < ActiveRecord::Base
   def self.for_tagged_in_comment_to(user_id, actor_id, options = {})
     user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
 
-    activity = user.activities.for('tagged_in_comment').create(
-      tagged_users: { 
-        actor.id => { 
-          full_name: actor.full_name, 
-          user_id: actor.id 
-        } 
-      }, 
-      custom_payloads: {
-        "user:#{actor.id}" => {
-          full_name: actor.full_name, 
-          user_id: actor.id 
-        },
-        identifier: {
-          code: 107,
-          description: 'tagged_in_comment'
-        },
-        comment_id: options[:comment_id],
-        post_id: options[:post_id]
-      },
+    activity_with_comment(user, actor, options, {
+      code: 107,
+      description: 'tagged_in_comment',
       body: "@[user:#{actor.id}] tagged you in a comment",
-      comment_id: options[:comment_id],
-      post_id: options[:post_id]
-    )
-
-    if user.notifications.tagged_in_post
-      user_tokens = user.devices.map(&:device_token)
-      user_tokens.each do |token|
-        PushNotification.new(token, "#{actor.full_name} tagged you in a comment", { 
-          identifier: 107, 
-          badge: user.activities.unread.size,
-          custom: activity.custom_payloads 
-        }).push
-      end
-    end
+      alert: "#{actor.full_name} tagged you in a comment"
+    })
   end
 
   def self.for_post_gets_featured_to(user_id, options = {})
@@ -329,6 +245,34 @@ class Activity < ActiveRecord::Base
           post_id: options[:post_id]
         },
         body: details[:body],
+        post_id: options[:post_id]
+      )
+
+      push_notification(user, activity, details) if user.notifications.send(details[:description])
+    end
+
+    def activity_with_comment(user, actor, options, details)
+      activity = user.activities.for(details[:description]).create(
+        tagged_users: { 
+          actor.id => { 
+            full_name: actor.full_name, 
+            user_id: actor.id 
+          } 
+        }, 
+        custom_payloads: {
+          "user:#{actor.id}" => {
+            full_name: actor.full_name, 
+            user_id: actor.id 
+          },
+          identifier: {
+            code: details[:code],
+            description: details[:description]
+          },
+          comment_id: options[:comment_id],
+          post_id: options[:post_id]
+        },
+        body: details[:body],
+        comment_id: options[:comment_id],
         post_id: options[:post_id]
       )
 
