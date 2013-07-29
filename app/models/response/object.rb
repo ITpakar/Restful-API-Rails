@@ -121,15 +121,6 @@ module Response
       }.update(post_with_current_user_id(options[:current_user_id], post))
     end
 
-    def post_with_current_user_id(current_user_id, post)
-      return {} unless current_user_id.present?
-       
-      {
-        user_liked: post.liked_by?(options[:current_user_id]),
-        in_collection: post.in_collection_of?(options[:current_user_id])
-      }
-    end
-
     def preset_category_hash(preset_category = object)
       {
         id: preset_category.id,
@@ -206,26 +197,40 @@ module Response
         birth_date: user.birth_date,
         gender: user.gender,
         active: user.active
-      }
+      }.update(user_is_current_user(user)).update(user_is_not_current_user(user))
+    end
 
-      if current_user.present? and user.id == current_user.id
-        hash.update({
+    protected
+
+      def post_with_current_user_id(current_user_id, post)
+        return {} unless current_user_id.present?
+         
+        {
+          user_liked: post.liked_by?(options[:current_user_id]),
+          in_collection: post.in_collection_of?(options[:current_user_id])
+        }
+      end
+
+      def user_is_current_user(user)
+        return {
           notifications: user.notifications,
           email: user.email,
           authentication_token: user.authentication_token,
           badge_count: user.activities.unread.count
-        })
-      elsif current_user.present? and user.id != current_user.id
-        hash.update({
+        } if current_user.present? and user.id == current_user.id
+        
+        {}
+      end
+
+      def user_is_not_current_user(user)
+        return {
           following_me: current_user.following_me?(user.id),
           following_date: current_user.following_date(user.id),
           am_follower: current_user.am_follower?(user.id),
           follower_date: current_user.follower_date(user.id)
-        })
+        } if current_user.present? and user.id != current_user.id
+        
+        {}
       end
-
-      return hash
-    end
-
   end
 end
