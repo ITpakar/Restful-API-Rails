@@ -306,16 +306,7 @@ class Activity < ActiveRecord::Base
         body: details[:body]
       )
 
-      if user.notifications.send(details[:description])
-        user_tokens = user.devices.map(&:device_token)
-        user_tokens.each do |token|
-          PushNotification.new(token, details[:alert], { 
-            identifier: details[:code], 
-            badge: user.activities.unread.size,
-            custom: activity.custom_payloads 
-          }).push
-        end
-      end
+      push_notification(user, activity, details) if user.notifications.send(details[:description])
     end
 
     def activity_with_post(user, actor, options, details)
@@ -341,15 +332,17 @@ class Activity < ActiveRecord::Base
         post_id: options[:post_id]
       )
 
-      if user.notifications.send(details[:description])
-        user_tokens = user.devices.map(&:device_token)
-        user_tokens.each do |token|
-          PushNotification.new(token, details[:alert], { 
-            identifier: details[:code], 
-            badge: user.activities.unread.size,
-            custom: activity.custom_payloads 
-          }).push
-        end
+      push_notification(user, activity, details) if user.notifications.send(details[:description])
+    end
+
+    def push_notification(user, activity, details)
+      user_tokens = user.devices.map(&:device_token)
+      user_tokens.each do |token|
+        PushNotification.new(token, details[:alert], { 
+          identifier: details[:code], 
+          badge: user.activities.unread.size,
+          custom: activity.custom_payloads 
+        }).push
       end
     end
 
