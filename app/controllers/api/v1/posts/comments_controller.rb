@@ -7,26 +7,9 @@ module Api
 
         def index
           @comments = instance_post.comments.order("comments.created_at DESC")
-          json = Jbuilder.encode do |json|
-            json.data do |data|
-              data.comments do |comments|
-                comments.array! @comments do |comment|
-                  comments.body comment.body
-                  comments.description comment.description
-                  comments.post_id comment.commentable_id
-                  comments.commented_at comment.created_at.to_i
-                  comments.tagged_users comment.tagged_users
-                  comments.set! :user do
-                    comments.set! :user_id, comment.user_id
-                    comments.set! :full_name, comment.user.full_name
-                    comments.set! :profile_picture_url, comment.user.profile_picture_url
-                  end
-                end
-              end
-            end
-            json.success true
-          end
 
+          json = Response::Collection.new('comment', @comments, { current_user_id: current_user.id }).to_json
+          
           render json: json, status: 200
         end
 
@@ -42,15 +25,16 @@ module Api
           other_ids = instance_post.comments.map(&:user_id).uniq.compact - [commenter_id, poster_id]
           Resque.enqueue(Jobs::Notify, :comments_after_you, other_ids, commenter_id, {comment_id: comment.id, post_id: instance_post.id})
           
-          render json: comment.to_builder.target!, status: 200
+          json = Response::Object.new('comment', comment, { current_user_id: current_user.id }).to_json 
+          
+          render json: json, status: 200
         end
 
         def destroy
           comment = instance_post.comments.find(params[:id])
           comment.destroy if comment.present? and [instance_post.user_id, current_user.id].include?(comment.user_id)
-          json = {success: true, data: nil}.to_json
 
-          render json: json, status: 200
+          render json: {success: true, data: {}}.to_json, status: 200
         end
 
         protected

@@ -58,29 +58,4 @@ class Comment < ActiveRecord::Base
     end
     return str
   end
-
-  def to_builder
-    bool_errors = self.errors.present?
-    Jbuilder.new do |json|
-      json.data do |data|
-        data.comment do |comment|
-          comment.body self.body
-          comment.description self.description
-          comment.post_id self.commentable_id
-          comment.commented_at self.created_at.to_i
-          comment.tagged_users self.tagged_users
-          comment.set! :user do
-            comment.set! :user_id, self.user_id
-            comment.set! :full_name, self.user.full_name
-            comment.set! :profile_picture_url, self.user.profile_picture_url
-          end
-        end
-        
-        if bool_errors
-          data.errors self.errors.full_messages
-        end
-      end
-      json.success !bool_errors
-    end
-  end
 end

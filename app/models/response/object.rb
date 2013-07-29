@@ -86,6 +86,23 @@ module Response
       return hash
     end
 
+    def comment_hash(comment = object)
+      return {} unless comment.is_a?(Comment)
+
+      hash = {
+        id: comment.id
+        comment_id: comment.id,
+        post_id: comment.commentable_id,
+        body: comment.body,
+        description: comment.description,
+        commented_at: comment.created_at.to_i,
+        tagged_users: comment.tagged_users
+        user: user_hash(comment.user)
+      }
+
+      return hash
+    end
+
     def post_hash(post = object)
       return {} unless post.is_a?(Post)
 
