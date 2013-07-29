@@ -2,21 +2,7 @@ class Admin::PostsController < AdminController
   def index
     condition = params[:sort].present? and params[:sort].in?(%w(editors_pick likes_count))
     
-    if sort_by.eql?('likes_count')
-      case params[:by]
-      when 'today' then start_date = Time.zone.now.midnight
-      when 'yesterday'
-        start_date = Time.zone.now.yesterday.midnight
-        end_date = Time.zone.now.midnight
-      when 'last_week'
-        start_date = Time.zone.now.prev_week
-        end_date = Time.zone.now.prev_week.end_of_week
-      when 'this_month' then start_date = Time.zone.now.beginning_of_month
-      when 'this_year' then start_date = Time.zone.now.beginning_of_year
-      else
-        end_date = Time.zone.now
-      end
-    end
+    start_date, end_date = time_range_logic(params[:by]) if sort_by.eql?('likes_count')
     
     posts = Post.order(sort_by.to_sym => :desc, created_at: :desc).page(params[:page]).per(20)
     

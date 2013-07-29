@@ -4,7 +4,6 @@ gem 'rails', '3.2.13'
 gem 'mysql2'
 
 gem 'api-versions', '~> 0.2.0'
-gem 'jbuilder'
 gem 'hashie'
 gem 'kaminari'
 gem 'roo', git: 'https://github.com/Empact/roo.git'

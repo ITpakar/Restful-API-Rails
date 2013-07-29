@@ -181,7 +181,7 @@ module Response
     end
 
     def user_hash(user = object)
-      hash = {
+      {
         user_id: user.id,
         full_name: user.full_name,
         profile_picture_url: user.profile_picture_url,
