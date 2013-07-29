@@ -76,15 +76,13 @@ module Response
     end
 
     def author_hash(author = object)
-      return {} unless author.is_a?(Activity)
+      return {} unless author.is_a?(Author)
 
-      hash = {
+      {
         id: author.id,
         author_id: author.id,
         name: author.name
       }
-
-      return hash
     end
 
     def comment_hash(comment = object)
@@ -188,39 +186,33 @@ module Response
     def relationship_hash(relationship = object)
       return {} unless relationship.is_a?(Relationship)
 
-      hash = {
+      {
         status: relationship.status,
         follower_id: relationship.follower_id,
         following_id: relationship.user_id,
         followed_at: relationship.created_at.to_i
       }
-
-      return hash
     end
 
     def tag_hash(tag = object)
       return {} unless tag.is_a?(Tag)
 
-      hash = {
+      {
         id: tag.id,
         tag_id: tag.id,
         name: tag.name,
         posts_count: tag.posts.count
       }
-
-      return hash
     end
 
     def topic_hash(topic = object)
       return {} unless topic.is_a?(Topic)
 
-      hash = {
+      {
         id: topic.id,
         topic_id: topic.id,
         name: topic.name
       }
-
-      return hash
     end
 
     def user_hash(user = object)
