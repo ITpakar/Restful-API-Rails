@@ -3,39 +3,37 @@
   <head>
     <title>Not Found - Quotiful</title>
     <style type="text/css">
-      body {
-        
-      }
+      a, a:hover {color:#6bc9d1;text-decoration:none;}
+      p {margin:0;letter-spacing:1px;}
       .container {
         background-color: #fff;
         background-image: url('/tolkien.png');
-        background-size: 1445px;
+        background-position: -83px -169px;
         background-repeat:no-repeat;
-        width: 1445px;
-        margin: 560px auto 0;
-        font-size: 26px;
+        background-size: 1445px;
         color: #888;
-        text-align: center;
         font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        font-size: 26px;
         font-weight: 300;
+        height: 800px;
+        margin: 0 auto;
+        text-align: center;
+        width: 1280px;
       }
-
-      p {
-        margin: 0;
-        letter-spacing: 1px;
-      }
-
-      a, a:hover {
-        color: #6bc9d1;
-        text-decoration: none;
-      }
+      .text {margin:390px auto 0;}
+      .clearfix:before, .clearfix:after {content:" ";display:table;}
+      .clearfix:after {clear:both;}
+      .clearfix {*zoom:1;}
     </style>
   </head>
 
   <body>
     <div class="container">
-      <p>But in this case...you're lost. This page doesn't exist anymore!</p>
-      <p>Return to the <a href="http://www.quotiful.com/" class="teal">Quotiful</a> homepage or happy wandering!</p>
+      <div class="clearfix"></div>
+      <div class="text">
+        <p>But in this case...you're lost. This page doesn't exist anymore!</p>
+        <p>Return to the <a href="http://www.quotiful.com/" class="teal">Quotiful</a> homepage or happy wandering!</p>
+      </div>
     </div>
   </body>
 </html>
