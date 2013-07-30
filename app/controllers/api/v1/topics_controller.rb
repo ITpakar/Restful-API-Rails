@@ -15,7 +15,7 @@ module Api
 
       def show
         topic = Topic.find(params[:id])
-        @quotes = topic.quotes.page(@page).per(@count).order('body ASC')
+        @quotes = topic.quotes.page(@page).per(@count).order('author_last_name ASC, author_first_name ASC, body ASC')
           
         json = Response::Collection.new('quote', @quotes, {current_user_id: current_user.id, page: @page}).to_json
 

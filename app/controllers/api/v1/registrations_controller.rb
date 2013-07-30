@@ -12,7 +12,7 @@ module Api
           return login_facebook_user(user_params[:facebook_id]) if User.exists?(facebook_id: user_params[:facebook_id])
 
           generated_password = Devise.friendly_token.first(8)
-          user_params.update(password: generated_password, password_confirmation: generated_password)
+          user_params.update(password: generated_password, password_confirmation: generated_password, has_password: false)
         end
 
         if user_params[:facebook_id].present? and User.exists?(email: user_params[:email])

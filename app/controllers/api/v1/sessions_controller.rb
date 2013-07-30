@@ -17,7 +17,7 @@ module Api
           return
         end
         
-        invalid_login_attempt
+        invalid_login_attempt(user)
       end
       
       def destroy
@@ -28,9 +28,10 @@ module Api
      
       protected
        
-        def invalid_login_attempt
+        def invalid_login_attempt(user)
           warden.custom_failure!
-          render json: { success: false, message: "Error with your email or password" }, status: 200
+          message = user.has_password? ? "Error with your email or password" : "Please try signing in using Facebook"
+          render json: { success: false, message: message }, status: 200
         end
 
     end

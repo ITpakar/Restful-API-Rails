@@ -34,6 +34,8 @@
 #  birth_date             :date
 #  gender                 :string(255)
 #  facebook_token         :string(255)
+#  spam_count             :integer          default(0), not null
+#  has_password           :boolean          default(TRUE), not null
 #
 
 class User < ActiveRecord::Base
@@ -44,7 +46,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation,
-                  :full_name, :auto_accept, :facebook_id, :bio,
+                  :full_name, :auto_accept, :facebook_id, :has_password,
                   :website, :follows_count, :followed_by_count, :posts_count,
                   :profile_picture, :favorite_quote, :author_name, :notifications,
                   :profile_picture_url, :birth_date, :gender, :facebook_token, :spam_count
