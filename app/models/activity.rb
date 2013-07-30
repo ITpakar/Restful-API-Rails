@@ -163,13 +163,13 @@ class Activity < ActiveRecord::Base
 
   private
 
-    def set_arguments_for_variables(user_id, actor_id = nil, options = {})
+    def self.set_arguments_for_variables(user_id, actor_id = nil, options = {})
       user = User.find(user_id)
       actor = User.find(actor_id) if actor_id.present?
       [user, actor, options.symbolize_keys!]
     end
 
-    def activity_with_user_and_actor(user, actor, details) 
+    def self.activity_with_user_and_actor(user, actor, details) 
       activity = user.activities.for(details[:description]).create(
         tagged_users: {
           actor.id => { 
@@ -193,9 +193,10 @@ class Activity < ActiveRecord::Base
       apn_via_settings(user, actor, activity, details)
     end
 
-    def activity_with_post(user_id, actor_id, options, details)
+    def self.activity_with_post(user_id, actor_id, options, details)
       user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
 
+      
       activity = user.activities.for(details[:description]).create(
         activity_attributes_with_post(actor, details, options)
       )
@@ -203,7 +204,7 @@ class Activity < ActiveRecord::Base
       apn_via_settings(user, actor, activity, details)
     end
 
-    def activity_with_comment(user_id, actor_id, options, details)
+    def self.activity_with_comment(user_id, actor_id, options, details)
       user, actor, options = set_arguments_for_variables(user_id, actor_id, options.dup)
 
       activity = user.activities.for(details[:description]).create(
@@ -217,7 +218,7 @@ class Activity < ActiveRecord::Base
       apn_via_settings(user, actor, activity, details)
     end
 
-    def activity_attributes_with_post(actor, details, options)
+    def self.activity_attributes_with_post(actor, details, options)
       {
         tagged_users: { 
           actor.id => { 
@@ -241,11 +242,11 @@ class Activity < ActiveRecord::Base
       }
     end
 
-    def apn_via_settings(user, actor, activity, details)
+    def self.apn_via_settings(user, actor, activity, details)
       push_notification(user, activity, details[:code], "#{actor.full_name} #{details[:message]}") if user.notifications.send(details[:description])
     end
 
-    def push_notification(user, activity, code, alert)
+    def self.push_notification(user, activity, code, alert)
       user_tokens = user.devices.map(&:device_token)
       user_tokens.each do |token|
         PushNotification.new(token, alert, { 
