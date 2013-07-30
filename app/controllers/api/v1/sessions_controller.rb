@@ -30,8 +30,8 @@ module Api
        
         def invalid_login_attempt(user)
           warden.custom_failure!
-          message = user.has_password? ? "Error with your email or password" : "Please try signing in using Facebook"
-          render json: { success: false, message: message }, status: 200
+          code = user.has_password? ? 100 : 101
+          render json: { success: false, signin_error: code  }, status: 200
         end
 
     end
