@@ -58,6 +58,14 @@ module Api
         render json: json, status: 200
       end
 
+      def spam
+        instance_user.is_spammer!
+
+        json = Response::Object.new('user', instance_user, {current_user_id: current_user.id}).to_json
+        
+        render json: json, status: 200
+      end
+
       def recent
         @posts = instance_user.posts.order('posts.created_at DESC').page(params[:page]).per(params[:count] || 10)
 

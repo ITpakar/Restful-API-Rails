@@ -154,6 +154,8 @@ module Response
         quote_id: quote.id,
         author_full_name: quote.author_full_name,
         author_name: quote.author_name,
+        author_first_name: quote.author_first_name,
+        author_last_name: quote.author_last_name,
         body: quote.body
       }
     end

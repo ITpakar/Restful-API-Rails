@@ -67,6 +67,7 @@ Quotiful::Application.routes.draw do
             get 'followed_by', path: 'followed-by'
             get 'requested_by', path: 'requested-by'
             get 'recent'
+            put 'spam'
           end
 
           resources :collections, only: [:index, :create, :destroy], controller: 'users/collections'
