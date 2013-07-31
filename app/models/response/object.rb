@@ -83,7 +83,9 @@ module Response
       {
         id: author.id,
         author_id: author.id,
-        name: author.name
+        name: author.name,
+        first_name: author.first_name,
+        last_name: author.last_name
       }
     end
 

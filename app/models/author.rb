@@ -6,6 +6,8 @@
 #  name       :string(255)      default(""), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  first_name :string(255)
+#  last_name  :string(255)
 #
 
 class Author < ActiveRecord::Base
