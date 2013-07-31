@@ -174,6 +174,7 @@ class User < ActiveRecord::Base
 
   def deactivate!
     self.update_attribute(:active, false)
+    ::Users::Mailer.deactivation(@user.id).deliver
   end
 
   def facebook_id=(value)

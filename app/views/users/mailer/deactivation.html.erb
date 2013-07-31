@@ -12,11 +12,9 @@
   <body>
     <div style="font-family:Arial,sans-serif;font-size:10pt;">
       <p style="margin:10px auto;padding:0;color:#000000;">Hi <%= @user.full_name %></p>
-      <p style="margin:10px auto;padding:0;color:#000000;">We received a password reset request for your Quotiful account. To reset your password, use the link below:</p>
-      <p style="margin:10px auto;padding:0;color:#000000;"><%= link_to 'Change my password', edit_users_passwords_url(:reset_password_token => @user.reset_password_token) %></p>
-      <p style="margin:10px auto;padding:0;color:#000000;">If you didn't request this, please ignore this email. Your password won't change until you access the link above and create a new one.</p>
+      <p style="margin:10px auto;padding:0;color:#000000;">We’re sorry to inform you that your account has been deactivated due to multiple reports of spam and/or inappropriate content. You can view our Terms of Use to learn more about our policies and hopefully we’ll see you back on Quotiful again with updated content that fits the community standards.</p>
       <p style="margin:10px auto;padding:0;color:#000000;">
-        Thanks,<br>
+        Cheers,<br>
         The Quotiful Team<br>
         http://www.quotiful.com
       </p>
