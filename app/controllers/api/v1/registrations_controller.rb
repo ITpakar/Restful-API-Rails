@@ -23,8 +23,8 @@ module Api
         end
 
         if user.save
-          if user_params[:facebook_id].present? and params[:fb_friend_ids].present?
-            fb_friend_ids = params[:fb_friend_ids].dup
+          if user_params[:facebook_id].present? and params[:app_friend_ids].present?
+            fb_friend_ids = params[:app_friend_ids].dup
             fb_friend_ids = fb_friend_ids.is_a?(String) ? fb_friend_ids.split(',') : fb_friend_ids.to_a
 
             friends = User.where(facebook_id: fb_friend_ids)
