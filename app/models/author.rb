@@ -9,7 +9,7 @@
 #
 
 class Author < ActiveRecord::Base
-  attr_accessible :name
+  attr_accessible :name, :first_name, :last_name
 
   has_many :quotes, dependent: :nullify
 

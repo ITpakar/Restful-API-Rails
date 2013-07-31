@@ -57,8 +57,8 @@ class Activity < ActiveRecord::Base
       post_id = self.custom_payloads.symbolize_keys[:post_id]
       post = Post.where(id: post_id).first
       hash.update(
-        post: Response::Object.new('post', post).post_hash
-      )
+        post: Response::Object.new('post', post).post_hash(post)
+      ) if post.present?
     end
 
     return hash

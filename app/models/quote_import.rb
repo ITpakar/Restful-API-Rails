@@ -41,7 +41,10 @@ class QuoteImport
 
       EM::Synchrony::FiberIterator.new(Quote.all, 250).each do |quote|
         if quote.author_full_name.present?
-          author = Author.find_or_create_by_name(quote.author_full_name)
+          author = Author.find_or_initialize_by_name(quote.author_full_name)
+          author.first_name = quote.author_first_name
+          author.last_name = quote.author_last_name
+          author.save
           quote.author_id = author.id
           quote.save
         end
