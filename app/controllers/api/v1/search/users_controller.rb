@@ -25,7 +25,7 @@ module Api
         end
 
         def facebook
-          facebook_ids = params[:app_friend_ids].dup.to_s
+          facebook_ids = params[:ids].dup.to_s
 
           @users = User.where(facebook_id: facebook_ids.split(',')).order("full_name ASC").page(@page).per(10)
 
