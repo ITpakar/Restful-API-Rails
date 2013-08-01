@@ -8,7 +8,7 @@ class Users::Mailer < ActionMailer::Base
     mail(to: @user.email, subject: "Password reset on Quotiful")
   end
 
-  def deactivition(user_id)
+  def deactivation(user_id)
     @user = User.find(user_id)
 
     mail(to: @user.email, subject: "Quotiful Account Deactivated")
