@@ -15,6 +15,7 @@ module Api
               boost(5.0) { with(:follows_id, current_user.id) }
               boost(3.0) { with(:followers_id, current_user.id) }
             end
+            without :blockers_id, current_user.id
             without :full_name, nil
             paginate(page: page, per_page: count)
           end.results

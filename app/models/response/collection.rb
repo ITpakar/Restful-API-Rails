@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: collections
+#
+#  id         :integer          not null, primary key
+#  user_id    :integer          not null
+#  post_id    :integer          not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 require "em-synchrony"
 require "em-synchrony/fiber_iterator"
 require "thread"

@@ -1,7 +1,7 @@
 class CollectionObserver < ActiveRecord::Observer
   def after_create(collection)
     user = collection.user
-    user.increment!(:collection_count)
+    # user.increment!(:collection_count)
 
     post = collection.post
 
@@ -10,6 +10,6 @@ class CollectionObserver < ActiveRecord::Observer
 
   def before_destroy(collection)
     user = collection.user
-    user.decrement!(:collection_count)
+    # user.decrement!(:collection_count)
   end
 end

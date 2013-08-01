@@ -33,9 +33,10 @@ module Api
           as_follower = as_follower.new_record? ? nil : as_follower
           as_followed_by = as_followed_by.new_record? ? nil : as_followed_by
 
-          json = relationship_response(as_follower, as_followed_by)
+          hash = relationship_response(as_follower, as_followed_by)
+          hash.update(message: "User blocked") if params[:status].eql?('block')
 
-          render json: json, status: 200
+          render json: hash, status: 200
         end
 
         protected
@@ -51,7 +52,7 @@ module Api
                 am_follower_date: as_follower.try(:created_at).to_i
               },
               success: true
-            }.to_json
+            }
           end
 
           def ensure_params_id_exist

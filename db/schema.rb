@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130731081929) do
+ActiveRecord::Schema.define(:version => 20130731145113) do
 
   create_table "activities", :force => true do |t|
     t.text     "body"
@@ -261,16 +261,11 @@ ActiveRecord::Schema.define(:version => 20130731081929) do
     t.string   "profile_picture_name"
     t.boolean  "auto_accept",            :default => true
     t.string   "facebook_id"
-    t.text     "bio",                                      :null => false
     t.string   "website",                :default => "",   :null => false
-    t.integer  "follows_count",          :default => 0
-    t.integer  "followed_by_count",      :default => 0
-    t.integer  "posts_count",            :default => 0
     t.text     "favorite_quote"
     t.string   "author_name"
     t.boolean  "active",                 :default => true, :null => false
     t.datetime "deactivated_at"
-    t.integer  "collection_count",       :default => 0,    :null => false
     t.date     "birth_date"
     t.string   "gender"
     t.string   "facebook_token"

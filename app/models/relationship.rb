@@ -26,8 +26,8 @@ class Relationship < ActiveRecord::Base
 
     Resque.enqueue(Jobs::Notify, :new_follower, user.id, follower.id)
 
-    self.user.increment!(:followed_by_count)
-    self.follower.increment!(:follows_count)
+    # self.user.increment!(:followed_by_count)
+    # self.follower.increment!(:follows_count)
 
     # SOLR: save changes to solr index
     self.user.index
@@ -36,7 +36,19 @@ class Relationship < ActiveRecord::Base
   end
 
   def block!
-    update_attribute(:status, 'blocked')
+    set_block(user_id, follower_id)
+    set_block(follower_id, user_id)
+
+    # SOLR: save changes to solr index
+    self.user.index
+    self.follower.index
+    Sunspot.commit
+  end
+
+  def set_block(id1, id2)
+    block = Relationship.find_or_initialize_by_user_id_and_follower_id(id1, id2)
+    block.status = 'blocked'
+    block.save    
   end
 
   def request!

@@ -75,6 +75,8 @@ class User < ActiveRecord::Base
   # REFACTOR: naming problem, list of users that requested to follow current user
   has_many :requests, class_name: 'Relationship', conditions: { relationships: { status: 'requested' } }
   has_many :requested_by_users, through: :requests, source: :follower
+  has_many :blocks, class_name: 'Relationship', conditions: { relationships: { status: 'blocked' } }
+  has_many :blockers, through: :blocks, source: :follower
 
   validates_presence_of :full_name
   # validates_uniqueness_of :facebook_id
@@ -94,6 +96,10 @@ class User < ActiveRecord::Base
 
     integer :followers_id, multiple: true do
       followers.map { |relationship| relationship.follower_id }
+    end
+
+    integer :blockers_id, multiple: true do
+      blocks.map { |relationship| relationship.follower_id }
     end
 
     string :full_name do
