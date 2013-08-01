@@ -47,6 +47,9 @@ module Api
       def update
         user_params = params[:user].dup
         user_params.reject!{ |k,v| v.blank? }
+        user_params.reverse_update(author_name: params[:user][:author_name]) if params[:user].has_key?(:author_name)
+        user_params.reverse_update(favorite_quote: params[:user][:favorite_quote]) if params[:user].has_key?(:favorite_quote)
+        user_params.reverse_update(website: params[:user][:website]) if params[:user].has_key?(:website)
 
         cond1 = [:current_password, :password, :password_confirmation].all? { |sym| user_params.keys.include?(sym) }
         cond2 = current_user.valid_password?(user_params[:current_password])
