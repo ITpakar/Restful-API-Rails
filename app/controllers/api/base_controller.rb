@@ -39,7 +39,7 @@ module Api
       end
 
       def validate_authentication_token
-        ensure_authentication_token_exist && check_validity_of_authentication_token && is_current_user_active?
+        ensure_authentication_token_exist || check_validity_of_authentication_token || is_current_user_active?
       end
     
       def ensure_params_user_exist
