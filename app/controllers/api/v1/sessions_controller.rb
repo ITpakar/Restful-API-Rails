@@ -22,7 +22,6 @@ module Api
       end
       
       def destroy
-        # sign_out(current_user) if signed_in?
         Device.signs_out_in(params[:device_token])
         render json: { success: true }, status: 200
       end

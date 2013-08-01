@@ -47,7 +47,7 @@ class Admin::UsersController < AdminController
     user = User.find(params[:id])
     user.reactivate!
 
-    redirect_to admin_users_url(page: params[:page]), notice: "Successfully reactivated the user."
+    redirect_to :back, notice: "Successfully reactivated the user."
   end
 
   def destroy
