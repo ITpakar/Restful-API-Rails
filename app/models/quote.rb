@@ -59,7 +59,7 @@ class Quote < ActiveRecord::Base
   end
 
   def body=(raw)
-    value = raw.gsub("\u00e2\u0080\u0099", "'").gsub(/[\u201c\u201d]/, '"')
+    value = raw.gsub(/(\u00e2\u0080\u0099|\u0027)/, "'").gsub(/[\u201c\u201d]/, '"')
     write_attribute(:body, value)
   end
 
