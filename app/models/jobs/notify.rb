@@ -16,7 +16,7 @@ module Jobs
     def self.perform(alert_type, user_ids, actor_id = nil, custom = {})
       user_ids = user_ids.is_a?(Array) ? user_ids : user_ids.to_s.split(',')
       user_ids.each do |user_id|
-        next if user_id == actor_id
+        next if user_id.to_i == actor_id.to_i
         case alert_type.to_sym
         when :new_follower
           Activity.for_new_follower_to(user_id, actor_id)
