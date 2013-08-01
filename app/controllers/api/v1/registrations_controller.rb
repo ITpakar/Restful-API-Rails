@@ -32,14 +32,16 @@ module Api
           end
 
           user.using_this_device(params[:device_token])
+
           json = Response::Object.new('user', user, {current_user_id: user.id}).to_json
-          render json: json, status: 200
-          return
         else
           warden.custom_failure!
           json = Response::Object.new('user', user).to_json
-          render json: json, status: 200
         end
+
+        return deactivated_user unless user.active?
+        
+        render json: json, status: 200
       end
 
       def update

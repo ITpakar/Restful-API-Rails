@@ -16,6 +16,8 @@ module Api
           return
         end
         
+        return deactivated_user unless user.active?
+
         invalid_login_attempt(user)
       end
       

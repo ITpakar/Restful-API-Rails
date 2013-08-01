@@ -180,7 +180,7 @@ class User < ActiveRecord::Base
 
   def deactivate!
     self.update_attribute(:active, false)
-    ::Users::Mailer.deactivation(@user.id).deliver
+    Users::Mailer.deactivation(self.id).deliver
   end
 
   def facebook_id=(value)
