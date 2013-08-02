@@ -147,6 +147,8 @@ class User < ActiveRecord::Base
       eval %Q{ hash.#{noty} = ['1', 1, true].member?(setting.#{noty}) }
     end
 
+    hash.tagged_in_comment = hash.tagged_in_post
+
     return hash
   end
 
