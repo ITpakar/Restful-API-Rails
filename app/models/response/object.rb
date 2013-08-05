@@ -224,7 +224,8 @@ module Response
           notifications: user.notifications,
           email: user.email,
           authentication_token: user.authentication_token,
-          badge_count: user.activities.unread.count
+          badge_count: user.activities.unread.count,
+          has_password: user.has_password?
         } if current_user.present? and user.id == current_user.id
         
         {}
