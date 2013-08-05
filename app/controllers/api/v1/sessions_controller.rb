@@ -8,15 +8,14 @@ module Api
       def create
         user = User.find_for_database_authentication(email: params[:user][:email])
         return invalid_login_attempt unless user
-     
+        return deactivated_user unless user.active?
+
         if user.valid_password?(params[:user][:password])
           user.using_this_device(params[:device_token])
           json = Response::Object.new('user', user, {current_user_id: user.id}).to_json
           render json: json, status: 200
           return
         end
-        
-        return deactivated_user unless user.active?
 
         invalid_login_attempt(user)
       end
