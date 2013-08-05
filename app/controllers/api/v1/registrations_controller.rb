@@ -70,7 +70,7 @@ module Api
           json = Response::Object.new('user', current_user, {current_user_id: current_user.id}).to_json
           render json: json, status: 200
         else
-          render json: { success: false, message: "Error with your password" }, status: 200
+          render json: { success: false, message: "#{cond1} #{cond2} #{cond3} #{cond4}" }, status: 200
         end
       end
 
