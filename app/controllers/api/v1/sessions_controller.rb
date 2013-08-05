@@ -2,7 +2,7 @@ module Api
   module V1
     class SessionsController < Api::BaseController
       
-      skip_before_filter :validate_authentication_token, except: [:destroy]
+      skip_before_filter :validate_authentication_token
       before_filter :ensure_params_user_exist, only: [:create]
      
       def create

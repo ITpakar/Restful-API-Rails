@@ -79,6 +79,7 @@ module Api
         def login_facebook_user(facebook_id)
           user = User.find_by_facebook_id(facebook_id)
           if user.present?
+            return deactivated_user unless user.active?
             user.using_this_device(params[:device_token])
 
             json = Response::Object.new('user', user, {current_user_id: user.id}).to_json
