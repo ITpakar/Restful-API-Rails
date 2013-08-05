@@ -56,6 +56,8 @@ module Api
         cond3 = user_params[:password] == user_params[:password_confirmation]
         cond4 = [:current_password, :password, :password_confirmation].any? { |sym| user_params.keys.include?(sym) }
 
+        user_params.update(has_password: true) if cond1 and cond2 and cond3
+
         if (cond1 and cond2 and cond3) or !cond4
           current_user.update_attributes(user_params)
           json = Response::Object.new('user', current_user, {current_user_id: current_user.id}).to_json
