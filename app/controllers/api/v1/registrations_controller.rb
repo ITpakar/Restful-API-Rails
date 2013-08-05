@@ -51,10 +51,17 @@ module Api
           user_params.reverse_update(key => params[:user][key]) if params[:user].has_key?(key)  
         end
 
-        cond1 = [:password, :password_confirmation].all? { |sym| user_params.keys.include?(sym) }
+        cond1 = true
+        cond4 = false
+
+        [:password, :password_confirmation].each do |key|
+          cond1 &= user_params.has_key?(key)
+          cond4 |= user_params.has_key?(key)
+        end
+
         cond2 = current_user.valid_password?(user_params[:current_password]) or !current_user.has_password?
         cond3 = user_params[:password] == user_params[:password_confirmation]
-        cond4 = [:current_password, :password, :password_confirmation].any? { |sym| user_params.keys.include?(sym) }
+        cond4 |= user_params.has_key?(:current_password)
 
         user_params.update(has_password: true) if cond1 and cond2 and cond3
 
