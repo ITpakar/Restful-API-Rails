@@ -59,8 +59,8 @@ module Api
           cond4 |= user_params.has_key?(key)
         end
 
-        cond2 = current_user.valid_password?(user_params[:current_password]) or !current_user.has_password?
-        cond3 = user_params[:password] == user_params[:password_confirmation]
+        cond2 = (current_user.valid_password?(user_params[:current_password]) || !current_user.has_password?)
+        cond3 = (user_params[:password] == user_params[:password_confirmation])
         cond4 |= user_params.has_key?(:current_password)
 
         user_params.update(has_password: true) if cond1 and cond2 and cond3
