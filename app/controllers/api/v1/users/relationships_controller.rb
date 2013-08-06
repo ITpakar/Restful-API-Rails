@@ -30,16 +30,27 @@ module Api
             as_follower.unfollow!
           end
 
-          as_follower = as_follower.new_record? ? nil : as_follower
-          as_followed_by = as_followed_by.new_record? ? nil : as_followed_by
+          if params[:status].eql?('block')
+            as_follower = Relationship.find_or_initialize_by_user_id_and_follower_id(user_id: instance_user.id, follower_id: current_user.id)
+            as_followed_by = Relationship.find_or_initialize_by_user_id_and_follower_id(user_id: current_user.id, follower_id: instance_user.id)
+            message = {message: "User blocked"}
+          else
+            as_follower = as_follower.new_record? ? nil : as_follower
+            as_followed_by = as_followed_by.new_record? ? nil : as_followed_by
+            message = {}
+          end
 
           hash = relationship_response(as_follower, as_followed_by)
-          hash.update(message: "User blocked") if params[:status].eql?('block')
+          hash.update(message) 
 
           render json: hash, status: 200
         end
 
         protected
+
+          def blocked_response()
+            
+          end
 
           def relationship_response(as_follower, as_followed_by)
             {
