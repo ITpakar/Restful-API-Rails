@@ -116,6 +116,7 @@ body {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#61D2D6', endColorstr='#54B0B3', GradientType=0);
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
+
 .btn-download:hover,
 .btn-download:active,
 .btn-download.active,
@@ -135,4 +136,40 @@ body {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ED264B', endColorstr='#EA3556', GradientType=0);
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.clearfix{*zoom:1;}.clearfix:before,.clearfix:after{display:table;content:"";line-height:0;}
+.clearfix:after{clear:both;}
+
+@media only screen and (max-width:480px) {
+  .container {display:none;visibility:hidden;}
+  .mobile {width:320px;margin:0 auto;display: block;visibility: visible;}
+  .mobile .media {
+    width: 320px;
+    height:320px;
+    margin:0 auto;
+    background-image:linear-gradient(bottom, #E53C53 0%, #C3C3C3 50%, #6CCAD1 100%);
+    background-image:-o-linear-gradient(bottom, #E53C53 0%, #C3C3C3 50%, #6CCAD1 100%);
+    background-image:-moz-linear-gradient(bottom, #E53C53 0%, #C3C3C3 50%, #6CCAD1 100%);
+    background-image:-webkit-linear-gradient(bottom, #E53C53 0%, #C3C3C3 50%, #6CCAD1 100%);
+    background-image:-ms-linear-gradient(bottom, #E53C53 0%, #C3C3C3 50%, #6CCAD1 100%);
+    background-image:-webkit-gradient(linear,left bottom,left top,color-stop(0, #E53C53),color-stop(0.5, #C3C3C3),color-stop(1, #6CCAD1));
+  }
+  .mobile .media img {width:310px;margin:5px;}
+  .mobile .info {width: 320px;margin:0 auto;text-align:center;}
+  .mobile .info .user {margin:15px auto;border-bottom:1px solid #CCC}
+  .mobile .info .user img {width:64px;margin:0 auto;}
+  .mobile .info .user h3 {color:#6CCAD1;text-transform:uppercase;font-size:18px;}
+  .mobile .info .description {margin:30px auto 0px;min-height:120px;border-bottom:1px solid #CCC;}
+  .mobile .info .description h4 {font-weight:normal;}
+  .mobile .info .download {background-color:#EEE;margin:0 auto;padding:10px auto;}
+  .mobile .info .download h5 {float:left;color:#AAA;font-size:10px;margin:20px 5px 0 15px;}
+  .mobile .info .download p {float:left;}
+  .mobile .info .download p img {width:100px;margin:20px 0;}
+  .mobile .info .download p .btn-download {width:100px;font-size:12px;padding:5px;font-weight:bold;margin:15px 0 0 10px;}
+}
+
+@media only screen and (min-width:480px) {
+  .container {display:block;visibility:visible;}
+  .mobile {display:none;visibility:hidden;}
 }

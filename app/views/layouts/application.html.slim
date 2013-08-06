@@ -9,10 +9,11 @@ html
     = favicon_link_tag
     = csrf_meta_tags
     = render "shared/opengraph" if @ogtags.present?
-    meta content="width=device-width, initial-scale=1" name="viewport"
+    meta name="viewport" content="user-scalable=no, width=device-width"
   body
     .container
       .row
         .span12
           = render 'shared/alert_messages' if notice.present? or alert.present?
           = yield
+    = yield(:mobile)
