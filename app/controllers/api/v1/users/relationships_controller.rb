@@ -48,10 +48,6 @@ module Api
 
         protected
 
-          def blocked_response()
-            
-          end
-
           def relationship_response(as_follower, as_followed_by)
             {
               data: {
