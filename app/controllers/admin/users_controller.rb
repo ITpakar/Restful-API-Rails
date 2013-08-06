@@ -29,6 +29,13 @@ class Admin::UsersController < AdminController
     end
   end
 
+  def suggest
+    @user = User.find(params[:id])
+    @user.update_attribute(:suggested, params[:sg].eql?('true'))
+
+    redirect_to :back, notice: "Successfully updated the suggested users list."
+  end
+
   def spammers
     @users = User.spammers.page(params[:page]).per(15)
   end

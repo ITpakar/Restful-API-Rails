@@ -204,6 +204,7 @@ module Response
         collection_count: user.collections.count,
         birth_date: user.birth_date,
         gender: user.gender,
+        suggested: user.suggested,
         active: user.active
       }.update(user_is_current_user(user)).update(user_is_not_current_user(user))
     end

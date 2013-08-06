@@ -39,6 +39,7 @@ Quotiful::Application.routes.draw do
         post :reactivate
         get :followers
         get :following
+        put :suggest
       end
     end
     resources :hashtags, only: [:index, :show]
@@ -59,6 +60,7 @@ Quotiful::Application.routes.draw do
         resources :users, only: [:show] do
           collection do
             post 'email_check'
+            get 'suggested'
           end
 
           member do

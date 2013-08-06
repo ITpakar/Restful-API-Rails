@@ -34,6 +34,16 @@ module Api
         render json: json, status: 200
       end
 
+      def suggested
+        page = params[:page] || 1
+        count = params[:count] || 10
+        @users = User.suggested.page(page).per(count)
+
+        json = Response::Collection.new('user', @users, {current_user_id: current_user.id, page: params[:page]}).to_json
+
+        render json: json, status: 200
+      end
+
       def follows
         @users = instance_user.followed_by_self.includes(:follows, :followers)
 

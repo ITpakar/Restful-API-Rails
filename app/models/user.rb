@@ -21,21 +21,17 @@
 #  profile_picture_name   :string(255)
 #  auto_accept            :boolean          default(TRUE)
 #  facebook_id            :string(255)
-#  bio                    :text             default(""), not null
 #  website                :string(255)      default(""), not null
-#  follows_count          :integer          default(0)
-#  followed_by_count      :integer          default(0)
-#  posts_count            :integer          default(0)
 #  favorite_quote         :text
 #  author_name            :string(255)
 #  active                 :boolean          default(TRUE), not null
 #  deactivated_at         :datetime
-#  collection_count       :integer          default(0), not null
 #  birth_date             :date
 #  gender                 :string(255)
 #  facebook_token         :string(255)
 #  spam_count             :integer          default(0), not null
 #  has_password           :boolean          default(TRUE), not null
+#  suggested              :boolean          default(FALSE), not null
 #
 
 class User < ActiveRecord::Base
@@ -49,7 +45,7 @@ class User < ActiveRecord::Base
                   :full_name, :auto_accept, :facebook_id, :has_password,
                   :website, :follows_count, :followed_by_count, :posts_count,
                   :profile_picture, :favorite_quote, :author_name, :notifications,
-                  :profile_picture_url, :birth_date, :gender, :facebook_token, :spam_count
+                  :profile_picture_url, :birth_date, :gender, :facebook_token, :spam_count, :suggested
 
   before_save :ensure_authentication_token
 
@@ -82,6 +78,7 @@ class User < ActiveRecord::Base
   # validates_uniqueness_of :facebook_id
 
   scope :spammers, where("users.spam_count > 0").order('users.active ASC, users.spam_count DESC')
+  scope :suggested, where("users.suggested = ?", true).order('users.updated_at DESC')
 
   searchable do
     text :full_name do

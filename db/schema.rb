@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130731145113) do
+ActiveRecord::Schema.define(:version => 20130806122510) do
 
   create_table "activities", :force => true do |t|
     t.text     "body"
@@ -243,8 +243,8 @@ ActiveRecord::Schema.define(:version => 20130731145113) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "",   :null => false
-    t.string   "encrypted_password",     :default => "",   :null => false
+    t.string   "email",                  :default => "",    :null => false
+    t.string   "encrypted_password",     :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -254,23 +254,24 @@ ActiveRecord::Schema.define(:version => 20130731145113) do
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.string   "authentication_token"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.string   "full_name"
     t.string   "profile_picture_uid"
     t.string   "profile_picture_name"
     t.boolean  "auto_accept",            :default => true
     t.string   "facebook_id"
-    t.string   "website",                :default => "",   :null => false
+    t.string   "website",                :default => "",    :null => false
     t.text     "favorite_quote"
     t.string   "author_name"
-    t.boolean  "active",                 :default => true, :null => false
+    t.boolean  "active",                 :default => true,  :null => false
     t.datetime "deactivated_at"
     t.date     "birth_date"
     t.string   "gender"
     t.string   "facebook_token"
-    t.integer  "spam_count",             :default => 0,    :null => false
-    t.boolean  "has_password",           :default => true, :null => false
+    t.integer  "spam_count",             :default => 0,     :null => false
+    t.boolean  "has_password",           :default => true,  :null => false
+    t.boolean  "suggested",              :default => false, :null => false
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
