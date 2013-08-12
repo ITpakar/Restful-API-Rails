@@ -11,11 +11,13 @@
 #  source            :text
 #  author_first_name :string(255)
 #  author_last_name  :string(255)
+#  author_full_name  :string(255)
 #
 
 class Quote < ActiveRecord::Base
-  attr_accessible :author_id, :body, :tags, :source, :author_first_name, :author_last_name
+  attr_accessible :author_id, :body, :tags, :source, :author_first_name, :author_last_name, :author_full_name
 
+  before_save :initialize_full_name
   before_save :associate_with_author
 
   belongs_to :author
@@ -46,9 +48,9 @@ class Quote < ActiveRecord::Base
     return ''
   end
 
-  def author_full_name
-    [self.author_first_name, self.author_last_name].join(' ').downcase.titleize.strip
-  end
+  # def author_full_name
+  #   [self.author_first_name, self.author_last_name].join(' ').downcase.titleize.strip
+  # end
 
   def author_first_name=(value)
     write_attribute(:author_first_name, value.strip) if value.present?
@@ -83,6 +85,11 @@ class Quote < ActiveRecord::Base
   end
 
   protected
+
+    def initialize_full_name
+      full_name = [self.author_first_name, self.author_last_name].join(' ').downcase.titleize.strip
+      write_attribute(:author_full_name, full_name)
+    end
 
     def associate_with_author
       if self.author_full_name.present?

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130806122510) do
+ActiveRecord::Schema.define(:version => 20130811202918) do
 
   create_table "activities", :force => true do |t|
     t.text     "body"
@@ -182,6 +182,7 @@ ActiveRecord::Schema.define(:version => 20130806122510) do
     t.text     "source"
     t.string   "author_first_name"
     t.string   "author_last_name"
+    t.string   "author_full_name"
   end
 
   add_index "quotes", ["author_id"], :name => "index_quotes_on_author_id"

@@ -6,7 +6,7 @@ module Api
       before_filter :validate_author_object, only: [:show]
       
       def index
-        @authors = Author.page(@page).per(@count).order('last_name ASC, first_name ASC')
+        @authors = Author.page(@page).per(@count).order('name ASC')
 
         json = Response::Collection.new('author', @authors, { page: @page }).to_json
 
@@ -15,7 +15,7 @@ module Api
 
       def show
         author = Author.find(params[:id])
-        @quotes = author.quotes.page(@page).per(@count).order('author_last_name ASC, author_first_name ASC, body ASC')
+        @quotes = author.quotes.page(@page).per(@count).order('author_full_name ASC, body ASC')
 
         json = Response::Collection.new('quote', @quotes, {current_user_id: current_user.id, page: @page}).to_json
         
