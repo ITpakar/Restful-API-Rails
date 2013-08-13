@@ -49,10 +49,13 @@ module Api
         protected
 
           def relationship_response(as_follower, as_followed_by)
+            as_follower_status = as_follower.present? ? as_follower.status : 'not_following'
+            as_followed_by_status = as_followed_by.present? ? as_followed_by.status : 'not_following'
+            
             {
               data: {
-                outgoing_status: as_follower.try(:status),
-                incoming_status: as_followed_by.try(:status),
+                outgoing_status: as_follower_status,
+                incoming_status: as_followed_by_status,
                 following_me: (as_followed_by.present? && as_followed_by.status.eql?('approved')),
                 am_follower: (as_follower.present? && as_follower.status.eql?('approved')),
                 following_me_date: as_followed_by.try(:created_at).to_i,
