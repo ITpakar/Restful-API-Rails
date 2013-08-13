@@ -49,6 +49,8 @@ module Api
         protected
 
           def relationship_response(as_follower, as_followed_by)
+            as_follower = as_follower.reload rescue nil
+            as_follower = as_followed_by.reload rescue nil
             as_follower_status = as_follower.present? ? as_follower.status : 'not_following'
             as_followed_by_status = as_followed_by.present? ? as_followed_by.status : 'not_following'
             
