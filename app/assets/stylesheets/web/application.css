@@ -157,9 +157,9 @@ body {
   }
   .mobile .media img {width:310px;margin:5px;}
   .mobile .info {width: 320px;margin:0 auto;text-align:center;}
-  .mobile .info .user {margin:15px auto;border-bottom:1px solid #CCC}
-  .mobile .info .user img {width:64px;margin:0 auto;}
-  .mobile .info .user h3 {color:#6CCAD1;text-transform:uppercase;font-size:18px;}
+  .mobile .info .user {margin:15px auto;}
+  .mobile .info .user img {-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px;width:64px;margin:0 auto;}
+  .mobile .info .user h3 {color:#6CCAD1;font-size:18px;font-weight:normal;}
   .mobile .info .description {margin:30px auto 0px;min-height:120px;border-bottom:1px solid #CCC;}
   .mobile .info .description h4 {font-weight:normal;}
   .mobile .info .download {background-color:#EEE;margin:0 auto;padding:10px auto;}
