@@ -1,11 +1,11 @@
 class Admin::PostsController < AdminController
   def index
-    condition = params[:sort].present? and params[:sort].in?(%w(editors_pick likes_count))
-    
     start_date, end_date = time_range_logic(params[:by]) if sort_by.eql?('likes_count')
     
-    posts = Post.order(sort_by.to_sym => :desc, created_at: :desc).page(params[:page]).per(20)
-    
+    sort_str = "#{sort_by} DESC"
+
+    posts = Post.order(sort_str).order('created_at DESC').page(params[:page]).per(20)
+
     if end_date.present? 
       posts = posts.where("created_at <= ?", end_date)
     end
@@ -38,8 +38,6 @@ class Admin::PostsController < AdminController
   end
 
   def flagged
-    condition = params[:sort].present? and params[:sort].in?(%w(editors_pick likes_count))
-    
     @posts = Post.flagged.order(sort_by.to_sym => :desc, created_at: :desc).page(params[:page]).per(20)
   end
 
