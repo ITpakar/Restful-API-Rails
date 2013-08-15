@@ -13,20 +13,32 @@
         margin: 0 auto;
         text-align: center;
       }
+
+      .footer {
+        background-image: url('/logo-text.png');
+        background-repeat:no-repeat;
+        background-size: cover;
+        margin: 0 auto;
+      }
       
       .clearfix:before, .clearfix:after {content:" ";display:table;}
       .clearfix:after {clear:both;}
       .clearfix {*zoom:1;}
       @media only screen and (min-width:320px) {
-        p {margin:0;}
+        p {margin:0;letter-spacing:0;}
         .container {
-          background-size: 280px;
+          background-size: 300px;
           background-position: auto;
-          width: 280px;
+          width: 300px;
           height: 568px;
-          font-size: 8px;
+          font-size: 18px;
         }
         .text {margin:95px auto 0;}
+        .footer {
+          width: 106px;
+          height: 20px;
+          margin-top: 20px;
+        }
       }
       @media only screen and (min-width:780px) {
         p {margin:0;letter-spacing:1px;}
@@ -39,6 +51,11 @@
           font-size: 26px;
         }
         .text {margin:390px auto 0;}
+        .footer {
+          width: 180px;
+          height: 35px;
+          margin-top: 80px;
+        }
       }
     </style>
     <meta name = "viewport" content = "user-scalable=no, width=device-width">
@@ -51,6 +68,7 @@
         <p>But in this case...you're lost. This page doesn't exist anymore!</p>
         <p>Return to the <a href="http://www.quotiful.com/" class="teal">Quotiful</a> homepage or happy wandering!</p>
       </div>
+      <div class="footer"></div>
     </div>
   </body>
 </html>
