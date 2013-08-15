@@ -78,7 +78,8 @@ class User < ActiveRecord::Base
   # validates_uniqueness_of :facebook_id
 
   scope :spammers, where("users.spam_count > 0").order('users.active ASC, users.spam_count DESC')
-  scope :suggested, where("users.suggested = ?", true).order('users.updated_at DESC')
+  scope :suggested, where("users.suggested = ?", true)
+  scope :active, where("users.active = ?", true)
 
   searchable do
     text :full_name do

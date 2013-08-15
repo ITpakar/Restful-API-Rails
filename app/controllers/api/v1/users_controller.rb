@@ -37,7 +37,7 @@ module Api
       def suggested
         page = params[:page] || 1
         count = params[:count] || 10
-        @users = User.suggested.page(page).per(count)
+        @users = User.active.suggested.page(page).per(count).order('users.updated_at DESC')
 
         json = Response::Collection.new('user', @users, {current_user_id: current_user.id, page: params[:page]}).to_json
 
