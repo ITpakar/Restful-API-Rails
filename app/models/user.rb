@@ -88,6 +88,8 @@ class User < ActiveRecord::Base
 
     integer :id
 
+    boolean :active
+
     integer :follows_id, multiple: true do
       follows.map { |relationship| relationship.user_id } rescue []
     end
