@@ -11,6 +11,6 @@ staging:
   port: 6379
   db: 3
 production:
-  host: localhost
+  host: dbs0.quotiful.com
   port: 6379
   db: 4

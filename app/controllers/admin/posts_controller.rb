@@ -25,7 +25,7 @@ class Admin::PostsController < AdminController
       post.unpick!
     end
 
-    redirect_to admin_posts_path(page: params[:page], sort: params[:sort])
+    redirect_to :back, page: params[:page], sort: params[:sort], by: params[:by]
   end
 
   def destroy
