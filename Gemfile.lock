@@ -241,6 +241,7 @@ DEPENDENCIES
   doorkeeper (~> 0.6.7)
   dragonfly (~> 0.9.15)
   em-synchrony (~> 1.0.3)
+  fog
   grocer
   hashie
   jquery-rails
