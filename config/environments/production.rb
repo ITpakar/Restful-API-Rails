@@ -1,4 +1,4 @@
-DEFAULT_HOST = 'quotiful.sourcepadstage.com'
+DEFAULT_HOST = 'beta.quotiful.com'
 
 Quotiful::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
