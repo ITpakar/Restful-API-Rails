@@ -1,7 +1,7 @@
 defaults: &defaults
   fog_provider: 'AWS'
   aws_access_key_id: "AKIAJ5PJULN75BYPMHTQ"
-  aws_secret_access_key: "iz0qp0zeUIHelqRb7EjAUafh7U38j5"
+  aws_secret_access_key: "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"
   # To use AWS reduced redundancy storage.
   # aws_reduced_redundancy: true
   fog_directory: "nicephore"
