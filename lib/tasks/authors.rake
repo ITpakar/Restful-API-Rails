@@ -4,7 +4,7 @@ namespace :author do
     quotes = Quote.all
     quotes.each do |quote|
       full_name = [quote.author_first_name, quote.author_last_name].join(' ').downcase.titleize.strip
-      quote.write_attribute(:author_full_name, full_name)    
+      quote.update_attributes(author_full_name: full_name)    
     end
   end  
 end
