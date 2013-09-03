@@ -48,6 +48,11 @@ class Comment < ActiveRecord::Base
     end
   end
 
+  def body=(value)
+    encoded_str = value.force_encoding(::Encoding::UTF_8) if value.respond_to?(:force_encoding)
+    write_attribute(:body, encoded_str)
+  end
+
   def description
     str = self.body.dup 
     if self.tagged_users.present? and self.tagged_users.is_a?(Hash)
