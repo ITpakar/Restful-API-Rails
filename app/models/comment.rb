@@ -49,16 +49,17 @@ class Comment < ActiveRecord::Base
   end
 
   def body=(value)
-    encoded_str = value.force_encoding(::Encoding::UTF_8) if value.respond_to?(:force_encoding)
+    encoded_str = Emoji.to_string(value)
     write_attribute(:body, encoded_str)
   end
 
   def description
-    str = self.body.dup 
+    str = self.body.dup
     if self.tagged_users.present? and self.tagged_users.is_a?(Hash)
       self.tagged_users.keys.each do |user_id|
         full_name = User.where(id: user_id).first.try(:full_name)
         str = str.gsub("@[user:#{user_id}]", "@#{full_name}")
+        str = Emoji.to_unicode(str)
       end
     end
     return str
