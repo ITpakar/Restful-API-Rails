@@ -11,7 +11,7 @@ class Common
     end
   end
 
-  def generate_image_url(image_path)
+  def self.generate_image_url(image_path)
     if image_path.start_with?('http', 'https') or Rails.env.eql?('development')
       image_path
     else
