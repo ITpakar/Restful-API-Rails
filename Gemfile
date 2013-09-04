@@ -1,7 +1,9 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
-gem 'mysql2'
+# gem 'mysql2'
+# changed to pg due to unable to store emoji characters
+gem 'pg'
 
 gem 'api-versions', '~> 0.2.0'
 gem 'hashie'

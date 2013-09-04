@@ -51,7 +51,8 @@ class Comment < ActiveRecord::Base
   end
 
   def body=(value)
-    encoded_str = Emoji.to_string(value)
+    # encoded_str = Emoji.to_string(value)
+    encoded_str = value
     write_attribute(:body, encoded_str)
   end
 
@@ -61,7 +62,8 @@ class Comment < ActiveRecord::Base
       self.tagged_users.keys.each do |user_id|
         full_name = User.where(id: user_id).first.try(:full_name)
         str = str.gsub("@[user:#{user_id}]", "@#{full_name}")
-        str = Emoji.to_unicode(str)
+        # str = Emoji.to_unicode(str)
+        str = str
       end
     end
     return str

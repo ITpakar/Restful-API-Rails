@@ -130,8 +130,8 @@ ActiveRecord::Schema.define(:version => 20130902214813) do
   add_index "oauth_applications", ["uid"], :name => "index_oauth_applications_on_uid", :unique => true
 
   create_table "posts", :force => true do |t|
-    t.text     "quote",                                    :null => false
-    t.text     "caption",                                  :null => false
+    t.text     "quote",                 :default => "",    :null => false
+    t.text     "caption",               :default => "",    :null => false
     t.string   "quote_image_uid"
     t.string   "quote_image_name"
     t.boolean  "editors_pick",          :default => false, :null => false
@@ -174,11 +174,11 @@ ActiveRecord::Schema.define(:version => 20130902214813) do
   add_index "preset_images", ["preset_category_id"], :name => "index_preset_images_on_preset_category_id"
 
   create_table "quotes", :force => true do |t|
-    t.text     "body",              :null => false
+    t.text     "body",              :default => "", :null => false
     t.integer  "author_id"
     t.text     "tags"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.text     "source"
     t.string   "author_first_name"
     t.string   "author_last_name"
