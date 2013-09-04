@@ -732,22 +732,22 @@ module Emoji
   MAPS['icons'] = MAPS['names'].invert
 
   def self.to_string(text = '')
-    ret_str = text
+    ret_str = text.unpack('U*').pack('U*')
     if text.present?
       MAPS['names'].each do |k, v|
         k = k.unpack('U*').pack('U*')
-        ret_str = text.gsub(k, "[u]#{v}[/u]")
+        ret_str = ret_str.gsub(k, "[u]#{v}[/u]")
       end
     end
     ret_str
   end
 
   def self.to_unicode(text = '')
-    ret_str = text
+    ret_str = text.unpack('U*').pack('U*')
     if text.present?
       MAPS['icons'].each do |k, v|
         v = v.unpack('U*').pack('U*')
-        ret_str = text.gsub("[u]#{k}[/u]", v)
+        ret_str = ret_str.gsub("[u]#{k}[/u]", v)
       end
     end
     ret_str
