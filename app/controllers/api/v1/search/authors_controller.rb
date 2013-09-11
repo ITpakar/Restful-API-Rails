@@ -20,7 +20,7 @@ module Api
         end
 
         def random
-          @author = Author.order('rand()').first
+          @author = Author.order('random()').first
 
           json = Response::Object.new('author', @author).to_json
 

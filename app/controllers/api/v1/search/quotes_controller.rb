@@ -28,7 +28,7 @@ module Api
         end
 
         def random
-          @quote = Quote.order('rand()').first
+          @quote = Quote.order('random()').first
 
           json = Response::Object.new('quote', @quote, { current_user_id: current_user.id }).to_json
  
