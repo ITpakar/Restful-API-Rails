@@ -84,12 +84,12 @@ class Quote < ActiveRecord::Base
     end
   end
 
-  protected
+  def initialize_full_name
+    full_name = [self.author_first_name, self.author_last_name].join(' ').downcase.titleize.strip
+    write_attribute(:author_full_name, full_name)
+  end
 
-    def initialize_full_name
-      full_name = [self.author_first_name, self.author_last_name].join(' ').downcase.titleize.strip
-      write_attribute(:author_full_name, full_name)
-    end
+  protected
 
     def associate_with_author
       if self.author_full_name.present?

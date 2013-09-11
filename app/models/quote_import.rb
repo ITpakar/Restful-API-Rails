@@ -76,6 +76,7 @@ class QuoteImport
       row = Hash[[header, spreadsheet.row(i)].transpose]
       quote = Quote.new
       quote.attributes = row.to_hash.slice(*Quote.accessible_attributes)
+      quote.initialize_full_name
       quotes << quote if quote.valid?
     end
     return quotes
