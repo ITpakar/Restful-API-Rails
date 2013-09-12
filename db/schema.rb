@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130902214813) do
+ActiveRecord::Schema.define(:version => 20130912160856) do
 
   create_table "activities", :force => true do |t|
     t.text     "body"
@@ -149,9 +149,11 @@ ActiveRecord::Schema.define(:version => 20130902214813) do
     t.text     "author_attr"
     t.text     "quotebox_attr"
     t.text     "tagged_users"
+    t.string   "posted_at"
   end
 
   add_index "posts", ["editors_pick"], :name => "index_posts_on_editors_pick"
+  add_index "posts", ["posted_at"], :name => "index_posts_on_posted_at"
   add_index "posts", ["user_id"], :name => "index_posts_on_user_id"
 
   create_table "preset_categories", :force => true do |t|

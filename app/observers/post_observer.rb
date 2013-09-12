@@ -10,6 +10,8 @@ class PostObserver < ActiveRecord::Observer
     # SOLR: add to solr index
     post.index!
 
+    post.update_attribute(:posted_at, post.created_at.to_i)
+
     # RESQUE: Send APN alert for tagged users in post
     unless post.tagged_users.blank?
       user_ids = post.tagged_users.keys.join(',')
