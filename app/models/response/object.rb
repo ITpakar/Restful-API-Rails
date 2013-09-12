@@ -113,7 +113,7 @@ module Response
         editors_pick: post.editors_pick,
         likes_count: post.likes.count,
         posted_at: post.created_at.to_i,
-        web_url: post_url(post.created_at.to_i, host: DEFAULT_HOST),
+        web_url: post_url(post.posted_at, host: DEFAULT_HOST),
         background_image_url: post.background_image_url,
         quote_attr: post.quote_attr,
         author_attr: post.author_attr,
