@@ -1,6 +1,8 @@
 class PostsController < ApplicationController
   def show
-    @post = Post.find_by_created_at(Time.at(params[:id].to_i))
+    # for mysql
+    # @post = Post.find_by_created_at(Time.at(params[:id].to_i))
+    @post = Post.where("posts.created_at::date = ?", Time.at(params[:id].to_i)).first
     
     unless @post.present?
       render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found
