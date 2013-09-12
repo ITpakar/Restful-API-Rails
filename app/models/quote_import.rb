@@ -51,7 +51,9 @@ class QuoteImport
 
         quote.tags.each do |topic_name|
           topic = Topic.find_or_create_by_name(topic_name.titleize)
-          quote.topics << topic unless quote.topics.include?(topic)
+          unless quote.topics.include?(topic)
+            quote.topics << topic
+          end
         end
       end
 
