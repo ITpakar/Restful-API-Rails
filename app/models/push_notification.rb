@@ -26,17 +26,17 @@ class PushNotification
 
   def self.gateway
     if Rails.env.eql?('production')
-      'gateway.sandbox.push.apple.com'
-    else
       'gateway.push.apple.com'
+    else
+      'gateway.sandbox.push.apple.com'
     end
   end
 
   def self.feedback
     if Rails.env.eql?('production')
-      'feedback.sandbox.push.apple.com'
-    else
       'feedback.push.apple.com'
+    else
+      'feedback.sandbox.push.apple.com'
     end
   end
 
