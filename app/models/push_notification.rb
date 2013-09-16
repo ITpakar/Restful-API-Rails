@@ -13,7 +13,11 @@ class PushNotification
   end
 
   def self.certificate
-    File.join(Rails.root, 'certs', 'development.pem')
+    if Rails.env.eql?('production')
+      File.join(Rails.root, 'certs', 'production.pem')
+    else
+      File.join(Rails.root, 'certs', 'development.pem')
+    end
   end
 
   def self.passphrase
@@ -21,11 +25,19 @@ class PushNotification
   end
 
   def self.gateway
-    'gateway.sandbox.push.apple.com'
+    if Rails.env.eql?('production')
+      'gateway.sandbox.push.apple.com'
+    else
+      'gateway.push.apple.com'
+    end
   end
 
   def self.feedback
-    'feedback.sandbox.push.apple.com'
+    if Rails.env.eql?('production')
+      'feedback.sandbox.push.apple.com'
+    else
+      'feedback.push.apple.com'
+    end
   end
 
   def self.pusher
