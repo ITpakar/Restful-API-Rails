@@ -86,7 +86,7 @@ class PushNotification
     file.close
   end
 
-  def print_failed(attempt)
+  def self.print_failed(attempt)
     file = File.open(File.join(Rails.root.to_s, "log/apn.log"), "a")
     file.puts("Device #{attempt.device_token} failed at #{attempt.timestamp}")
     file.close
