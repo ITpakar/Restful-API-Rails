@@ -72,6 +72,9 @@
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.NGramFilterFactory"
+                minGramSize="2"
+                maxGramSize="30"/>
       </analyzer>`
     </fieldType>
     <!-- *** This fieldType is used by Sunspot! *** -->
