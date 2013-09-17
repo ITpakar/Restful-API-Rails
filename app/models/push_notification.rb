@@ -21,7 +21,11 @@ class PushNotification
   end
 
   def self.passphrase
-    'quotiful123'
+    if Rails.env.eql?('production')
+      'sourcepad'
+    else
+      'quotiful123'
+    end
   end
 
   def self.gateway
