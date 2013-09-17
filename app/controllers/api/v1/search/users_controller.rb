@@ -10,7 +10,7 @@ module Api
           count = @count
 
           @users = User.search do
-            keywords(query) do
+            fulltext(query) do
               fields :full_name
               boost(5.0) { with(:follows_id, current_user.id) }
               boost(3.0) { with(:followers_id, current_user.id) }
