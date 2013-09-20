@@ -144,5 +144,5 @@ Quotiful::Application.routes.draw do
     # end
   end
 
-  root to: 'api/v1/versions#index'
+  root to: redirect('http://quotiful.com/') #'api/v1/versions#index'
 end
