@@ -1,14 +1,15 @@
 class Common
 
   def self.image_url(image, size = '')
-    if image.present?
-      image_path = size.present? ? image.thumb(size).url : image.jpg.url
-      generate_image_url(image_path)
+    image_path = if image.present?
+      size.present? ? image.thumb(size).url : image.jpg.url
     else
       path = File.join(Rails.root, 'public', 'default-avatar.png')
       default = Dragonfly[:images].fetch_file(path)
       size.present? ? default.thumb(size).url : default.jpg.url
     end
+    
+    generate_image_url(image_path)
   end
 
   def self.generate_image_url(image_path)
