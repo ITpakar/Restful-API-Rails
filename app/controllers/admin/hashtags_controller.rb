@@ -8,7 +8,7 @@ class Admin::HashtagsController < AdminController
     tags = Tag.page(params[:page]).per(15)
     
     if start_date.present? or end_date.present?
-      tags = tags.joins("LEFT OUTER JOIN `taggings` ON `taggings`.`tag_id` = `tags`.`id` AND `taggings`.`taggable_type` = 'Post' LEFT OUTER JOIN `posts` ON `posts`.`id` = `taggings`.`taggable_id`").group("tags.id").order('posts_ctr DESC, name ASC').select("COUNT(DISTINCT(posts.id)) AS posts_ctr, tags.*")
+      tags = tags.joins("LEFT OUTER JOIN taggings ON taggings.tag_id = tags.id AND taggings.taggable_type = 'Post' LEFT OUTER JOIN posts ON posts.id = taggings.taggable_id").group("tags.id").order('posts_ctr DESC, name ASC').select("COUNT(DISTINCT(posts.id)) AS posts_ctr, tags.*")
     else
       tags = tags.order('name ASC').select("tags.posts_count AS posts_ctr, tags.*")
     end
