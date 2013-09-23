@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  quote: MyText
+  caption: MyText
+  quote_image_uid: MyString
+  quote_image_name: MyString
+  editors_pick: false
+  likes_count: 1
+
+two:
+  quote: MyText
+  caption: MyText
+  quote_image_uid: MyString
+  quote_image_name: MyString
+  editors_pick: false
+  likes_count: 1

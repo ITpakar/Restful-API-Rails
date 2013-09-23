@@ -1,0 +1,29 @@
+.row
+  .span6.navbar
+    ul.nav.nav-pills
+      li = link_to "Import Library", new_admin_quote_path
+      li = link_to "Export to CSV", admin_quotes_path(format: 'csv'), target: '_blank'  
+  dl.dl-horizontal.span5
+    dt = pluralize(@db_count, 'quote')
+    dd in database
+    dt = pluralize(@solr_count, 'quote')
+    dd searchable
+
+.row
+  table.span12.table.table-striped.table-bordered
+    thead
+      tr
+        th.span2.text-center Author First Name
+        th.span2.text-center Author Last Name
+        th.span2.text-center Source
+        th.span4.text-center Body
+        th.span2.text-center Tags
+    tbody
+      - @quotes.each do |quote|
+        tr
+          td = quote.author_first_name
+          td = quote.author_last_name
+          td = quote.source
+          td = quote.body
+          td = quote.tags.join(',') rescue ''
+  .span12 = paginate @quotes

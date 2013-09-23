@@ -1,0 +1,10 @@
+#!/bin/bash
+
+ssh quotiful@s4.sourcepad.com "export RAILS_ENV=staging && cd staging && git pull && script/restart"
+ssh quotiful@ws0.quotiful.com "export RAILS_ENV=production && cd current && git pull && script/restart"
+ssh quotiful@ws1.quotiful.com "export RAILS_ENV=production && cd current && git pull && script/restart"
+ssh quotiful@dbs0.quotiful.com "export RAILS_ENV=production && cd current && git pull && script/restart"
+
+curl "http://quotiful.sourcepadstage.com/"
+curl "http://ws0.quotiful.com/"
+curl "http://ws1.quotiful.com/"

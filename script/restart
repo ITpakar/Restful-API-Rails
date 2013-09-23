@@ -1,0 +1,11 @@
+#!/bin/bash
+
+touch tmp/restart.txt
+bundle install --deployment --without development test
+bundle exec rake sunspot:solr:stop
+bundle exec rake db:migrate
+bundle exec rake workers:killall
+bundle exec rake assets:precompile
+nohup bundle exec rake workers:start COUNT=3 QUEUE=extract_tags,notify > log/workers.log 2>&1 &
+bundle exec rake sunspot:solr:start
+touch tmp/restart.txt

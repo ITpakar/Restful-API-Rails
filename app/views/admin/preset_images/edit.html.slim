@@ -1,0 +1,31 @@
+.row
+  .span12
+    = form_for @image, url: admin_preset_image_path(@image), multipart: true, html: {method: :put, :class => 'form-horizontal'} do |f|
+      .control-group
+        = f.label :name, :class => 'control-label'
+        .controls= f.text_field :name, placeholder: "Image name"
+      .control-group
+        = label_tag :current_image, "Current Image", :class => 'control-label'
+        .controls = link_to image_tag(@image.preset_image_url('35x35#'), :class => 'img-polaroid'), "#thumbnailView", "data-toggle" => "modal", "data-src" => @image.preset_image_url
+      .control-group
+        = f.label :preset_image, "Image File", :class => 'control-label'
+        .controls
+          .fileupload.fileupload-new data-provides="fileupload"
+            span.btn.btn-file
+              span.fileupload-new Select file
+              span.fileupload-exists Change
+              = f.file_field :preset_image
+            | &nbsp;
+            span.fileupload-preview
+            | &nbsp;
+            a.close.fileupload-exists data-dismiss="fileupload" href="#" style="float: none" x
+      .control-group
+        = f.label :preset_category_id, "Category", :class => 'control-label'
+        .controls= f.select :preset_category_id, options_from_collection_for_select(PresetCategory.all, :id, :name, @image.preset_category_id), include_blank: "Select category"
+      .control-group
+        .controls
+          = f.submit "Submit", :class => 'btn btn-primary'
+          | &nbsp;
+          = link_to 'Cancel', admin_preset_images_path, :class => 'btn'
+
+  = render 'preview_modal'

@@ -1,0 +1,46 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require bootstrap_and_overrides_fixed
+ *= require_self
+ *= require_tree .
+ *
+ */
+
+input[type=text] {
+  font-size: 16px;
+  height: 30px;
+}
+
+table .text-center {
+  text-align: center;
+}
+
+.table td {
+  vertical-align: middle;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.brand img {
+  height: 20px;
+}
+
+.spacer {
+  margin-top: 30px;
+}
+
+.modal-body {
+  max-height: 530px;
+}
+
+.modal-body img{
+  height: 500px;
+}

@@ -1,0 +1,19 @@
+doctype 5
+html
+  head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# quotiful: http://ogp.me/ns/fb/quotiful#"
+    title #{"#{@page_title}Quotiful"}
+    /![if lt IE 9]
+      | <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    = stylesheet_link_tag    "web/application", :media => "all"
+    = javascript_include_tag "application"
+    = favicon_link_tag
+    = csrf_meta_tags
+    = render "shared/opengraph" if @ogtags.present?
+    meta name="viewport" content="user-scalable=no, width=device-width"
+  body
+    .container
+      .row
+        .span12
+          = render 'shared/alert_messages' if notice.present? or alert.present?
+          = yield
+    = yield(:mobile)

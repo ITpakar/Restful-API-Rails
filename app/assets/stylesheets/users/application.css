@@ -1,0 +1,97 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require bootstrap_and_overrides_fixed
+ *= require_self
+ *= require_tree .
+ *
+ */
+
+.span9 {
+  width: 698px;
+}
+
+input[type=text] {
+  font-size: 16px;
+  height: 30px;
+}
+
+table .text-center {
+  text-align: center;
+}
+
+.table td {
+  vertical-align: middle;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.spacer {
+  margin-top: 30px;
+}
+
+.modal-body {
+  max-height: 530px;
+}
+
+.modal-body img{
+  height: 500px;
+}
+
+.header {
+  border-right: 1px solid #CCC;
+  width: 940px;
+  margin: 0 auto;
+}
+
+.footer-box {
+  border-top: 1px solid #CCC;
+}
+
+.footer {
+  width: 940px;
+  margin: 10px auto 0;
+}
+
+.home {
+  float: left;
+  border-left: 1px solid #CCC;
+  border-right: 1px solid #CCC;
+}
+
+.home a img {
+  padding: 10px 5px;
+}
+
+.logo {
+  width: 122px;
+  margin: 0 auto;
+}
+
+.logo a img {
+  height: 20px;
+}
+
+.sidebar {
+  min-height:600px;
+  background-color: #EEE;
+  border-left: 1px solid #AAA;
+  border-right: 1px solid #AAA;
+  margin-top: -17px;
+}
+
+.footer ul {
+  text-align: center;
+  font-weight: bold;
+}
+
+.footer ul li a:hover {
+  text-decoration: none;
+}

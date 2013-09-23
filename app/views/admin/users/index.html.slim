@@ -1,0 +1,45 @@
+.row
+  .span12.navbar
+    ul.nav.nav-pills
+      li = link_to "Export to CSV", admin_users_path(format: 'csv'), target: '_blank'
+      li = link_to "Show Spammers", spammers_admin_users_path
+      
+.row
+  table.span12.table.table-striped.table-bordered
+    thead
+      tr
+        th.span1.text-center = content_tag(:i, '', :class => 'icon-user')
+        th.span2.text-center Name
+        th.span2.text-center Email
+        th.span1.text-center Followers
+        th.span1.text-center Following
+        th.span1.text-center Posts
+        th.span1.text-center Spam Count
+        th.span3.text-center Actions
+    tbody
+      - @users.each do |user|
+        tr
+          td = link_to image_tag(user.profile_picture_url('35x35#'), :class => 'img-polaroid'), "#thumbnailView", "data-toggle" => "modal", "data-src" => user.profile_picture_url
+          td = user.full_name
+          td = user.email
+          td.text-center = link_to_unless user.followers.count.zero?, user.followers.count, followers_admin_user_path(user)
+          td.text-center = link_to_unless user.follows.count.zero?, user.follows.count, following_admin_user_path(user)
+          td.text-center = user.posts.count
+          td.text-center = user.spam_count
+          td
+            .btn-group
+              - if user.suggested?
+                = link_to "Remove to Suggested List", suggest_admin_user_url(user, sg: 'false'), method: :put, confirm: "Are you sure?", :class => "btn"
+              - else
+                = link_to "Add to Suggested List", suggest_admin_user_url(user, sg: 'true'), method: :put, confirm: "Are you sure?", :class => "btn"
+              button.btn.dropdown-toggle data-toggle="dropdown"
+                span.caret style="margin-bottom:8px;"
+              ul.dropdown-menu
+                li = link_to content_tag(:i, " Edit", :class => 'icon-edit'), edit_admin_user_path(user)
+                - if user.active?
+                  li = link_to content_tag(:i, " Deactivate", :class => 'icon-remove'), admin_user_path(user, page: params[:page]), method: :delete, confirm: "Are you sure?"
+                - else
+                  li = link_to content_tag(:i, " Reactivate", :class => 'icon-ok'), reactivate_admin_user_path(user, page: params[:page]), method: :post, confirm: "Are you sure?"
+  .span12 = paginate @users
+
+= render 'preview_modal'

@@ -1,0 +1,27 @@
+.row
+  .span12.navbar
+    ul.nav.nav-pills
+      li = link_to "Back to hashtags list", admin_hashtags_path
+
+p.lead = @tag.name
+
+.row
+  table.span12.table.table-striped.table-bordered
+    thead
+      tr
+        th.span1.text-center = content_tag(:i, '', :class => 'icon-picture')
+        th.span3.text-center Quote
+        th.span2.text-center Author
+        th.span3.text-center Description
+        th.span2.text-center Posted By
+        th.span1.text-center Likes
+    tbody
+      - @posts.each do |post|
+        tr
+          td = image_tag(post.quote_image_url('35x35#'), :class => 'img-polaroid')
+          td = post.quote
+          td = post.author_name
+          td = post.caption
+          td = post.user_name
+          td.text-center = post.likes_count
+  .span12 = paginate @posts

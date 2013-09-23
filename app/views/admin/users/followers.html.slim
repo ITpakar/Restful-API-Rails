@@ -1,0 +1,8 @@
+.row
+  .span12.navbar
+    ul.nav.nav-pills
+      li = link_to "Back to users list", admin_users_path
+
+p.lead List of users following #{@user.full_name}
+
+= render 'relationship'

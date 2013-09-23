@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <title>Quotiful</title>
+    <style type="text/stylesheet">
+      .im{color:black !important;}
+      p{color:#000000 !important;}
+      div.gapcontentarea p {color:#000000 !important;font-size:12pt;}
+    </style>
+  </head>
+  <body>
+    <div style="font-family:Arial,sans-serif;font-size:10pt;">
+      <p style="margin:10px auto;padding:0;color:#000000;">Hi <%= @user.full_name %>,</p>
+      <p style="margin:10px auto;padding:0;color:#000000;">We’re sorry to inform you that your account has been deactivated due to multiple reports of spam and/or inappropriate content. You can view our Terms of Use to learn more about our policies and hopefully we’ll see you back on Quotiful again with updated content that fits the community standards.</p>
+      <p style="margin:10px auto;padding:0;color:#000000;">
+        Cheers,<br>
+        The Quotiful Team<br>
+        http://www.quotiful.com
+      </p>
+    </div>
+  </body>
+</html>

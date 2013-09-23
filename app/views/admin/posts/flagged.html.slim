@@ -1,0 +1,33 @@
+.row
+  .span12.navbar
+    ul.nav.nav-pills
+      li = link_to "Sort by Date", flagged_admin_posts_path(sort: 'created_at')
+      li = link_to "Sort by Flagged Count", flagged_admin_posts_path(sort: 'flagged_count')
+      li.divider-vertical
+      li = link_to "See all posts", admin_posts_path
+
+.row
+  table.span12.table.table-striped.table-bordered
+    thead
+      tr
+        th.span1.text-center = content_tag(:i, '', :class => 'icon-picture')
+        th.span4.text-center Quote
+        th.span1.text-center Author
+        th.span3.text-center Description
+        th.span1.text-center Posted By
+        th.span1.text-center
+          small Flagged Count
+        th.span1.text-center Actions
+    tbody
+      - @posts.each do |post|
+        tr
+          td = image_tag(post.quote_image_url('35x35#'), :class => 'img-polaroid')
+          td = post.quote
+          td = post.author_name
+          td = post.description
+          td = post.user_name
+          td.text-center = post.likes_count
+          td = link_to "Delete", admin_post_path(post), confirm: "Are you sure?", method: :delete, :class => "btn btn-danger"
+  .span12 = paginate @posts
+
+= render 'preview_modal'

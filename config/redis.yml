@@ -1,0 +1,16 @@
+development:
+  host: localhost
+  port: 6379
+  db: 1
+test:
+  host: localhost
+  port: 6379
+  db: 2
+staging:
+  host: localhost
+  port: 6379
+  db: 3
+production:
+  host: dbs0.quotiful.com
+  port: 6379
+  db: 4

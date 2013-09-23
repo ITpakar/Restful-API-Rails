@@ -1,0 +1,35 @@
+doctype 5
+html
+  head
+    title Quotiful
+    /![if lt IE 9]
+      | <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    = stylesheet_link_tag    "users/application", :media => "all"
+    = javascript_include_tag "application"
+    = favicon_link_tag
+    = csrf_meta_tags
+    meta content="width=device-width, initial-scale=1" name="viewport"
+  body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container.header
+          .home = link_to image_tag(asset_path('home.png')), 'http://quotiful.com/'
+          .logo = link_to image_tag(asset_path('logo-text.png')), 'http://quotiful.com/', :class => 'brand'
+    .container
+      .row
+        .span3.sidebar
+          = yield(:sidebar)
+        .span9
+          = render 'shared/alert_messages' if notice.present? or alert.present?
+          = yield
+    .footer-box
+      .footer
+        ul.inline
+          li = link_to "ABOUT", 'http://quotiful.com/about/'
+          li = link_to "CONTACT", 'http://quotiful.com/contact/'
+          /li = link_to "BLOG", 'javascript:void(0)'
+          /li = link_to "PRESS", 'javascript:void(0)'
+          /li = link_to "API", 'javascript:void(0)'
+          /li = link_to "JOBS", 'javascript:void(0)'
+          li = link_to "PRIVACY", 'http://quotiful.com/privacy/'
+          li = link_to "TERMS", 'http://quotiful.com/terms/'
