@@ -39,6 +39,7 @@ Quotiful::Application.routes.draw do
         post :reactivate
         get :followers
         get :following
+        get :posts
         put :suggest
       end
     end

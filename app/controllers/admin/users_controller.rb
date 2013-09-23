@@ -16,6 +16,11 @@ class Admin::UsersController < AdminController
     @user = User.find(params[:id])
   end
 
+  def posts
+    @user = User.find(params[:id])
+    @posts = @user.posts.page(params[:page]).per(15).order("posts.created_at DESC")
+  end
+
   def update
     @user = User.find(params[:id])
     
