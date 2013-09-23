@@ -109,11 +109,11 @@ class User < ActiveRecord::Base
 
   has_settings do |setting|
     setting.key :notifications, defaults: {
-      new_follower: false,
-      fb_friend_joins: false,
-      likes_your_post: false,
+      new_follower: true,
+      fb_friend_joins: true,
+      likes_your_post: true,
       comments_on_your_post: true,
-      comments_after_you: false,
+      comments_after_you: true,
       requotes_your_post: true,
       tagged_in_post: true,
       post_gets_featured: true,
