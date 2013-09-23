@@ -158,7 +158,7 @@ body {
   .mobile .media img {width:310px;margin:5px;}
   .mobile .info {width: 320px;margin:0 auto;text-align:center;}
   .mobile .info .user {margin:15px auto;}
-  .mobile .info .user img {-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px;width:64px;margin:0 auto;}
+  .mobile .info .user img {-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px;width:64px;margin:0 auto;}
   .mobile .info .user h3 {color:#6CCAD1;font-size:18px;font-weight:normal;}
   .mobile .info .description {margin:30px auto 0px;min-height:120px;border-bottom:1px solid #CCC;}
   .mobile .info .description h4 {font-weight:normal;}
