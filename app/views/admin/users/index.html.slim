@@ -1,9 +1,11 @@
 .row
-  .span12.navbar
+  .span8.navbar
     ul.nav.nav-pills
       li = link_to "Export to CSV", admin_users_path(format: 'csv'), target: '_blank'
       li = link_to "Show Spammers", spammers_admin_users_path
-      
+  .counter.span3
+    strong = pluralize(User.count, 'user')
+    span &nbsp;in database      
 .row
   table.span12.table.table-striped.table-bordered
     thead

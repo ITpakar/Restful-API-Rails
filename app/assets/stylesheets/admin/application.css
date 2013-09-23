@@ -41,6 +41,10 @@ table .text-center {
   max-height: 530px;
 }
 
-.modal-body img{
+.modal-body img {
   height: 500px;
+}
+
+.counter {
+  margin-top: 14px;
 }

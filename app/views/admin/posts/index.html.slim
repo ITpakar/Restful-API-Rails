@@ -1,5 +1,5 @@
 .row
-  .span12.navbar
+  .span8.navbar
     ul.nav.nav-pills
       li = link_to "Sort by Latest", admin_posts_path(sort: 'created_at')
       li
@@ -17,7 +17,9 @@
       li = link_to "Sort by Editor's Pick", admin_posts_path(sort: 'editors_pick')
       li.divider-vertical
       li = link_to "See flagged posts", flagged_admin_posts_path
-
+  .counter.span3
+    strong = pluralize(Post.count, 'post')
+    span &nbsp;in database
 .row
   table.span12.table.table-striped.table-bordered
     thead
