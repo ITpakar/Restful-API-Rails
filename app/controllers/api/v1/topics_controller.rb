@@ -6,7 +6,7 @@ module Api
       before_filter :validate_topic_object, only: [:show]
       
       def index
-        @topics = Topic.page(@page).per(@count).order('name ASC')
+        @topics = Topic.explore.page(@page).per(@count).order('name ASC')
 
         json = Response::Collection.new('topic', @topics, { page: @page }).to_json
 
