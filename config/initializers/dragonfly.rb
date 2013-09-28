@@ -22,7 +22,7 @@ if Rails.env == 'production'
     # c.storage_headers = {'some' => 'thing'}       # defaults to {'x-amz-acl' => 'public-read'}
     # c.url_scheme = 'https'                        # defaults to 'http'
     # c.url_host = 'some.custom.host'               # defaults to "<bucket_name>.s3.amazonaws.com"
-    
+
     # Prohibit images from being accessed directly from S3 by the public.
     # In conjunction with protect_from_dos_attacks (see below), this allows
     # our rails app to enforce access, e.g. to allow access to a 64x64 thumbnail
@@ -54,5 +54,11 @@ if Rails.env == 'production'
         :job => job.serialize     # 'BAhbBls...' - holds all the job info
       )                           # e.g. fetch 'some_uid' then resize to '40x40'
     end
+    # Make it effectively impossible to guess valid image URLs
+
+    # Amazon CloudFront does not allow query params, so put sha in the url itself
+    c.url_format = '/media/:job/:sha/:basename.:format'
+    # This secret should be unique to your app. Use SecureRandom.hex(64) to make one.
+    c.secret = '659b5f82190fe1df02f5a4817b1591d8aac3de26b5422251c52f03d9d7941b2ae564bf1505a5aaa72cb26e000f9a6cf6417bfee1a86c3e9e36dc3845f7ef5e7c'
   end
 end
