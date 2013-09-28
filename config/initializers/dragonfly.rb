@@ -19,9 +19,8 @@ if Rails.env == 'production'
     c.access_key_id = 'AKIAJ5PJULN75BYPMHTQ'
     c.secret_access_key = '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'
     # c.region = 'eu-west-1'                        # defaults to 'us-east-1'
-    # c.storage_headers = {'some' => 'thing'}       # defaults to {'x-amz-acl' => 'public-read'}
     # c.url_scheme = 'https'                        # defaults to 'http'
-    # c.url_host = 'some.custom.host'               # defaults to "<bucket_name>.s3.amazonaws.com"
+    c.url_host = 'd1t4f9gbrjiu98.cloudfront.net'  # defaults to "<bucket_name>.s3.amazonaws.com"
 
     # Prohibit images from being accessed directly from S3 by the public.
     # In conjunction with protect_from_dos_attacks (see below), this allows
