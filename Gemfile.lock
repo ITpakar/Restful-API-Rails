@@ -60,6 +60,7 @@ GEM
       execjs
     coffee-script-source (1.6.2)
     commonjs (0.2.6)
+    dalli (2.6.4)
     database_cleaner (1.0.1)
     devise (2.2.4)
       bcrypt-ruby (~> 3.0)
@@ -103,6 +104,7 @@ GEM
     kaminari (0.14.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+    kgio (2.8.1)
     ledermann-rails-settings (2.0.3)
       activerecord (~> 3.1)
     less (2.3.2)
@@ -234,31 +236,33 @@ DEPENDENCIES
   activerecord-import (~> 0.2.11)
   annotate
   api-versions (~> 0.2.0)
-  asset_sync
+  asset_sync (~> 1.0.0)
   coffee-rails (~> 3.2.1)
-  database_cleaner
+  dalli (~> 2.6.4)
+  database_cleaner (~> 1.0.1)
   devise (~> 2.2.4)
   doorkeeper (~> 0.6.7)
   dragonfly (~> 0.9.15)
   em-synchrony (~> 1.0.3)
-  fog
+  fog (~> 1.15.0)
   grocer
-  hashie
-  jquery-rails
-  kaminari
+  hashie (~> 2.0.4)
+  jquery-rails (~> 3.0.0)
+  kaminari (~> 0.14.1)
+  kgio (~> 2.8.1)
   ledermann-rails-settings
-  less-rails
-  pg
-  progress_bar
+  less-rails (~> 2.3.3)
+  pg (~> 0.16.0)
+  progress_bar (~> 1.0.0)
   pry
   rack-cache
   rails (= 3.2.13)
   resque (~> 1.24.1)
   roo!
   sass-rails (~> 3.2.3)
-  slim
-  sunspot_rails
-  sunspot_solr
+  slim (~> 2.0.0)
+  sunspot_rails (~> 2.0.0)
+  sunspot_solr (~> 2.0.0)
   therubyracer
-  twitter-bootstrap-rails
+  twitter-bootstrap-rails (~> 2.2.6)
   uglifier (>= 1.0.3)

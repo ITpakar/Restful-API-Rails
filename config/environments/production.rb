@@ -45,10 +45,18 @@ Quotiful::Application.configure do
   # config.cache_store = :mem_cache_store
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
-  config.action_controller.asset_host = "//nicephore.s3.amazonaws.com"
+  # config.action_controller.asset_host = "//nicephore.s3.amazonaws.com"
+  config.action_controller.asset_host = "//d1t4f9gbrjiu98.cloudfront.net"
 
   # store assets in a 'folder' instead of bucket root
   config.assets.prefix = "/production/assets"
+
+  config.cache_store = :dalli_store
+  config.middleware.insert_before 'Dragonfly::Middleware', 'Rack::Cache', {
+    :verbose     => true,
+    :metastore   => 'memcached://localhost:11211/dragonfly/cache/meta',
+    :entitystore => 'file:tmp/dragonfly/cache/body'
+  }
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )

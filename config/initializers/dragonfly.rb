@@ -22,6 +22,12 @@ if Rails.env == 'production'
     # c.storage_headers = {'some' => 'thing'}       # defaults to {'x-amz-acl' => 'public-read'}
     # c.url_scheme = 'https'                        # defaults to 'http'
     # c.url_host = 'some.custom.host'               # defaults to "<bucket_name>.s3.amazonaws.com"
+    
+    # Prohibit images from being accessed directly from S3 by the public.
+    # In conjunction with protect_from_dos_attacks (see below), this allows
+    # our rails app to enforce access, e.g. to allow access to a 64x64 thumbnail
+    # but prohibit access to the original image.
+    c.storage_headers = {'x-amz-acl' => 'private'}
   end
 
   app.configure do |c|
