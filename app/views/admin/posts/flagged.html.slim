@@ -26,7 +26,7 @@
           td = post.author_name
           td = post.description
           td = post.user_name
-          td.text-center = post.likes_count
+          td.text-center = post.flagged_count
           td = link_to "Delete", admin_post_path(post), confirm: "Are you sure?", method: :delete, :class => "btn btn-danger"
   .span12 = paginate @posts
 
