@@ -38,7 +38,7 @@ class Admin::PostsController < AdminController
   end
 
   def flagged
-    @posts = Post.flagged.order([sort_by.to_sym, :desc].join(' '), [:created_at, :desc].join(' ')).page(params[:page]).per(20)
+    @posts = Post.flagged.order([sort_by, 'desc'].join(' '), 'created_at desc').page(params[:page]).per(20)
   end
 
   private
