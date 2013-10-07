@@ -14,7 +14,7 @@ module Jobs
       images += [post.quote_image_url('35x35#'), post.quote_image_url('612x612#'), post.quote_image_url]
 
       EM.synchrony do
-        EM::Synchrony::FiberIterator.new(images, 3).each do |image|
+        EM::Synchrony::FiberIterator.new(images, 10).each do |image|
           url = URI.parse(image)
           open(url) do |http|
             response = http.read
