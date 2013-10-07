@@ -56,7 +56,7 @@ if Rails.env == 'production'
     # Make it effectively impossible to guess valid image URLs
 
     # Amazon CloudFront does not allow query params, so put sha in the url itself
-    c.url_format = '/media/:job/:sha/:basename.:format'
+    # c.url_format = '/media/:job/:sha/:basename.:format'
     # This secret should be unique to your app. Use SecureRandom.hex(64) to make one.
     c.secret = '659b5f82190fe1df02f5a4817b1591d8aac3de26b5422251c52f03d9d7941b2ae564bf1505a5aaa72cb26e000f9a6cf6417bfee1a86c3e9e36dc3845f7ef5e7c'
   end
