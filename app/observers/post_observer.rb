@@ -3,6 +3,8 @@ class PostObserver < ActiveRecord::Observer
     # RESQUE: save_tags_on_quote_and_caption
     Resque.enqueue(Jobs::ExtractTags, post.id)
 
+    Resque.enqueue(Jobs::UploadPost, post.id)
+
     # increment posts counter on users
     user = post.user
     # user.increment!(:posts_count)
@@ -23,8 +25,6 @@ class PostObserver < ActiveRecord::Observer
       author_id = post.origin.user_id
       Resque.enqueue(Jobs::Notify, :requotes_your_post, author_id, user.id, {post_id: post.id})
     end
-
-    Resque.enqueue(Jobs::UploadPost, post.id)
   end
 
   def after_destroy(post)
