@@ -11,6 +11,9 @@ namespace :thumbs do
     
     images = Response::Collection.new('post', posts).to_hash[:data][:posts].collect {|p| [p[:s_thumbnail_url], p[:m_thumbnail_url], p[:quote_image_url]]}.flatten.delete_if {|u| u.starts_with?("http://d1t4f9gbrjiu98.cloudfront.net/")}
     images += Response::Collection.new('user', users).to_hash[:data][:users].collect {|p| [p[:s_thumbnail_url], p[:m_thumbnail_url], p[:profile_picture_url]]}.flatten.delete_if {|u| u.starts_with?("http://d1t4f9gbrjiu98.cloudfront.net/")}
+
+    puts images.count
+    
     EM.synchrony do
       EM::Synchrony::FiberIterator.new(images, 20).each do |image|
       # images.each do |image|
