@@ -47,6 +47,7 @@ module Response
         @hash[:data][:user] = Response::Object.new('user', instance_user, options).user_hash if instance_user.present?
         @hash[:data][:tag] = Response::Object.new('tag', instance_tag, options).tag_hash if instance_tag.present?
         @hash[:data][:page] = options[:page] || 1
+        @hash[:data][:params] = options[:params] || {}
         @hash[:success] = success
 
         EM.stop

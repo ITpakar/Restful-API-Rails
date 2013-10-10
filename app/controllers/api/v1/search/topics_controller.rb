@@ -16,7 +16,7 @@ module Api
             paginate(page: page, per_page: count)
           end.results
 
-          json = Response::Collection.new('quote', @topics, {current_user_id: current_user.id, page: @page}).to_json
+          json = Response::Collection.new('quote', @topics, {current_user_id: current_user.id, page: @page, params: { q: @query }}).to_json
 
           render json: json, status: 200
         end

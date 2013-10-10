@@ -14,7 +14,7 @@ module Api
             paginate(page: page, per_page: count)
           end.results
 
-          json = Response::Collection.new('author', @authors, { page: @page }).to_json
+          json = Response::Collection.new('author', @authors, { page: @page, params: { q: @query } }).to_json
 
           render json: json, status: 200
         end

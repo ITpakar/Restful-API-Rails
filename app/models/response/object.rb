@@ -46,6 +46,7 @@ module Response
       EM.synchrony do
         @hash = {}
         @hash[:data] = data
+        @hash[:data][:params] = options[:params] || {}
         @hash[:errors] = errors if errors.present?
         @hash[:success] = success
         
