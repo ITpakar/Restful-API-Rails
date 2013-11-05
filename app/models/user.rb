@@ -86,6 +86,8 @@ class User < ActiveRecord::Base
       full_name.try(:downcase)
     end
 
+    string :email
+
     integer :id
 
     boolean :active

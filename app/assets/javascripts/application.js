@@ -14,3 +14,20 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require_tree .
+
+$(document).ready(function() {
+  $('#userSearch').typeahead({
+    source: function(query, process) {
+      $.ajax({
+        dataType: "json",
+        type: "GET",
+        url: '/admin/users/search',
+        data: { q: query },
+        success: function(e) { 
+          console.log(e);
+          return process(e);
+        }
+      });
+    }
+  });
+})

@@ -2,7 +2,20 @@ class Admin::UsersController < AdminController
   def index
     respond_to do |format|
       format.html do
-        @users = User.page(params[:page]).per(15).order("full_name ASC, email ASC")
+        page = params[:page]
+        query = params[:q]
+        # @users = User.page(params[:page]).per(15).order("full_name ASC, email ASC")
+        
+        @users = User.search do
+          fulltext(query) do
+            fields :full_name
+          end
+
+          paginate(page: page, per_page: 15)
+
+          order_by(:full_name, :asc)
+          order_by(:email, :asc)
+        end.results
       end
 
       format.csv do
@@ -67,5 +80,11 @@ class Admin::UsersController < AdminController
     user.deactivate!
 
     redirect_to :back, notice: "Successfully deactivated the user."
+  end
+
+  def search
+    @users = User.where("LOWER(users.full_name) LIKE ?", [params[:q].downcase, '%'].join).limit(8).pluck(:full_name)
+
+    render json: @users.to_json
   end
 end

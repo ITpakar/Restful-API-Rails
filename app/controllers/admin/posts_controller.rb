@@ -4,15 +4,32 @@ class Admin::PostsController < AdminController
     
     sort_str = "#{sort_by} DESC"
 
-    posts = Post.order(sort_str).order('created_at DESC').page(params[:page]).per(20)
+    query = params[:q]
+    page = params[:page] || 1
 
-    if end_date.present? 
-      posts = posts.where("created_at <= ?", end_date)
-    end
+    # posts = Post.order(sort_str).order('created_at DESC').page(params[:page]).per(20)
 
-    if start_date.present?
-      posts = posts.where("created_at >= ?", start_date)
-    end
+    # if end_date.present? 
+    #   posts = posts.where("created_at <= ?", end_date)
+    # end
+
+    # if start_date.present?
+    #   posts = posts.where("created_at >= ?", start_date)
+    # end
+
+    posts = Post.search do
+      fulltext(query) do
+        fields :user_name
+      end
+
+      with(:created_at).less_than(end_date) if end_date.present?
+      with(:created_at).greater_than(start_date) if start_date.present?
+
+      paginate(page: page, per_page: 20)
+
+      order_by(sort_by.to_sym, :desc)
+      order_by(:created_at, :desc)
+    end.results
     
     @posts = posts
   end

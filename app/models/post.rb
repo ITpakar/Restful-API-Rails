@@ -61,12 +61,21 @@ class Post < ActiveRecord::Base
   
   searchable do
     string :author_name
+    string :user_name
 
     integer :user_id
+    integer :likes_count
+    integer :flagged_count
 
     text :caption
     text :quote
     text :author_name
+
+    text :user_name
+
+    boolean :editors_pick
+    
+    time :created_at
     # text :tag_names do
     #   tag.map(&:name)
     # end
