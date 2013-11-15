@@ -45,25 +45,31 @@ module Api
       end
 
       def follows
-        @users = instance_user.followed_by_self.includes(:follows, :followers)
+        page = params[:page] || 1
 
-        json = Response::Collection.new('user', @users, { current_user_id: current_user.id, relative_user_id: instance_user.id }).to_json
+        @users = instance_user.followed_by_self.includes(:follows, :followers).page(page).per(10)
+
+        json = Response::Collection.new('user', @users, { current_user_id: current_user.id, relative_user_id: instance_user.id, page: page }).to_json
         
         render json: json, status: 200
       end
 
       def followed_by
-        @users = instance_user.followed_by_users.includes(:follows, :followers)
+        page = params[:page] || 1
 
-        json = Response::Collection.new('user', @users, { current_user_id: current_user.id, relative_user_id: instance_user.id }).to_json
+        @users = instance_user.followed_by_users.includes(:follows, :followers).page(page).per(10)
+
+        json = Response::Collection.new('user', @users, { current_user_id: current_user.id, relative_user_id: instance_user.id, page: page }).to_json
 
         render json: json, status: 200
       end
 
       def requested_by
-        @users = current_user.requested_by_users
+        page = params[:page] || 1
+        
+        @users = current_user.requested_by_users.page(page).per(10)
 
-        json = Response::Collection.new('user', @users, { current_user_id: current_user.id, relative_user_id: instance_user.id }).to_json
+        json = Response::Collection.new('user', @users, { current_user_id: current_user.id, relative_user_id: instance_user.id, page: page }).to_json
 
         render json: json, status: 200
       end
