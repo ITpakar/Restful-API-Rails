@@ -48,7 +48,7 @@ module Api
         page = params[:page] || 1
         count = params[:count] || 10
 
-        @users = instance_user.followed_by_self.includes(:follows, :followers).page(page).per(count)
+        @users = instance_user.followed_by_self.includes(:follows, :followers).order("relationships.created_at DESC").page(page).per(count)
 
         json = Response::Collection.new('user', @users, { current_user_id: current_user.id, relative_user_id: instance_user.id, page: page }).to_json
         
@@ -59,7 +59,7 @@ module Api
         page = params[:page] || 1
         count = params[:count] || 10
 
-        @users = instance_user.followed_by_users.includes(:follows, :followers).page(page).per(count)
+        @users = instance_user.followed_by_users.includes(:follows, :followers).order("relationships.created_at DESC").page(page).per(count)
 
         json = Response::Collection.new('user', @users, { current_user_id: current_user.id, relative_user_id: instance_user.id, page: page }).to_json
 
