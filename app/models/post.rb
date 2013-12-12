@@ -45,7 +45,7 @@ class Post < ActiveRecord::Base
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :users_commented, through: :comments, source: :user
 
-  validates_presence_of :quote
+  # validates_presence_of :quote
 
   image_accessor :quote_image
   image_accessor :background_image

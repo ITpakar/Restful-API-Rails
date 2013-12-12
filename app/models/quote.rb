@@ -17,7 +17,8 @@
 class Quote < ActiveRecord::Base
   attr_accessible :author_id, :body, :tags, :source, :author_first_name, :author_last_name, :author_full_name
 
-  before_save :initialize_full_name
+  # before_save :initialize_full_name
+  before_save :initialize_first_and_last_names
   before_save :associate_with_author
 
   belongs_to :author
@@ -77,16 +78,24 @@ class Quote < ActiveRecord::Base
 
   def self.to_csv(options = {})
     CSV.generate(options) do |csv|
-      csv << %w(author_first_name author_last_name source body tags)
+      csv << %w(author_full_name source body tags)
       all.each do |quote|
-        csv << [quote.author_first_name, quote.author_last_name, quote.source, quote.body, quote.tags.join(',')]
+        csv << [quote.author_full_name, quote.source, quote.body, quote.tags.join(',')]
       end
     end
   end
 
   def initialize_full_name
     full_name = [self.author_first_name, self.author_last_name].join(' ').downcase.titleize.strip
-    write_attribute(:author_full_name, full_name)
+    write_attribute(:author_full_name, full_name) unless self.author_full_name.present?
+  end
+
+  def initialize_first_and_last_names
+    first_name, last_name = self.author_full_name.split(' ')
+    if self.author_first_name.blank? and self.author_last_name.blank?
+      write_attribute(:author_first_name, first_name)
+      write_attribute(:author_last_name, last_name)
+    end
   end
 
   protected
