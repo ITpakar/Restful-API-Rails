@@ -91,10 +91,11 @@ class Quote < ActiveRecord::Base
   end
 
   def initialize_first_and_last_names
+    write_attribute(:author_full_name, '') if self.author_full_name.blank?
     first_name, last_name = self.author_full_name.to_s.split(' ', 2)
     if self.author_first_name.blank? and self.author_last_name.blank?
-      write_attribute(:author_first_name, first_name)
-      write_attribute(:author_last_name, last_name)
+      write_attribute(:author_first_name, first_name.to_s)
+      write_attribute(:author_last_name, last_name.to_s)
     end
   end
 

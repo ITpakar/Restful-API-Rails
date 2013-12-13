@@ -30,7 +30,6 @@ if Rails.env == 'production'
   end
 
   app.configure do |c|
-    # Override the .url method...
     c.define_url do |app, job, opts|
       thumb = Thumb.find_by_job(job.serialize)
       # If (fetch 'some_uid' then resize to '40x40') has been stored already, give the datastore's remote url ...
@@ -43,7 +42,8 @@ if Rails.env == 'production'
     end
 
     # Before serving from the local Dragonfly server...
-    c.server.before_serve do |job, env|
+    # c.server.before_serve do |job, env|
+    c.before_serve do |job, env|
       # ...store the thumbnail in the datastore...
       uid = job.store
 
