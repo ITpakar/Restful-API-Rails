@@ -42,8 +42,8 @@ if Rails.env == 'production'
     end
 
     # Before serving from the local Dragonfly server...
-    # c.server.before_serve do |job, env|
-    c.before_serve do |job, env|
+    c.server.before_serve do |job, env|
+    # c.before_serve do |job, env|
       # ...store the thumbnail in the datastore...
       uid = job.store
 
