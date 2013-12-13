@@ -155,10 +155,10 @@ module Response
       {
         id: quote.id,
         quote_id: quote.id,
-        author_full_name: quote.author_full_name,
+        author_full_name: quote.author_full_name.to_s,
         author_name: quote.author_name,
-        author_first_name: quote.author_first_name,
-        author_last_name: quote.author_last_name,
+        author_first_name: quote.author_first_name.to_s,
+        author_last_name: quote.author_last_name.to_s,
         body: quote.body
       }
     end
