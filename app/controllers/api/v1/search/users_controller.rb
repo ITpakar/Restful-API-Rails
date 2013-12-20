@@ -29,7 +29,7 @@ module Api
         def facebook
           facebook_ids = params[:ids].dup.to_s
 
-          @users = User.where(facebook_id: facebook_ids.split(',')).order("full_name ASC").page(@page).per(10)
+          @users = User.where(facebook_id: facebook_ids.split(',')).order("full_name ASC").page(@page).per(@count)
 
           json = Response::Collection.new('user', @users, { current_user_id: current_user.id, page: @page }).to_json
 
