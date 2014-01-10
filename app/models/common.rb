@@ -6,7 +6,7 @@ class Common
     else
       path = File.join(Rails.root, 'public', 'default-avatar.png')
       default = Dragonfly.app.fetch_file(path)
-      size.present? ? default.thumb(size).store : default.job.uid
+      size.present? ? default.thumb(size).store : default.store
     end
     
     generate_image_url(image_path)
