@@ -29,7 +29,7 @@ module ApplicationHelper
 
   def placeholder_image_path(size = '')
     path = File.join(Rails.root, 'public', 'default.png')
-    default = Dragonfly[:images].fetch_file(path)
+    default = Dragonfly.app.fetch_file(path)
     size.present? ? default.thumb(size).url : default.jpg.url
   end
 end
