@@ -20,7 +20,7 @@ namespace :thumbs do
         puts "uploaded Post##{p.id}"
       end
 
-      EM::Synchrony::FiberIterator.new(PresentImage.all, 1000).each do |p|
+      EM::Synchrony::FiberIterator.new(PresetImage.all, 1000).each do |p|
         [p.preset_image.job, p.preset_image.thumb('56x56#'), p.preset_image.thumb('140x140#')].each do |job|
           thumb = Thumb.find_or_initialize_by_signature(job.signature)
           unless thumb.new_record?
