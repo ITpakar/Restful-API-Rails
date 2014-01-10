@@ -9,22 +9,20 @@ class Common
       size.present? ? default.thumb(size).store : default.store
     end
     
-    generate_image_url(image_path)
+    generate_image_url(Dragonfly.app.remote_url_for(image_path))
   end
 
   def self.generate_image_url(image_path)
     if image_path.start_with?('http', 'https') or Rails.env.eql?('development')
       image_path
     else
-      # path, _, sha = image_path.split(/[\?\=]/)
-      # URI::HTTP.build({
-      #   host: DEFAULT_HOST,
-      #   path: path,
-      #   query: {
-      #     sha: sha
-      #   }.to_param
-      # }).to_s
-      Dragonfly.app.remote_url_for(image_path)
+      URI::HTTP.build({
+        host: DEFAULT_HOST,
+        path: image_path
+        # query: {
+        #   sha: sha
+        # }.to_param
+      }).to_s
     end
   end
 
