@@ -51,12 +51,12 @@ Quotiful::Application.configure do
   # store assets in a 'folder' instead of bucket root
   config.assets.prefix = "/production/assets"
 
-  config.cache_store = :dalli_store
-  config.middleware.insert_before 'Dragonfly::Middleware', 'Rack::Cache', {
-    :verbose     => true,
-    :metastore   => 'memcached://localhost:11211/dragonfly/cache/meta',
-    :entitystore => 'file:tmp/dragonfly/cache/body'
-  }
+  # config.cache_store = :dalli_store
+  # config.middleware.insert_before 'Dragonfly::Middleware', 'Rack::Cache', {
+  #   :verbose     => true,
+  #   :metastore   => 'memcached://localhost:11211/dragonfly/cache/meta',
+  #   :entitystore => 'file:tmp/dragonfly/cache/body'
+  # }
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )

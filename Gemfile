@@ -14,7 +14,8 @@ gem 'database_cleaner', '~> 1.0.1'
 gem 'slim', '~> 2.0.0'
 gem 'jquery-rails', '~> 3.0.0'
 
-gem 'dragonfly', '~>0.9.15'
+gem 'dragonfly', '~>1.0'
+gem 'dragonfly-s3_data_store'
 gem 'dalli', '~> 2.6.4' # memcache client
 gem 'kgio', '~> 2.8.1' # non-blocking i/o gives dalli 10-20% speed boost
 gem 'rack-cache', :require => 'rack/cache'

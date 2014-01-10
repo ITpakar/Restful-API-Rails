@@ -25,6 +25,7 @@
 #
 
 class Post < ActiveRecord::Base
+  extend Dragonfly::Model
   include Rails.application.routes.url_helpers
 
   attr_accessible :author_name, :caption, :editors_pick,
@@ -47,8 +48,10 @@ class Post < ActiveRecord::Base
 
   # validates_presence_of :quote
 
-  image_accessor :quote_image
-  image_accessor :background_image
+  # image_accessor :quote_image
+  # image_accessor :background_image
+  dragonfly_accessor :quote_image
+  dragonfly_accessor :background_image
 
   serialize :quote_attr, Hash
   serialize :author_attr, Hash

@@ -35,6 +35,7 @@
 #
 
 class User < ActiveRecord::Base
+  extend Dragonfly::Model
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :token_authenticatable, :database_authenticatable, :registerable,
@@ -49,7 +50,8 @@ class User < ActiveRecord::Base
 
   before_save :ensure_authentication_token
 
-  image_accessor :profile_picture
+  # image_accessor :profile_picture
+  dragonfly_accessor :profile_picture
 
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
