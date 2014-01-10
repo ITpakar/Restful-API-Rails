@@ -49,8 +49,20 @@ class Post < ActiveRecord::Base
 
   # image_accessor :quote_image
   # image_accessor :background_image
-  dragonfly_accessor :quote_image
-  dragonfly_accessor :background_image
+  dragonfly_accessor :quote_image do
+    default 'public/default-avatar.png'
+    after_assign do |i|
+      i.thumb('56x56#')
+      i.thumb('140x140#')
+    end
+  end
+  dragonfly_accessor :background_image do
+    default 'public/default-avatar.png'
+    after_assign do |i|
+      i.thumb('56x56#')
+      i.thumb('140x140#')
+    end
+  end
 
   serialize :quote_attr, Hash
   serialize :author_attr, Hash

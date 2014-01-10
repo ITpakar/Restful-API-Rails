@@ -50,7 +50,13 @@ class User < ActiveRecord::Base
   before_save :ensure_authentication_token
 
   # image_accessor :profile_picture
-  dragonfly_accessor :profile_picture
+  dragonfly_accessor :profile_picture do
+    default 'public/default-avatar.png'
+    after_assign do |i|
+      i.thumb('56x56#')
+      i.thumb('140x140#')
+    end
+  end
 
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy

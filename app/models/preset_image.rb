@@ -18,7 +18,13 @@ class PresetImage < ActiveRecord::Base
   belongs_to :preset_category, :counter_cache => true
 
   # image_accessor :preset_image
-  dragonfly_accessor :preset_image
+  dragonfly_accessor :preset_image do
+    default 'public/default-avatar.png'
+    after_assign do |i|
+      i.thumb('56x56#')
+      i.thumb('140x140#')
+    end
+  end
 
   validates_presence_of :preset_image
 

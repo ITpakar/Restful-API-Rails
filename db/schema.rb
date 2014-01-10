@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130912160856) do
+ActiveRecord::Schema.define(:version => 20140110165542) do
 
   create_table "activities", :force => true do |t|
     t.text     "body"
@@ -241,7 +241,7 @@ ActiveRecord::Schema.define(:version => 20130912160856) do
 
   create_table "thumbs", :force => true do |t|
     t.string   "uid"
-    t.string   "job"
+    t.string   "signature"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
