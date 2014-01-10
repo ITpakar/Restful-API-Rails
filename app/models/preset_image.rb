@@ -13,7 +13,6 @@
 #
 
 class PresetImage < ActiveRecord::Base
-  extend Dragonfly::Model
   attr_accessible :preset_category_id, :name, :preset_image
 
   belongs_to :preset_category, :counter_cache => true

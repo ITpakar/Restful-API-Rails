@@ -35,7 +35,6 @@
 #
 
 class User < ActiveRecord::Base
-  extend Dragonfly::Model
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :token_authenticatable, :database_authenticatable, :registerable,

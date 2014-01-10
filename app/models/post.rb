@@ -25,7 +25,6 @@
 #
 
 class Post < ActiveRecord::Base
-  extend Dragonfly::Model
   include Rails.application.routes.url_helpers
 
   attr_accessible :author_name, :caption, :editors_pick,
