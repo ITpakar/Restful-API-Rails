@@ -53,8 +53,12 @@ class User < ActiveRecord::Base
   dragonfly_accessor :profile_picture do
     default 'public/default-avatar.png'
     after_assign do |i|
-      i.thumb('56x56#')
-      i.thumb('140x140#')
+      [i.job, i.thumb('56x56#'), i.thumb('140x140#')].each do |job|
+        thumb = Thumb.find_or_initialize_by_signature(job.signature)
+        next unless thumb.new_record?
+        thumb.uid = job.store
+        thumb.save
+      end
     end
   end
 
