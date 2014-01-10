@@ -17,12 +17,13 @@ class Common
     if image_path.start_with?('http', 'https') or Rails.env.eql?('development')
       image_path
     else
+      path, _, sha = image_path.split(/[\?\=]/) 
       URI::HTTP.build({
         host: DEFAULT_HOST,
-        path: image_path
-        # query: {
-        #   sha: sha
-        # }.to_param
+        path: path
+        query: {
+          sha: sha
+        }.to_param
       }).to_s
     end
   end
