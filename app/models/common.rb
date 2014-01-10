@@ -20,7 +20,7 @@ class Common
       path, _, sha = image_path.split(/[\?\=]/) 
       URI::HTTP.build({
         host: DEFAULT_HOST,
-        path: path
+        path: path,
         query: {
           sha: sha
         }.to_param
