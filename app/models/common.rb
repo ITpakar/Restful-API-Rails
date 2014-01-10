@@ -8,8 +8,9 @@ class Common
     #   default = Dragonfly.app.fetch_file(path)
     #   size.present? ? default.thumb(size).store : default.store
     # end
+    # generate_image_url(Dragonfly.app.remote_url_for(image_path))
     image_path = size.present? ? image.thumb(size).url : image.url
-    generate_image_url(Dragonfly.app.remote_url_for(image_path))
+    generate_image_url(image_path)
   end
 
   def self.generate_image_url(image_path)
