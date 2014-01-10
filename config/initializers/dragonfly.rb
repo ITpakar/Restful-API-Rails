@@ -11,6 +11,10 @@ Dragonfly.app.configure do
 
   url_format "/media/:job/:name"
 
+  fetch_file_whitelist [
+    /public/
+  ]
+
   if Rails.env == 'production'
     datastore :s3,
       bucket_name: 'nicephore',
