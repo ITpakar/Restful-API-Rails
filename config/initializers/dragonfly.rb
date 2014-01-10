@@ -15,6 +15,8 @@ Dragonfly.app.configure do
     /public/
   ]
 
+  response_header "Cache-Control", "public, max-age=3600"
+
   if Rails.env == 'production'
     datastore :s3,
       bucket_name: 'nicephore',
