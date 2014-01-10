@@ -56,6 +56,13 @@ Quotiful::Application.configure do
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 
+  config.cache_store = :dalli_store
+  config.middleware.insert_before 'Dragonfly::Middleware', 'Rack::Cache', {
+    :verbose     => true,
+    :metastore   => 'memcached://localhost:11211/dragonfly/cache/meta',
+    :entitystore => 'file:tmp/dragonfly/cache/body'
+  }
+
   config.action_mailer.default_url_options = { :host => DEFAULT_HOST }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
