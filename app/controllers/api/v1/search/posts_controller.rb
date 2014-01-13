@@ -20,6 +20,7 @@ module Api
             end
 
             paginate(page: page, per_page: count)
+            order_by(:created_at, :desc)
           end.results
 
           json = Response::Collection.new('post', @posts, {current_user_id: current_user.id, page: page, params: { q: @query }}).to_json
