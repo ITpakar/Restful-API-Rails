@@ -123,9 +123,10 @@ module Response
         tagged_users: post.tagged_users,
         s_thumbnail_url: post.quote_image_url('56x56#'),
         m_thumbnail_url: post.quote_image_url('140x140#'),
+        l_thumbnail_url: post.quote_image_url('290x290#'),
         flagged_count: post.flagged_count,
         user: user_hash(post.user)
-      }.update(post_with_current_user_id(options[:current_user_id], post))
+      }.update(post_with_current_user_id(options[:current_user_id], post)).update(post_image_override(options[:override], post))
     end
 
     def preset_category_hash(preset_category = object)
@@ -211,6 +212,14 @@ module Response
     end
 
     protected
+
+      def post_image_override(override, post)
+        return {} unless override.present?
+
+        {
+          quote_image_url: post.quote_image_url('290x290#')
+        }
+      end
 
       def post_with_current_user_id(current_user_id, post)
         return {} unless current_user_id.present?

@@ -4,6 +4,25 @@ require "em-synchrony/fiber_iterator"
 require "thread"
 
 namespace :thumbs do
+  desc "Force upload 290sq post images"
+  task force_290: :environment do
+    EM.synchrony do
+      EM::Synchrony::FiberIterator.new(Post.all, 1000).each do |p|
+        job = p.quote_image.thumb('290x290#')
+        thumb = Thumb.find_or_initialize_by_signature(job.signature)
+        unless thumb.new_record?
+          puts "skip Post##{p.id}"
+          next
+        end
+        thumb.uid = job.store
+        thumb.save
+        puts "uploaded 290sq Post##{p.id}"
+      end
+
+      EM.stop
+    end
+  end
+
   desc "Force upload post"
   task :force_upload => :environment do
     EM.synchrony do
