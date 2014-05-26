@@ -1,14 +1,14 @@
 .row
-  .span8.navbar
+  .span4.navbar
     ul.nav.nav-pills
       li = link_to "Export to CSV", admin_users_path(format: 'csv'), target: '_blank'
       li = link_to "Show Spammers", spammers_admin_users_path
-  dl.dl-horizontal.counter.span3
+  dl.dl-horizontal.counter.span4
     dt = pluralize(@db_count, 'user')
     dd in database
     dt = pluralize(@solr_count, 'user')
     dd searchable
-  .span8
+  .span4
     = form_tag '', :class => "form form-search", method: :get do
       .input-append
         = text_field_tag :q, params[:q], placeholder: "Search by user's name", :class => "input-large", id: "userSearch", autocomplete: "off", data: { provide: "typeahead" }, style: "height:20px;"
