@@ -16,6 +16,9 @@ class Admin::UsersController < AdminController
           order_by(:full_name, :asc)
           order_by(:email, :asc)
         end.results
+
+        @db_count = User.count
+        @solr_count = User.search.results.total_entries
       end
 
       format.csv do

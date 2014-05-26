@@ -3,9 +3,11 @@
     ul.nav.nav-pills
       li = link_to "Export to CSV", admin_users_path(format: 'csv'), target: '_blank'
       li = link_to "Show Spammers", spammers_admin_users_path
-  .counter.span3
-    strong = pluralize(User.count, 'user')
-    span &nbsp;in database
+  dl.dl-horizontal.counter.span3
+    dt = pluralize(@db_count, 'user')
+    dd in database
+    dt = pluralize(@solr_count, 'user')
+    dd searchable
   .span8
     = form_tag '', :class => "form form-search", method: :get do
       .input-append
