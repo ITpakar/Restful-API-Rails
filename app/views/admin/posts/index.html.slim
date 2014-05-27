@@ -43,7 +43,7 @@
           td = post.quote
           td = post.author_name
           td = post.description
-          td = post.user_name
+          td = link_to post.user_name, edit_admin_user_path(post.user)
           td.text-center = post.likes_count
           td
             .btn-group

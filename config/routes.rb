@@ -33,6 +33,7 @@ Quotiful::Application.routes.draw do
     end
     resources :users, except: [:new, :create, :show] do
       collection do
+        get :featured
         get :spammers
         get :search
       end

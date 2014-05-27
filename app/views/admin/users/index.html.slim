@@ -3,6 +3,7 @@
     ul.nav.nav-pills
       li = link_to "Export to CSV", admin_users_path(format: 'csv'), target: '_blank'
       li = link_to "Show Spammers", spammers_admin_users_path
+      li = link_to "Interesting People", featured_admin_users_path
   dl.dl-horizontal.counter.span4
     dt = pluralize(@db_count, 'user')
     dd in database
