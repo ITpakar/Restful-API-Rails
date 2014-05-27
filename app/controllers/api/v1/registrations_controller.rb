@@ -67,7 +67,7 @@ module Api
 
         if (cond1 and cond2 and cond3) or !cond4
           current_user.update_attributes(user_params)
-          json = Response::Object.new('user', current_user, {current_user_id: current_user.id}).to_json
+          json = Response::Object.new('user', current_user.reload, {current_user_id: current_user.id}).to_json
           render json: json, status: 200
         else
           render json: { success: false, message: "Error with your password" }, status: 200
