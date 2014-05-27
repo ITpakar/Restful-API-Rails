@@ -28,6 +28,11 @@ class Admin::UsersController < AdminController
     end
   end
 
+  def featured
+    @users = User.suggested.active.order('full_name ASC, email ASC').page(params[:page]).per(15)
+    @count = User.suggested.active.count
+  end
+
   def edit
     @user = User.find(params[:id])
   end
