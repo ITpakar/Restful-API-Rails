@@ -2,6 +2,9 @@
   .span12
     = form_for @user, url: admin_user_path(@user), html: {:class => 'form-horizontal'} do |f|
       .control-group
+        = f.label :profile_picture_url, "Profile Picture", :class => 'control-label'
+        .controls = link_to image_tag(user.profile_picture_url('35x35#'), :class => 'img-polaroid'), "#thumbnailView", "data-toggle" => "modal", "data-src" => user.profile_picture_url
+      .control-group
         = f.label :full_name, "Name", :class => 'control-label'
         .controls = f.text_field :full_name, placeholder: "Name"
       .control-group
@@ -15,7 +18,20 @@
         = f.label :author_name, :class => 'control-label'
         .controls = f.text_field :author_name
       .control-group
+        = label_tag 'followers', 'Followers', :class => 'control-label'
+        .controls = link_to_unless @user.followers.count.zero?, @user.followers.count, followers_admin_user_path(@user), target: '_blank'
+      .control-group
+        = label_tag 'following', 'Following', :class => 'control-label'
+        .controls = link_to_unless @user.follows.count.zero?, @user.follows.count, following_admin_user_path(@user), target: '_blank'
+      .control-group
+        = label_tag 'posts', 'Posts', :class => 'control-label'
+        .controls = link_to_unless @user.posts.count.zero?, @user.posts.count, posts_admin_user_path(@user), target: '_blank'
+      .control-group
+        = label_tag 'spam_count', 'Spam Count', :class => 'control-label'
+        .controls = @user.spam_count
+      .control-group
         .controls
           = f.submit "Update Info", :class => 'btn btn-primary'
           | &nbsp;
           = link_to "Cancel", admin_users_path, :class => 'btn'
+= render 'preview_modal'
