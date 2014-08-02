@@ -4,11 +4,18 @@ module Api
     include ActionController::MimeResponds
     
     skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/vnd.quotiful+json;version=1' }
+    before_filter :adjust_negative_id
     before_filter :validate_authentication_token
 
     respond_to :json
 
     protected
+
+      def adjust_negative_id
+        if params[:id].to_i < 0
+          params.update(id: params[:id].to_i + 65_536)
+        end
+      end
 
       def deactivated_user
         render json: { success: false, signin_error: 102  }, status: 200
