@@ -15,8 +15,8 @@ module Api
         ids = params.keys.join(' ').scan(/\S*_*id/).map(&:to_sym)
         ids.each do |id|
           if params[id].to_i < 0
-            params.update(id: params[id].to_i + 65_536)
-          end  
+            params.update(id => params[id].to_i + 65_536)
+          end
         end
       end
 
