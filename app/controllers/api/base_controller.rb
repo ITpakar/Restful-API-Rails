@@ -13,7 +13,7 @@ module Api
     protected
 
       def get_version
-        API_VERSION = request.headers['Accept'].scan(/version=\d+/).first.split('=').last.to_i
+        @api_version = request.headers['Accept'].scan(/version=\d+/).first.split('=').last.to_i
       end
 
       def adjust_negative_ids
