@@ -6,10 +6,15 @@ module Api
     skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/vnd.quotiful+json;version=1' }
     before_filter :adjust_negative_ids
     before_filter :validate_authentication_token
+    before_filter :get_version
 
     respond_to :json
 
     protected
+
+      def get_version
+        API_VERSION = request.headers['Accept'].scan(/version=\d+/).first.split('=').last
+      end
 
       def adjust_negative_ids
         ids = params.keys.join(' ').scan(/\S*_*id/).map(&:to_sym)

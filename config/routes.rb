@@ -54,7 +54,7 @@ Quotiful::Application.routes.draw do
     resources :quotes, only: [:index, :new, :create]
   end
 
-  api vendor_string: "quotiful", default_version: 2 do
+  api vendor_string: "quotiful", default_version: 3 do
     version 1 do
       cache as: 'v1' do
         # ROUTES: api/v1/users
@@ -143,7 +143,13 @@ Quotiful::Application.routes.draw do
     end
 
     version 2 do
-      inherit from: 'v1'
+      cache as: 'v2' do
+        inherit from: 'v1'
+      end
+    end
+
+    version 3 do
+      inherit from: 'v2'
     end
   end
 
