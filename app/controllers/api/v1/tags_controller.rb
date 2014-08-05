@@ -20,7 +20,7 @@ module Api
 
         @posts = tag.posts.page(page).per(count)
 
-        json = Response::Collection.new('post', @posts, { instance_tag_id: tag.id, page: page }).to_json
+        json = Response::Collection.new('post', @posts, { instance_tag_id: tag.id, page: page, api_version: @api_version }).to_json
 
         render json: json, status: 200
       end

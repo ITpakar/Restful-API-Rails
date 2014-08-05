@@ -8,7 +8,7 @@ module Api
       def index
         @categories = PresetCategory.all
 
-        json = Response::Collection.new('preset_category', @categories, { alt_key: :categories }).to_json
+        json = Response::Collection.new('preset_category', @categories, { alt_key: :categories, api_version: @api_version }).to_json
 
         render json: json, status: 200
       end
@@ -16,7 +16,7 @@ module Api
       def show
         category = PresetCategory.find(params[:id])
 
-        json = Response::Object.new('preset_category', category, { alt_name: :category }).to_json
+        json = Response::Object.new('preset_category', category, { alt_name: :category, api_version: @api_version }).to_json
         
         render json: json, status: 200
       end

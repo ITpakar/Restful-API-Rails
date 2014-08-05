@@ -21,7 +21,7 @@ module Api
             paginate(page: page, per_page: count)
           end.results
 
-          json = Response::Collection.new('user', @users, { current_user_id: current_user.id, page: @page, params: { q: @query } }).to_json
+          json = Response::Collection.new('user', @users, { current_user_id: current_user.id, page: @page, params: { q: @query }, api_version: @api_version }).to_json
 
           render json: json, status: 200
         end
@@ -31,7 +31,7 @@ module Api
 
           @users = User.where(facebook_id: facebook_ids.split(',')).order("full_name ASC").page(@page).per(@count)
 
-          json = Response::Collection.new('user', @users, { current_user_id: current_user.id, page: @page }).to_json
+          json = Response::Collection.new('user', @users, { current_user_id: current_user.id, page: @page, api_version: @api_version }).to_json
 
           render json: json, status: 200
         end

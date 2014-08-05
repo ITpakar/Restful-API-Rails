@@ -8,7 +8,7 @@ module Api
         def index
           @users = instance_post.users_liked.order('likes.created_at DESC')
 
-          json = Response::Collection.new('user', @users, { current_user_id: current_user.id }).to_json
+          json = Response::Collection.new('user', @users, { current_user_id: current_user.id, api_version: @api_version }).to_json
 
           render json: json, status: 200
         end

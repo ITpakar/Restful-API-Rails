@@ -8,7 +8,7 @@ module Api
       def index
         @topics = Topic.explore.page(@page).per(@count).order('name ASC')
 
-        json = Response::Collection.new('topic', @topics, { page: @page }).to_json
+        json = Response::Collection.new('topic', @topics, { page: @page, api_version: @api_version }).to_json
 
         render json: json, status: 200
       end

@@ -8,7 +8,7 @@ module Api
         def index
           @comments = instance_post.comments.order("comments.created_at DESC")
 
-          json = Response::Collection.new('comment', @comments, { current_user_id: current_user.id }).to_json
+          json = Response::Collection.new('comment', @comments, { current_user_id: current_user.id, api_version: @api_version }).to_json
           
           render json: json, status: 200
         end
@@ -25,7 +25,7 @@ module Api
           other_ids = instance_post.comments.map(&:user_id).uniq.compact - [commenter_id, poster_id]
           Resque.enqueue(Jobs::Notify, :comments_after_you, other_ids, commenter_id, {comment_id: comment.id, post_id: instance_post.id})
           
-          json = Response::Object.new('comment', comment, { current_user_id: current_user.id }).to_json 
+          json = Response::Object.new('comment', comment, { current_user_id: current_user.id, api_version: @api_version }).to_json 
           
           render json: json, status: 200
         end

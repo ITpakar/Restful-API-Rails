@@ -8,7 +8,7 @@ module Api
       def index
         @authors = Author.page(@page).per(@count).order('name ASC')
 
-        json = Response::Collection.new('author', @authors, { page: @page }).to_json
+        json = Response::Collection.new('author', @authors, { page: @page, api_version: @api_version }).to_json
 
         render json: json, status: 200
       end

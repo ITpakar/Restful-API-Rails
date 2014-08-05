@@ -8,7 +8,7 @@ module Api
       def show
         image = PresetImage.find(params[:id])
 
-        json = Response::Object.new('preset_image', image, { alt_key: :image }).to_json
+        json = Response::Object.new('preset_image', image, { alt_key: :image, api_version: @api_version }).to_json
 
         render json: json, status: 200
       end

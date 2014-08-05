@@ -72,7 +72,7 @@ module Response
 
     def activity_hash(activity = object)
       {
-        activity_id: activity.id,
+        activity_id: negate_id(activity.id),
         body: activity.body,
         identifier: activity.custom_payloads.symbolize_keys[:identifier],
         timestamp: activity.created_at.to_i,
@@ -82,8 +82,8 @@ module Response
 
     def author_hash(author = object)
       {
-        id: author.id,
-        author_id: author.id,
+        id: negate_id(author.id),
+        author_id: negate_id(author.id),
         name: author.name,
         first_name: author.first_name,
         last_name: author.last_name
@@ -92,9 +92,9 @@ module Response
 
     def comment_hash(comment = object)
       {
-        id: comment.id,
-        comment_id: comment.id,
-        post_id: comment.commentable_id,
+        id: negate_id(comment.id),
+        comment_id: negate_id(comment.id),
+        post_id: negate_id(comment.commentable_id),
         body: comment.body,
         description: comment.description,
         commented_at: comment.created_at.to_i,
@@ -105,7 +105,7 @@ module Response
 
     def post_hash(post = object)
       {
-        post_id: post.id,
+        post_id: negate_id(post.id),
         quote: post.quote,
         quote_image_url: post.quote_image_url,
         author_name: post.author_name,
@@ -131,8 +131,8 @@ module Response
 
     def preset_category_hash(preset_category = object)
       {
-        id: preset_category.id,
-        category_id: preset_category.id,
+        id: negate_id(preset_category.id),
+        category_id: negate_id(preset_category.id),
         name: preset_category.name,
         preset_images_count: preset_category.preset_images_count,
         preset_image_sample: preset_category.preset_image_sample,
@@ -142,8 +142,8 @@ module Response
 
     def preset_image_hash(preset_image = object)
       {
-        id: preset_image.id,
-        image_id: preset_image.id,
+        id: negate_id(preset_image.id),
+        image_id: negate_id(preset_image.id),
         name: preset_image.name,
         image_name: preset_image.name,
         image_thumbnail_url: preset_image.preset_image_url('140x140#'),
@@ -154,8 +154,8 @@ module Response
 
     def quote_hash(quote = object)
       {
-        id: quote.id,
-        quote_id: quote.id,
+        id: negate_id(quote.id),
+        quote_id: negate_id(quote.id),
         author_full_name: quote.author_full_name.to_s,
         author_name: quote.author_name,
         author_first_name: quote.author_first_name.to_s,
@@ -167,16 +167,16 @@ module Response
     def relationship_hash(relationship = object)
       {
         status: relationship.status,
-        follower_id: relationship.follower_id,
-        following_id: relationship.user_id,
+        follower_id: negate_id(relationship.follower_id),
+        following_id: negate_id(relationship.user_id),
         followed_at: relationship.created_at.to_i
       }
     end
 
     def tag_hash(tag = object)
       {
-        id: tag.id,
-        tag_id: tag.id,
+        id: negate_id(tag.id),
+        tag_id: negate_id(tag.id),
         name: tag.name,
         posts_count: tag.posts.count
       }
@@ -184,15 +184,15 @@ module Response
 
     def topic_hash(topic = object)
       {
-        id: topic.id,
-        topic_id: topic.id,
+        id: negate_id(topic.id),
+        topic_id: negate_id(topic.id),
         name: topic.name
       }
     end
 
     def user_hash(user = object)
       {
-        user_id: user.id,
+        user_id: negate_id(user.id),
         full_name: user.full_name,
         profile_picture_url: user.profile_picture_url,
         s_thumbnail_url: user.profile_picture_url('56x56#'),
@@ -213,8 +213,8 @@ module Response
 
     protected
 
-      def to_negative_id(id)
-        id > 32_767 ? (id - 65_536) : id
+      def negate_id(id)
+        (id > 32_767 and options[:api_version].to_i < 3) ? (id - 65_536) : id
       end
 
       def post_image_override(override, post)
