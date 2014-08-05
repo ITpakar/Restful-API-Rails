@@ -4,16 +4,19 @@ module Api
     include ActionController::MimeResponds
     
     skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/vnd.quotiful+json;version=1' }
-    before_filter :adjust_negative_id
+    before_filter :adjust_negative_ids
     before_filter :validate_authentication_token
 
     respond_to :json
 
     protected
 
-      def adjust_negative_id
-        if params[:id].to_i < 0
-          params.update(id: params[:id].to_i + 65_536)
+      def adjust_negative_ids
+        ids = params.keys.join(' ').scan(/\S*_*id/).map(&:to_sym)
+        ids.each do |id|
+          if params[id].to_i < 0
+            params.update(id: params[id].to_i + 65_536)
+          end  
         end
       end
 
