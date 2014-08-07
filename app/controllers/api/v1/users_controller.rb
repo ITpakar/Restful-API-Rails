@@ -19,7 +19,7 @@ module Api
       end
 
       def show
-        json = Response::Object.new('user', instance_user, {current_user_id: current_user.id}).to_json
+        json = Response::Object.new('user', instance_user, {current_user_id: current_user.id, api_version: @api_version}).to_json
         render json: json, status: 200
       end
 
@@ -29,7 +29,7 @@ module Api
 
         @posts = current_user.authenticated_feed(hash_conditions)
 
-        json = Response::Collection.new('post', @posts, {current_user_id: current_user.id, page: params[:page]}).to_json
+        json = Response::Collection.new('post', @posts, {current_user_id: current_user.id, page: params[:page], api_version: @api_version}).to_json
 
         render json: json, status: 200
       end
@@ -39,7 +39,7 @@ module Api
         count = params[:count] || 10
         @users = User.active.suggested.page(page).per(count).order("users.email = 'info@quotiful.com' DESC, users.updated_at DESC")
 
-        json = Response::Collection.new('user', @users, {current_user_id: current_user.id, page: params[:page]}).to_json
+        json = Response::Collection.new('user', @users, {current_user_id: current_user.id, page: params[:page], api_version: @api_version}).to_json
 
         render json: json, status: 200
       end
@@ -80,7 +80,7 @@ module Api
       def spam
         instance_user.is_spammer!
 
-        json = Response::Object.new('user', instance_user, {current_user_id: current_user.id}).to_json
+        json = Response::Object.new('user', instance_user, {current_user_id: current_user.id, api_version: @api_version}).to_json
         
         render json: json, status: 200
       end
@@ -88,7 +88,7 @@ module Api
       def recent
         @posts = instance_user.posts.order('posts.created_at DESC').page(params[:page]).per(params[:count] || 10)
 
-        json = Response::Collection.new('post', @posts, {current_user_id: current_user.id, page: params[:page], instance_user_id: instance_user.id}).to_json
+        json = Response::Collection.new('post', @posts, {current_user_id: current_user.id, page: params[:page], instance_user_id: instance_user.id, api_version: @api_version}).to_json
 
         render json: json, status: 200
       end

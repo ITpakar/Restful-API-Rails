@@ -34,7 +34,7 @@ module Api
 
         def response_for_tag(tag)
           if tag.present?
-            json = Response::Object.new('tag', tag).to_json
+            json = Response::Object.new('tag', tag, {api_version: @api_version}).to_json
             
             render json: json, status: 200
           else

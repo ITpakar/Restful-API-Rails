@@ -11,7 +11,7 @@ module Api
 
           @posts = instance_user.collected_posts.order('posts.created_at DESC').page(page).per(count)
 
-          json = Response::Collection.new('post', @posts, {current_user_id: current_user.id, page: page}).to_json
+          json = Response::Collection.new('post', @posts, {current_user_id: current_user.id, page: page, api_version: @api_version}).to_json
 
           render json: json, status: 200
         end

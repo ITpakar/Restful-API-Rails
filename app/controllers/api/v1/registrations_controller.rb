@@ -33,10 +33,10 @@ module Api
 
           user.using_this_device(params[:device_token])
 
-          json = Response::Object.new('user', user, {current_user_id: user.id}).to_json
+          json = Response::Object.new('user', user, {current_user_id: user.id, api_version: @api_version}).to_json
         else
           warden.custom_failure!
-          json = Response::Object.new('user', user).to_json
+          json = Response::Object.new('user', user, {api_version: @api_version}).to_json
         end
 
         return deactivated_user unless user.active?
@@ -68,7 +68,7 @@ module Api
         if (cond1 and cond2 and cond3) or !cond4
           current_user.reload
           current_user.update_attributes(user_params)
-          json = Response::Object.new('user', current_user, {current_user_id: current_user.id}).to_json
+          json = Response::Object.new('user', current_user, {current_user_id: current_user.id, api_version: @api_version}).to_json
           render json: json, status: 200
         else
           render json: { success: false, message: "Error with your password" }, status: 200
@@ -83,7 +83,7 @@ module Api
             return deactivated_user unless user.active?
             user.using_this_device(params[:device_token])
 
-            json = Response::Object.new('user', user, {current_user_id: user.id}).to_json
+            json = Response::Object.new('user', user, {current_user_id: user.id, api_version: @api_version}).to_json
             
             render json: json, status: 200
           end

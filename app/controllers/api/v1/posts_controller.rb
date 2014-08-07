@@ -9,11 +9,11 @@ module Api
         post = current_user.posts.build(params[:post])
         post.save
         
-        render json: Response::Object.new('post', post, {current_user_id: current_user.id}).to_json, status: 200
+        render json: Response::Object.new('post', post, {current_user_id: current_user.id, api_version: @api_version}).to_json, status: 200
       end
 
       def show
-        json = Response::Object.new('post', instance_post, {current_user_id: current_user.id}).to_json
+        json = Response::Object.new('post', instance_post, {current_user_id: current_user.id, api_version: @api_version}).to_json
 
         render json: json, status: 200
       end
@@ -21,13 +21,13 @@ module Api
       def flag
         instance_post.flag!
         
-        render json: Response::Object.new('post', instance_post, {current_user_id: current_user.id}).to_json, status: 200
+        render json: Response::Object.new('post', instance_post, {current_user_id: current_user.id, api_version: @api_version}).to_json, status: 200
       end
 
       def editors_picks
         @posts = Post.editors_picked.page(params[:page]).per(params[:count] || 10)
 
-        json = Response::Collection.new('post', @posts, {current_user_id: current_user.id, page: params[:page], override: true}).to_json
+        json = Response::Collection.new('post', @posts, {current_user_id: current_user.id, page: params[:page], override: true, api_version: @api_version}).to_json
 
         render json: json, status: 200
       end
@@ -35,7 +35,7 @@ module Api
       def popular
         @posts = Post.popular.page(params[:page]).per(params[:count] || 10)
 
-        json = Response::Collection.new('post', @posts, {current_user_id: current_user.id, page: params[:page], override: true}).to_json
+        json = Response::Collection.new('post', @posts, {current_user_id: current_user.id, page: params[:page], override: true, api_version: @api_version}).to_json
 
         render json: json, status: 200
       end

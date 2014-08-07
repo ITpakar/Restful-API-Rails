@@ -17,7 +17,7 @@ module Api
         author = Author.find(params[:id])
         @quotes = author.quotes.page(@page).per(@count).order('author_full_name ASC, body ASC')
 
-        json = Response::Collection.new('quote', @quotes, {current_user_id: current_user.id, page: @page}).to_json
+        json = Response::Collection.new('quote', @quotes, {current_user_id: current_user.id, page: @page, api_version: @api_version}).to_json
         
         render json: json, status: 200
       end
