@@ -49,6 +49,7 @@ module Response
         @hash[:data][:params] = options[:params] || {}
         @hash[:errors] = errors if errors.present?
         @hash[:success] = success
+        @hash[:api_version] = options[:api_version] || nil
         
         EM.stop
       end
