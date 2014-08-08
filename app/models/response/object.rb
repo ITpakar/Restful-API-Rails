@@ -77,7 +77,7 @@ module Response
         body: activity.body,
         identifier: activity.custom_payloads.symbolize_keys[:identifier],
         timestamp: activity.created_at.to_i,
-        details: activity.tagged_details
+        details: activity.tagged_details(options)
       }
     end
 

@@ -42,14 +42,14 @@ class Activity < ActiveRecord::Base
   # 108 - post_gets_featured
   # 109 - saves_your_quotiful
 
-  def tagged_details
+  def tagged_details(options = {})
     hash = {}
     
     user_ids = self.tagged_users.keys
     users = User.where(id: user_ids)
     users.each do |user|
       hash.update(
-        "@[user:#{user.id}]" => Response::Object.new('user', user).user_hash
+        "@[user:#{user.id}]" => Response::Object.new('user', user, options).user_hash
       )
     end
 
@@ -57,7 +57,7 @@ class Activity < ActiveRecord::Base
       post_id = self.custom_payloads.symbolize_keys[:post_id]
       post = Post.where(id: post_id).first
       hash.update(
-        post: Response::Object.new('post', post).post_hash(post)
+        post: Response::Object.new('post', post, options).post_hash(post)
       ) if post.present?
     end
 
