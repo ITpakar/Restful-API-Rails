@@ -215,6 +215,7 @@ module Response
     protected
 
       def negate_id(id)
+        options.symbolize_keys!
         (id > 32_767 and options[:api_version].to_i < 3) ? (id - 65_536) : id
       end
 

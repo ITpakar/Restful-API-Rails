@@ -49,6 +49,7 @@ module Response
         @hash[:data][:page] = options[:page] || 1
         @hash[:data][:params] = options[:params] || {}
         @hash[:success] = success
+        @hash[:api_version] = options[:api_version] || nil
 
         EM.stop
       end
